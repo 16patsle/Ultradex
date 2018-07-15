@@ -10,31 +10,52 @@ export default new Vuex.Store({
     pokemon: []
   },
   mutations: {
-    getPokemon(state, { id, data }) {
+    getPokemonSpecies(state, { id, data }) {
       if (id) {
         state.pokemon[id] = data;
       } else {
         state.pokemonData = data.results;
       }
+    },
+    getPokemonVariety(state, { speciesId, data }) {
+      if (state.pokemon[speciesId]) {
+        for (let varietyIndex in state.pokemon[speciesId].varieties) {
+          if (
+            state.pokemon[speciesId].varieties[varietyIndex].pokemon.name ===
+            data.name
+          ) {
+            state.pokemon[speciesId].varieties[varietyIndex].pokemonData = data;
+          }
+        }
+      }
     }
   },
   actions: {
-    getPokemon({ commit }, { id }) {
+    getPokemonSpecies({ commit }, { id }) {
       if (id) {
         return PokeApi.getPokemonSpecies(id).then(data => {
-          commit("getPokemon", {
+          commit("getPokemonSpecies", {
             id,
             data
           });
         });
       } else {
         return PokeApi.getPokemonSpecies("?limit=1000").then(data => {
-          commit("getPokemon", {
+          commit("getPokemonSpecies", {
             id: null,
             data
           });
         });
       }
+    },
+    getPokemonVariety({ commit }, { speciesId, varietyId }) {
+      return PokeApi.getPokemon(varietyId).then(data => {
+        commit("getPokemonVariety", {
+          speciesId,
+          varietyId,
+          data
+        });
+      });
     }
   }
 });

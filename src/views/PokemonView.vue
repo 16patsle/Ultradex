@@ -1,13 +1,15 @@
 <template>
   <div class="pokemon-view">
-    <h1>Pokemon</h1>
+    <h1>Pokemon Species</h1>
     <div v-if="loading" class="loading">
       Loading...
     </div>
     <div v-if="error" class="error">
       {{ error }}
     </div>
-    <PokemonDetails v-if="this.$store.state.pokemon[this.$route.params.id]" :pokemon="this.$store.state.pokemon[this.$route.params.id]"/>
+    <div v-if="pokemon">
+      <PokemonDetails :pokemon="pokemon"/>
+    </div>
   </div>
 </template>
 
@@ -22,8 +24,33 @@ export default {
   data() {
     return {
       loading: false,
-      error: null
+      error: null,
+      pokemon: null
     };
+  },
+  computed: {
+    /*pokemon() {
+      return this.$store.state.pokemon[this.$route.params.id];
+    },*/
+    pokemonNameLocalized() {
+      if (this.pokemon) {
+        for (let name of this.pokemon.names) {
+          if (name.language.name === "en") {
+            return name.name;
+          }
+        }
+        return this.pokemon.name;
+      }
+    },
+    pokemonGenusLocalized() {
+      if (this.pokemon) {
+        for (let genus of this.pokemon.genera) {
+          if (genus.language.name === "en") {
+            return genus.genus;
+          }
+        }
+      }
+    }
   },
   watch: {
     // fetch data again if the route changes
@@ -38,9 +65,10 @@ export default {
       this.loading = true;
 
       return this.$store
-        .dispatch("getPokemon", { id: this.$route.params.id })
+        .dispatch("getPokemonSpecies", { id: this.$route.params.id })
         .then(() => {
           this.loading = false;
+          this.pokemon = this.$store.state.pokemon[this.$route.params.id];
         })
         .catch(err => {
           this.loading = false;

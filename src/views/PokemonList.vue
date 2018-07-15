@@ -16,13 +16,13 @@ export default {
     PokemonLink
   },
   mounted() {
-    this.$store.dispatch("getPokemon", { id: null }).then(() => {
+    this.$store.dispatch("getPokemonSpecies", { id: null }).then(() => {
       /*let requests = [];
       for (let pokemon of this.$store.state.pokemonData) {
         let pokemonId = /\S+\/([0-9]+)\//.exec(pokemon.url)[1];
         if (!this.$store.state.pokemon[pokemonId]) {
           requests.push(
-            this.$store.dispatch("getPokemon", {
+            this.$store.dispatch("getPokemonSpecies", {
               id: pokemonId
             })
           );
