@@ -1,18 +1,13 @@
 <template>
-  <div class="home">
-    <img src="../assets/logo.png">
-    <HelloWorld msg="SidebarMenu"/>
+  <div class="sidebar-menu">
+    <h1>SidebarMenu</h1>
+    <router-link to="/pokemon">Pokemon</router-link>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
 export default {
-  name: "home",
-  components: {
-    HelloWorld
-  }
+  name: "sidebarMenu",
+  components: {}
 };
 </script>

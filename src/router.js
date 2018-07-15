@@ -27,8 +27,16 @@ export default new Router({
       }
     },
     {
-      path: "/pokemon/:id",
+      path: "/pokemon",
       name: "pokemon",
+      components: {
+        sidebar: PokemonList,
+        main: Home
+      }
+    },
+    {
+      path: "/pokemon/:id",
+      name: "pokemon-view",
       components: {
         sidebar: PokemonList,
         main: PokemonView

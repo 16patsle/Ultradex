@@ -1,18 +1,26 @@
 <template>
-  <div class="home">
-    <img src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="pokemon-view container">
+    <h1>Pokemon</h1>
+    <h2>Name: {{getValue($route.params.id,'name')}}</h2>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
 export default {
-  name: "home",
-  components: {
-    HelloWorld
+  name: "pokemon-view",
+  components: {},
+  mounted() {
+    this.$store.dispatch("getPokemon", { id: this.$route.params.id });
+    console.log("dispatch!");
+  },
+  methods: {
+    getValue(id, property) {
+      if (this.$store.state.pokemon[id]) {
+        return this.$store.state.pokemon[id][property];
+      } else {
+        return undefined;
+      }
+    }
   }
 };
 </script>

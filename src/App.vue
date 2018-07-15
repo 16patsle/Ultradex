@@ -5,8 +5,12 @@
       <router-link to="/about">About</router-link>
     </div>
     <div class="columns">
-<router-view class="sidebar-view column is-one-third is-narrow-tablet is-one-quarter-widescreen" name="sidebar"></router-view>
-    <router-view class="main-view column" name="main"></router-view>
+    <aside class="sidebar-view column is-one-third is-narrow-tablet is-one-quarter-widescreen">
+      <router-view name="sidebar"></router-view>
+    </aside>
+    <main class="main-view column">
+      <router-view name="main"></router-view>
+    </main>
     </div>
     
   </div>

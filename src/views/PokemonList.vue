@@ -1,18 +1,27 @@
 <template>
-  <div class="home">
-    <img src="../assets/logo.png">
-    <HelloWorld msg="PokemonList"/>
+  <div class="pokemon-list">
+    <h1>PokemonList</h1>
+    <ul>
+      <li v-for="pokemon in $store.state.pokemonData" :key="pokemon.name"><PokemonLink :pokemon="pokemon"/></li>
+    </ul>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import PokemonLink from "@/components/PokemonLink.vue";
 
 export default {
-  name: "home",
+  name: "pokemonList",
   components: {
-    HelloWorld
+    PokemonLink
+  },
+  mounted() {
+    this.$store.dispatch("getPokemon", { id: null });
+  },
+  methods: {
+    getId(url) {
+      return /\S+\/([0-9]+)\//.exec(url)[1];
+    }
   }
 };
 </script>
