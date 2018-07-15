@@ -7,7 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     pokemonData: null,
-    pokemon: {}
+    pokemon: []
   },
   mutations: {
     getPokemon(state, { id, data }) {
@@ -21,14 +21,14 @@ export default new Vuex.Store({
   actions: {
     getPokemon({ commit }, { id }) {
       if (id) {
-        PokeApi.getPokemonSpecies(id).then(data => {
+        return PokeApi.getPokemonSpecies(id).then(data => {
           commit("getPokemon", {
             id,
             data
           });
         });
       } else {
-        PokeApi.getPokemonSpecies("?limit=1000").then(data => {
+        return PokeApi.getPokemonSpecies("?limit=1000").then(data => {
           commit("getPokemon", {
             id: null,
             data

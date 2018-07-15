@@ -17,11 +17,6 @@ export default {
   },
   mounted() {
     this.$store.dispatch("getPokemon", { id: null });
-  },
-  methods: {
-    getId(url) {
-      return /\S+\/([0-9]+)\//.exec(url)[1];
-    }
   }
 };
 </script>
