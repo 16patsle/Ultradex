@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "PokemonLink",
+  name: "PokemonDetails",
   props: {
     pokemon: {
       type: Object,
