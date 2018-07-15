@@ -4,7 +4,11 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <router-view/>
+    <div class="columns">
+<router-view class="sidebar-view column is-one-third is-narrow-tablet is-one-quarter-widescreen" name="sidebar"></router-view>
+    <router-view class="main-view column" name="main"></router-view>
+    </div>
+    
   </div>
 </template>
 
