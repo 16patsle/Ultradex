@@ -8,8 +8,8 @@
     <div v-if="pokemon">
       <p>Species name: {{ pokemonNameLocalized }}</p>
       <p>Genus: {{ pokemonGenusLocalized }}</p>
-      <!--<p>Color: {{ pokemon ? pokemon.color.name : '' | capitalize }}</p>
-      <p>Evolves from: {{ pokemon ? pokemon.evolves_from_species.name : '' | capitalize }}</p>-->
+      <p>Color: {{ pokemon ? pokemon.color.name : '' | capitalize }}</p>
+      <p>Evolves from: {{ pokemon ? pokemon.evolves_from_species.name : '' | capitalize }}</p>
       <PokemonVariety v-for="pokemonVariety in pokemon.varieties" :key="pokemonVariety.pokemon.name" :pokemonVariety="pokemonVariety" :pokemonSpecies="pokemon"/>
     </div>
   </span>
