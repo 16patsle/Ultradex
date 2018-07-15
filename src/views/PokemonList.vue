@@ -16,7 +16,20 @@ export default {
     PokemonLink
   },
   mounted() {
-    this.$store.dispatch("getPokemon", { id: null });
+    this.$store.dispatch("getPokemon", { id: null }).then(() => {
+      /*let requests = [];
+      for (let pokemon of this.$store.state.pokemonData) {
+        let pokemonId = /\S+\/([0-9]+)\//.exec(pokemon.url)[1];
+        if (!this.$store.state.pokemon[pokemonId]) {
+          requests.push(
+            this.$store.dispatch("getPokemon", {
+              id: pokemonId
+            })
+          );
+        }
+      }
+      return Promise.all(requests);*/
+    });
   }
 };
 </script>

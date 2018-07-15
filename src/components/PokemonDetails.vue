@@ -1,5 +1,5 @@
 <template>
-  <h2>Name: {{pokemon.name}}</h2>
+  <h2>Name: {{pokemonNameLocalized}}</h2>
 </template>
 
 <script>
@@ -11,6 +11,16 @@ export default {
       default() {
         return {};
       }
+    }
+  },
+  computed: {
+    pokemonNameLocalized() {
+      for (let name of this.pokemon.names) {
+        if (name.language.name === "en") {
+          return name.name;
+        }
+      }
+      return this.pokemon.name;
     }
   }
 };
