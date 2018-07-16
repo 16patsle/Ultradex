@@ -43,6 +43,11 @@ aside.sidebar-view {
   margin-top: 0.75rem;
 }
 
+main.main-view {
+  height: 100%;
+  overflow-y: scroll;
+}
+
 #nav {
   padding: 30px;
 }

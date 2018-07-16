@@ -1,14 +1,13 @@
 <template>
   <div class="pokemon-view">
-    <h1 v-if="pokemon && !loading" class="title">Pokémon Species: {{ pokemonNameLocalized }}</h1>
+    <h1 v-if="pokemon && !loading && !error" class="title">Pokémon Species: {{ pokemonNameLocalized }}</h1>
     <h1 v-else class="title">Pokémon Species</h1>
-    <div v-if="loading" class="loading">
-      Loading...
-    </div>
-    <div v-if="error" class="error">
-      {{ error }}
-    </div>
-    <div v-if="pokemon && !loading">
+    <b-loading :is-full-page="false" :active="loading"></b-loading>
+    <b-notification v-if="error" type="is-danger">
+      <h2 class="subtitle">ERROR!</h2>
+      <p>{{ error }}</p>
+    </b-notification>
+    <div v-if="pokemon && !loading && !error">
       <PokemonDetails :pokemon="pokemon"/>
     </div>
   </div>
@@ -64,6 +63,7 @@ export default {
   methods: {
     fetchPokemon() {
       this.loading = true;
+      this.error = null;
 
       return this.$store
         .dispatch("getPokemonSpecies", { id: this.$route.params.id })
@@ -79,3 +79,10 @@ export default {
   }
 };
 </script>
+
+<style>
+div.pokemon-view {
+  position: relative;
+  height: 100%;
+}
+</style>

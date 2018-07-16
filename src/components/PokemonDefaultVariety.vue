@@ -1,10 +1,10 @@
 <template>
-  <span><div v-if="loading" class="loading">
-      Loading...
-    </div>
-    <div v-if="error" class="error">
-      {{ error }}
-    </div>
+  <div class="wrapper">
+    <b-loading :is-full-page="false" :active="loading"></b-loading>
+    <b-notification v-if="error" type="is-danger">
+      <h2 class="subtitle">ERROR!</h2>
+      <p>{{ error }}</p>
+    </b-notification>
     <div v-if="pokemonVariety.pokemonData">
       <h2 v-if="pokemon.name !== pokemonSpecies.name">Variety: {{pokemonNameLocalized | titlecase}}</h2>
       <h3>Types:</h3>
@@ -14,7 +14,7 @@
       <PokemonSprite v-if="pokemon.sprites.front_default" :sprite="pokemon.sprites.front_default" :pokemonName="pokemonNameLocalized | titlecase" spriteName="front"/>
       <PokemonSprite v-if="pokemon.sprites.back_default" :sprite="pokemon.sprites.back_default" :pokemonName="pokemonNameLocalized | titlecase" spriteName="back"/>
     </div>
-  </span>
+  </div>
 </template>
 
 <script>
@@ -97,6 +97,7 @@ export default {
     fetchPokemonVariety() {
       if (!this.pokemonVariety.pokemonData) {
         this.loading = true;
+        this.error = null;
 
         return this.$store
           .dispatch("getPokemonVariety", {
@@ -123,4 +124,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+div.wrapper {
+  position: relative;
+  min-height: 250px;
+}
 </style>

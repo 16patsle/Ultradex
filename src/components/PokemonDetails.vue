@@ -1,11 +1,6 @@
 <template>
-  <span><div v-if="loading" class="loading">
-      Loading...
-    </div>
-    <div v-if="error" class="error">
-      {{ error }}
-    </div>
-    <div v-if="pokemon && !loading">
+  <div>
+    <div v-if="pokemon">
       <p>Genus: {{ pokemonGenusLocalized }}</p>
       <p>Color: {{ pokemon.color.name  | capitalize }}</p>
       <p v-if="pokemon.evolves_from_species">Evolves from: {{ pokemon.evolves_from_species.name | capitalize }}</p>
@@ -15,7 +10,7 @@
       <h2 v-if="pokemonOtherVarieties.length > 0" class="subtitle">Other varieties: {{ pokemonOtherVarieties.length }}</h2>
       <PokemonVariety v-for="pokemonVariety in pokemonOtherVarieties" v-if="defaultVarietyLoaded" :key="pokemonVariety.pokemon.name" :pokemonVariety="pokemonVariety" :pokemonSpecies="pokemon" :pokemonDefaultVariety="pokemonDefaultVariety"/>
     </div>
-  </span>
+  </div>
 </template>
 
 <script>
@@ -38,8 +33,6 @@ export default {
   },
   data() {
     return {
-      loading: false,
-      error: null,
       defaultVarietyLoaded: false
     };
   },
