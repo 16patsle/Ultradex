@@ -7,9 +7,9 @@
     </div>
     <div v-if="pokemonVariety.pokemonData">
       <h2 v-if="pokemon.name !== pokemonSpecies.name">Variety: {{pokemonNameLocalized | titlecase}}</h2>
-      <h3 v-if="JSON.stringify(pokemon.types) !== JSON.stringify(pokemonDefault.types)">Types: {{pokemonTypes}}</h3>
-      <h3 v-if="pokemon.height !== pokemonDefault.height">Height: {{pokemon.height / 10}} m</h3>
-      <h3 v-if="pokemon.weight !== pokemonDefault.weight">Weight: {{pokemon.weight / 10}} kg</h3>
+      <h3>Types: {{pokemonTypes}}</h3>
+      <h3>Height: {{pokemon.height / 10}} m</h3>
+      <h3>Weight: {{pokemon.weight / 10}} kg</h3>
       <PokemonSprite v-if="pokemon.sprites.front_default" :sprite="pokemon.sprites.front_default" :pokemonName="pokemonNameLocalized | titlecase" spriteName="front"/>
       <PokemonSprite v-if="pokemon.sprites.back_default" :sprite="pokemon.sprites.back_default" :pokemonName="pokemonNameLocalized | titlecase" spriteName="back"/>
     </div>
@@ -20,7 +20,7 @@
 import PokemonSprite from "@/components/PokemonSprite.vue";
 
 export default {
-  name: "PokemonVariety",
+  name: "PokemonDefaultVariety",
   components: {
     PokemonSprite
   },
@@ -36,12 +36,6 @@ export default {
       default() {
         return {};
       }
-    },
-    pokemonDefaultVariety: {
-      type: Object,
-      default() {
-        return {};
-      }
     }
   },
   data() {
@@ -53,9 +47,6 @@ export default {
   computed: {
     pokemon() {
       return this.pokemonVariety.pokemonData;
-    },
-    pokemonDefault() {
-      return this.pokemonDefaultVariety.pokemonData;
     },
     pokemonNameLocalized() {
       let localizedName;
@@ -113,11 +104,14 @@ export default {
           })
           .then(() => {
             this.loading = false;
+            this.$emit("loaded");
           })
           .catch(err => {
             this.loading = false;
             this.error = err;
           });
+      } else {
+        this.$emit("loaded");
       }
     }
   }

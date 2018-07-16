@@ -1,13 +1,14 @@
 <template>
   <div class="pokemon-view">
-    <h1>Pokemon Species</h1>
+    <h1 v-if="pokemon && !loading" class="title">Pokémon Species: {{ pokemonNameLocalized }}</h1>
+    <h1 v-else class="title">Pokémon Species</h1>
     <div v-if="loading" class="loading">
       Loading...
     </div>
     <div v-if="error" class="error">
       {{ error }}
     </div>
-    <div v-if="pokemon">
+    <div v-if="pokemon && !loading">
       <PokemonDetails :pokemon="pokemon"/>
     </div>
   </div>
