@@ -7,7 +7,8 @@
     </div>
     <div v-if="pokemonVariety.pokemonData">
       <h2 v-if="pokemon.name !== pokemonSpecies.name">Variety: {{pokemonNameLocalized | titlecase}}</h2>
-      <h3 v-if="JSON.stringify(pokemon.types) !== JSON.stringify(pokemonDefault.types)">Types: {{pokemonTypes}}</h3>
+      <h3 v-if="JSON.stringify(pokemon.types) !== JSON.stringify(pokemonDefault.types)">Types:</h3>
+      <PokemonType v-for="type in pokemonTypes" v-if="JSON.stringify(pokemon.types) !== JSON.stringify(pokemonDefault.types)" :key="type" :type="type"/>
       <h3 v-if="pokemon.height !== pokemonDefault.height">Height: {{pokemon.height / 10}} m</h3>
       <h3 v-if="pokemon.weight !== pokemonDefault.weight">Weight: {{pokemon.weight / 10}} kg</h3>
       <PokemonSprite v-if="pokemon.sprites.front_default" :sprite="pokemon.sprites.front_default" :pokemonName="pokemonNameLocalized | titlecase" spriteName="front"/>
@@ -18,11 +19,13 @@
 
 <script>
 import PokemonSprite from "@/components/PokemonSprite.vue";
+import PokemonType from "@/components/PokemonType.vue";
 
 export default {
   name: "PokemonVariety",
   components: {
-    PokemonSprite
+    PokemonSprite,
+    PokemonType
   },
   props: {
     pokemonVariety: {
@@ -88,7 +91,7 @@ export default {
         typesArray[type.slot - 1] =
           type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1);
       }
-      return typesArray.join(", ");
+      return typesArray;
     }
   },
   watch: {
