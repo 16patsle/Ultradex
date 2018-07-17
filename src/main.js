@@ -5,6 +5,16 @@ import store from "./store";
 import "./registerServiceWorker";
 import Buefy from "buefy";
 import "buefy/lib/buefy.css";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faWeightHanging,
+  faArrowsAltV
+} from "@fortawesome/pro-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
+library.add([faWeightHanging, faArrowsAltV]);
+
+Vue.component("fa-icon", FontAwesomeIcon);
 
 Vue.use(Buefy);
 

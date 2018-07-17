@@ -9,8 +9,8 @@
       <h2 v-if="pokemon.name !== pokemonSpecies.name">Variety: {{pokemonNameLocalized | titlecase}}</h2>
       <h3 v-if="JSON.stringify(pokemon.types) !== JSON.stringify(pokemonDefault.types)">Types:</h3>
       <PokemonType v-for="type in pokemonTypes" v-if="JSON.stringify(pokemon.types) !== JSON.stringify(pokemonDefault.types)" :key="type" :type="type"/>
-      <h3 v-if="pokemon.height !== pokemonDefault.height">Height: {{pokemon.height / 10}} m</h3>
-      <h3 v-if="pokemon.weight !== pokemonDefault.weight">Weight: {{pokemon.weight / 10}} kg</h3>
+      <h3 v-if="pokemon.height !== pokemonDefault.height"><fa-icon icon="arrows-alt-v"></fa-icon> Height: {{pokemon.height / 10}} m</h3>
+      <h3 v-if="pokemon.weight !== pokemonDefault.weight"><fa-icon icon="weight-hanging"></fa-icon> Weight: {{pokemon.weight / 10}} kg</h3>
       <PokemonSprite v-if="pokemon.sprites.front_default" :sprite="pokemon.sprites.front_default" :pokemonName="pokemonNameLocalized | titlecase" spriteName="front"/>
       <PokemonSprite v-if="pokemon.sprites.back_default" :sprite="pokemon.sprites.back_default" :pokemonName="pokemonNameLocalized | titlecase" spriteName="back"/>
     </div>
