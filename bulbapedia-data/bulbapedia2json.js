@@ -4,6 +4,7 @@ const path = require("path");
 const wtf = require("wtf_wikipedia");
 
 const doSection = require("./section");
+const doTitle = require("./title");
 
 (async function() {
   const xml = await fs.readFile(
@@ -23,7 +24,7 @@ const doSection = require("./section");
 
   for (let pageIndex in page) {
     page[pageIndex] = {
-      title: page[pageIndex].title,
+      title: page[pageIndex].title.replace(" (Pokémon)", ""),
       document: wtf(page[pageIndex].revision.text.$t),
       text: {}
     };
@@ -47,9 +48,8 @@ const doSection = require("./section");
         );
       } else {
         page[pageIndex].text[
-          page[pageIndex].document
-            .sections()
-            [sectionIndex].data.title.toLowerCase()
+          doTitle(page[pageIndex].document.sections()[sectionIndex].title())
+            .toLowerCase()
             .replace(new RegExp(" ", "g"), "_") || sectionIndex
         ] = doSection(page[pageIndex].document.sections()[sectionIndex], {
           title: false,
