@@ -42,6 +42,6 @@ const doSection = (section, options) => {
       .join(" ");
     html += "\n  </div>\n";
   }
-  return '<div class="section">\n' + html + "</div>\n";
+  return '<div class="wiki-section">\n' + html + "</div>\n";
 };
 module.exports = doSection;

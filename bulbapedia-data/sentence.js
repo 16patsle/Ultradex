@@ -19,7 +19,7 @@ const doSentence = function(sentence) {
         "https://bulbapedia.bulbagarden.net/wiki/" + href.replace(/ /g, "_");
     }
     let str = link.text || link.page;
-    let tag = `<a class="${classNames}" href="${href}">${str}</a>`;
+    let tag = `<a class="${classNames}" href="${href}" target="_blank" rel="noopener">${str}</a>`;
     text = smartReplace(text, str, tag);
   });
   //support bolds
