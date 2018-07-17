@@ -19,3 +19,9 @@ npm run build
 ```
 npm run lint
 ```
+
+### Parses Bulbapedia export and creates JSON files in /public
+Runs automatically after `npm install`.
+```
+npm run bulbapedia
+```
