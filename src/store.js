@@ -7,7 +7,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     pokemonData: null,
-    pokemon: []
+    pokemon: [],
+    pokemonWikiEntries: []
   },
   mutations: {
     getPokemonSpecies(state, { id, data }) {
@@ -27,6 +28,11 @@ export default new Vuex.Store({
             state.pokemon[speciesId].varieties[varietyIndex].pokemonData = data;
           }
         }
+      }
+    },
+    getPokemonWikiEntry(state, { pokemonId, data }) {
+      if (pokemonId && data) {
+        state.pokemonWikiEntries[pokemonId] = data;
       }
     }
   },
@@ -56,6 +62,18 @@ export default new Vuex.Store({
           data
         });
       });
+    },
+    getPokemonWikiEntry({ commit }, { pokemonId }) {
+      return fetch(`./data/${pokemonId}.json`)
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          commit("getPokemonWikiEntry", {
+            pokemonId,
+            data
+          });
+        });
     }
   }
 });

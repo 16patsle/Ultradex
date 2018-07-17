@@ -9,17 +9,20 @@
     </b-notification>
     <div v-if="pokemon && !loading && !error" style="padding-bottom: 50px;">
       <PokemonDetails :pokemon="pokemon"/>
+      <PokemonWikiEntry :pokemonId="pokemon.id"/>
     </div>
   </div>
 </template>
 
 <script>
 import PokemonDetails from "@/components/PokemonDetails.vue";
+import PokemonWikiEntry from "@/components/PokemonWikiEntry.vue";
 
 export default {
   name: "pokemon-view",
   components: {
-    PokemonDetails
+    PokemonDetails,
+    PokemonWikiEntry
   },
   data() {
     return {
