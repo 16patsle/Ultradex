@@ -20,14 +20,16 @@ export default {
 div.sprite-wrapper {
   position: relative;
   display: inline-block;
-  width: 96px;
-  height: 96px;
+  width: 192px;
+  height: 192px;
   margin: 0 auto;
 }
 
 img {
-  width: 96px;
-  height: 96px;
+  width: 192px;
+  height: 192px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
 img:after {
@@ -39,12 +41,12 @@ img:after {
 
   display: block;
   position: absolute;
-  width: 96px;
-  height: 96px;
+  width: 192px;
+  height: 192px;
   left: 50%;
-  margin-left: -48px;
+  margin-left: -96px;
   top: 50%;
-  margin-top: -48px;
+  margin-top: -96px;
   padding-top: 15px;
   z-index: 2;
   background-color: #eee;

@@ -5,14 +5,16 @@
       <h2 class="subtitle">ERROR!</h2>
       <p>{{ error }}</p>
     </b-notification>
-    <div v-if="pokemonVariety.pokemonData">
-      <h2 v-if="pokemon.name !== pokemonSpecies.name">Variety: {{pokemonNameLocalized | titlecase}}</h2>
-      <h3>Types:</h3>
-      <PokemonType v-for="type in pokemonTypes" :key="type" :type="type"/>
-      <h3><fa-icon icon="arrows-alt-v"></fa-icon> Height: {{pokemon.height / 10}} m</h3>
-      <h3><fa-icon icon="weight-hanging"></fa-icon> Weight: {{pokemon.weight / 10}} kg</h3>
-      <PokemonSprite v-if="pokemon.sprites.front_default" :sprite="pokemon.sprites.front_default" :pokemonName="pokemonNameLocalized | titlecase" spriteName="front"/>
-      <PokemonSprite v-if="pokemon.sprites.back_default" :sprite="pokemon.sprites.back_default" :pokemonName="pokemonNameLocalized | titlecase" spriteName="back"/>
+    <div v-if="pokemonVariety.pokemonData" class="columns">
+      <div class="column">
+        <div class="has-text-centered">
+          <PokemonType v-for="type in pokemonTypes" :key="type" :type="type" class="has-text-centered"/></div>
+        <div class="has-text-centered">
+          <PokemonSprite v-if="pokemon.sprites.front_default" :sprite="pokemon.sprites.front_default" :pokemonName="pokemonNameLocalized | titlecase" spriteName="front"/>
+          <PokemonSprite v-if="pokemon.sprites.back_default" :sprite="pokemon.sprites.back_default" :pokemonName="pokemonNameLocalized | titlecase" spriteName="back"/>
+        </div>
+      </div>
+      <PokemonStats :height="pokemon.height" :weight="pokemon.weight" :stats="pokemon.stats" class="column is-half is-one-third-desktop is-one-fourth-widescreen"/>
     </div>
   </div>
 </template>
@@ -20,12 +22,14 @@
 <script>
 import PokemonSprite from "@/components/PokemonSprite.vue";
 import PokemonType from "@/components/PokemonType.vue";
+import PokemonStats from "@/components/PokemonStats.vue";
 
 export default {
   name: "PokemonDefaultVariety",
   components: {
     PokemonSprite,
-    PokemonType
+    PokemonType,
+    PokemonStats
   },
   props: {
     pokemonVariety: {

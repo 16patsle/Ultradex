@@ -1,14 +1,18 @@
 <template>
-  <div>
+  <div class="details-wrapper">
     <div v-if="pokemon">
+      <p class="subtitle">{{ pokemonFlavorTextLocalized }}</p>
       <p>Genus: {{ pokemonGenusLocalized }}</p>
       <p>Color: {{ pokemon.color.name  | capitalize }}</p>
       <p v-if="pokemon.evolves_from_species">Evolves from: {{ pokemon.evolves_from_species.name | capitalize }}</p>
-      <h3>Description:</h3>
-      <p>{{ pokemonFlavorTextLocalized }}</p>
+      <hr>
       <PokemonDefaultVariety :pokemonVariety="pokemonDefaultVariety" :pokemonSpecies="pokemon" @loaded="defaultVarietyLoaded = true"/>
+      <hr>
       <h2 v-if="pokemonOtherVarieties.length > 0" class="subtitle">Other varieties: {{ pokemonOtherVarieties.length }}</h2>
-      <PokemonVariety v-for="pokemonVariety in pokemonOtherVarieties" v-if="defaultVarietyLoaded" :key="pokemonVariety.pokemon.name" :pokemonVariety="pokemonVariety" :pokemonSpecies="pokemon" :pokemonDefaultVariety="pokemonDefaultVariety"/>
+      <div v-for="pokemonVariety in pokemonOtherVarieties" v-if="defaultVarietyLoaded" :key="pokemonVariety.pokemon.name">
+        <PokemonVariety :pokemonVariety="pokemonVariety" :pokemonSpecies="pokemon" :pokemonDefaultVariety="pokemonDefaultVariety"/>
+        <hr>
+      </div>
     </div>
   </div>
 </template>

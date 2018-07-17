@@ -8,11 +8,22 @@ import "buefy/lib/buefy.css";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faWeightHanging,
-  faArrowsAltV
+  faArrowsAltV,
+  faFeatherAlt,
+  faShieldAlt,
+  faBolt,
+  faHeart
 } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add([faWeightHanging, faArrowsAltV]);
+library.add([
+  faWeightHanging,
+  faArrowsAltV,
+  faFeatherAlt,
+  faShieldAlt,
+  faBolt,
+  faHeart
+]);
 
 Vue.component("fa-icon", FontAwesomeIcon);
 

@@ -7,7 +7,7 @@
       <h2 class="subtitle">ERROR!</h2>
       <p>{{ error }}</p>
     </b-notification>
-    <div v-if="pokemon && !loading && !error">
+    <div v-if="pokemon && !loading && !error" style="padding-bottom: 50px;">
       <PokemonDetails :pokemon="pokemon"/>
     </div>
   </div>

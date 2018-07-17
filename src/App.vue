@@ -27,7 +27,6 @@ body {
   height: 100%;
   width: 100%;
   overflow-y: hidden;
-  text-align: center;
 }
 
 #app .columns {
@@ -41,6 +40,7 @@ aside.sidebar-view {
   margin-left: 0.75rem;
   margin-right: 0.75rem;
   margin-top: 0.75rem;
+  text-align: center;
 }
 
 main.main-view {
