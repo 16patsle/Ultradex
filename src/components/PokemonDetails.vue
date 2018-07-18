@@ -8,7 +8,7 @@
       <hr>
       <PokemonDefaultVariety :pokemonVariety="pokemonDefaultVariety" :pokemonSpecies="pokemon" @loaded="defaultVarietyLoaded = true"/>
       <b-collapse v-if="pokemonOtherVarieties.length > 0" :open="false" class="other-varieties-collapse">
-        <h2 slot="trigger" slot-scope="props" class="subtitle other-varieties-header"><fa-icon :icon="props.open ? 'caret-down' : 'caret-right'" fixed-width title="Show/hide other varieties"></fa-icon>Other varieties: {{ pokemonOtherVarieties.length }}</h2>
+        <h2 slot="trigger" slot-scope="props" class="subtitle other-varieties-header"><fa-icon :icon="props.open ? 'caret-down' : 'caret-right'" fixed-width title="Show/hide other varieties"/>Other varieties: {{ pokemonOtherVarieties.length }}</h2>
         <div v-for="pokemonVariety in pokemonOtherVarieties" v-if="defaultVarietyLoaded" :key="pokemonVariety.pokemon.name">
           <PokemonVariety :pokemonVariety="pokemonVariety" :pokemonSpecies="pokemon" :pokemonDefaultVariety="pokemonDefaultVariety"/>
         </div>
