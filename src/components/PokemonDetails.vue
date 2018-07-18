@@ -8,11 +8,12 @@
       <hr>
       <PokemonDefaultVariety :pokemonVariety="pokemonDefaultVariety" :pokemonSpecies="pokemon" @loaded="defaultVarietyLoaded = true"/>
       <hr>
-      <h2 v-if="pokemonOtherVarieties.length > 0" class="subtitle">Other varieties: {{ pokemonOtherVarieties.length }}</h2>
-      <div v-for="pokemonVariety in pokemonOtherVarieties" v-if="defaultVarietyLoaded" :key="pokemonVariety.pokemon.name">
-        <PokemonVariety :pokemonVariety="pokemonVariety" :pokemonSpecies="pokemon" :pokemonDefaultVariety="pokemonDefaultVariety"/>
-        <hr>
-      </div>
+      <b-collapse v-if="pokemonOtherVarieties.length > 0" :open="false" class="other-varieties-collapse">
+        <h2 slot="trigger" slot-scope="props" class="subtitle other-varieties-header"><fa-icon :icon="props.open ? 'caret-down' : 'caret-right'" fixed-width title="Show/hide other varieties"></fa-icon>Other varieties: {{ pokemonOtherVarieties.length }}</h2>
+        <div v-for="pokemonVariety in pokemonOtherVarieties" v-if="defaultVarietyLoaded" :key="pokemonVariety.pokemon.name">
+          <PokemonVariety :pokemonVariety="pokemonVariety" :pokemonSpecies="pokemon" :pokemonDefaultVariety="pokemonDefaultVariety"/>
+        </div>
+      </b-collapse>
     </div>
   </div>
 </template>
@@ -86,4 +87,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.other-varieties-collapse,
+h2.other-varieties-header {
+  padding-bottom: 10px;
+}
 </style>
