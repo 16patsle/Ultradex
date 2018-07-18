@@ -58,7 +58,11 @@ const doTitle = require("./output/title");
             tables: true,
             lists: true
           }),
-          index: sectionIndex
+          index: sectionIndex,
+          title: doTitle(
+            page[pageIndex].document.sections()[sectionIndex].title()
+          ),
+          depth: page[pageIndex].document.sections()[sectionIndex].data.depth
         };
       }
     }

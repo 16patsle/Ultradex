@@ -13,6 +13,7 @@ const formatting = require("wtf_wikipedia/src/templates/formatting");
 const pronounce = require("wtf_wikipedia/src/templates/pronounce");
 const external = require("wtf_wikipedia/src/templates/external");
 const ignore = require("wtf_wikipedia/src/templates/ignore");
+const bulbapedia = require("./bulbapedia.js");
 
 //put them all together
 const inlineParsers = Object.assign(
@@ -21,7 +22,8 @@ const inlineParsers = Object.assign(
   inline,
   currencies,
   links,
-  formatting
+  formatting,
+  bulbapedia
 );
 const bigParsers = Object.assign({}, geo, pronounce, misc, external);
 
@@ -48,7 +50,7 @@ const doTemplate = function(tmpl, wiki, r) {
     return wiki;
   }
 
-  const regex = /{{[a-zA-Z0-9é]+\|(?:[a-zA-Z0-9é]*\|)?([a-zA-Z0-9é♀♂]+)}}/;
+  const regex = /{{[a-zA-Z0-9é ]+\|(?:[a-zA-Z0-9é ]*\|)*([a-zA-Z0-9é♀♂ ]+)}}/;
   //fallback parser
   let obj = generic(tmpl, name);
   if (obj) {
