@@ -1,10 +1,10 @@
 const parser = require("xml2json");
 const fs = require("fs-extra");
 const path = require("path");
-const wtf = require("wtf_wikipedia");
 
-const doSection = require("./section");
-const doTitle = require("./title");
+const Document = require("./document/Document");
+const doSection = require("./output/section");
+const doTitle = require("./output/title");
 
 (async function() {
   const xml = await fs.readFile(
@@ -25,7 +25,7 @@ const doTitle = require("./title");
   for (let pageIndex in page) {
     page[pageIndex] = {
       title: page[pageIndex].title.replace(" (Pokémon)", ""),
-      document: wtf(page[pageIndex].revision.text.$t),
+      document: new Document(page[pageIndex].revision.text.$t),
       text: {}
     };
 
@@ -37,26 +37,29 @@ const doTitle = require("./title");
     }
     for (let sectionIndex in page[pageIndex].document.sections()) {
       if (sectionIndex === "0") {
-        page[pageIndex].text.introduction = doSection(
-          page[pageIndex].document.sections()[sectionIndex],
-          {
+        page[pageIndex].text.introduction = {
+          html: doSection(page[pageIndex].document.sections()[sectionIndex], {
             title: false,
             sentences: true,
             tables: true,
             lists: true
-          }
-        );
+          }),
+          index: 1
+        };
       } else {
         page[pageIndex].text[
           doTitle(page[pageIndex].document.sections()[sectionIndex].title())
             .toLowerCase()
             .replace(new RegExp(" ", "g"), "_") || sectionIndex
-        ] = doSection(page[pageIndex].document.sections()[sectionIndex], {
-          title: false,
-          sentences: true,
-          tables: true,
-          lists: true
-        });
+        ] = {
+          html: doSection(page[pageIndex].document.sections()[sectionIndex], {
+            title: false,
+            sentences: true,
+            tables: true,
+            lists: true
+          }),
+          index: sectionIndex
+        };
       }
     }
     page[pageIndex].document = undefined;
@@ -66,3 +69,6 @@ const doTitle = require("./title");
     );
   }
 })().catch(err => console.log(err));
+
+// Start reading from stdin so we don't exit.
+// process.stdin.resume();

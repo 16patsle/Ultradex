@@ -4,6 +4,7 @@ const helpers = require("wtf_wikipedia/src/lib/helpers");
 // create links, bold, italic in html
 const doSentence = function(sentence) {
   let text = sentence.text();
+  //console.log(sentence);
   //turn links into <a href>
   sentence.links().forEach(link => {
     let href = "";
