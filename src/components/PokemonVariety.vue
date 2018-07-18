@@ -8,7 +8,7 @@
     <div v-if="pokemonVariety.pokemonData" class="columns">
       <div class="column">
         <div>
-          <h2 class="variety-name">Variety: {{pokemonNameLocalized | titlecase}}</h2>
+          <h3 class="variety-name">Variety: {{pokemonNameLocalized | titlecase}}</h3>
         </div>
       </div>
     </div>
@@ -152,6 +152,6 @@ div.variety-wrapper {
   margin: 0.5rem;
 }
 .variety-name {
-  padding-left: 25px;
+  padding-left: 31px;
 }
 </style>

@@ -60,4 +60,21 @@ main.main-view {
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
+#app main.main-view h2 {
+  font-size: 1.55rem;
+}
+
+#app main.main-view h3 {
+  font-size: 1.35rem;
+}
+
+#app main.main-view h3,
+#app main.main-view h4,
+#app main.main-view h5,
+#app main.main-view h6 {
+  color: #4a4a4a;
+  font-weight: 400;
+  line-height: 1.125;
+}
 </style>
