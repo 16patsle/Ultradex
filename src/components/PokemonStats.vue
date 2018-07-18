@@ -1,12 +1,12 @@
 <template>
   <div class="stats-wrapper">
-    <div v-if="height" class="stat"><div class="icon is-medium"><fa-icon icon="arrows-alt-v" class="fa-lg fa-fw" aria-hidden></fa-icon></div>
+    <div v-if="height" class="stat"><div class="icon is-medium"><fa-icon icon="arrows-alt-v" size="lg" fixed-width></fa-icon></div>
       <p>Height: {{height / 10}} m</p>
     </div>
-    <div v-if="weight" class="stat"><div class="icon is-medium"><fa-icon icon="weight-hanging" class="fa-lg fa-fw" aria-hidden></fa-icon></div>
+    <div v-if="weight" class="stat"><div class="icon is-medium"><fa-icon icon="weight-hanging" size="lg" fixed-width></fa-icon></div>
       <p>Weight: {{weight / 10}} kg</p>
     </div>
-    <div v-for="stat in stats" :key="stat.stat.name" class="stat"><div class="icon is-medium"><fa-icon v-if="statIcon(stat.stat.name)" :icon="statIcon(stat.stat.name)" class="fa-lg fa-fw" aria-hidden></fa-icon></div>
+    <div v-for="stat in stats" :key="stat.stat.name" class="stat"><div class="icon is-medium"><fa-icon v-if="statIcon(stat.stat.name)" :icon="statIcon(stat.stat.name)" size="lg" fixed-width></fa-icon></div>
       <p>{{ stat.stat.name.replace('-', ' ').replace('hp','HP') | titlecase }}: {{ stat.base_stat }}</p>
     </div>
   </div>
