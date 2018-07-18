@@ -48,7 +48,7 @@ const doTemplate = function(tmpl, wiki, r) {
     return wiki;
   }
 
-  const regex = /{{[a-zA-Z0-9é]+\|(?:[a-zA-Z0-9é]*\|)?([a-zA-Z0-9é]+)}}/;
+  const regex = /{{[a-zA-Z0-9é]+\|(?:[a-zA-Z0-9é]*\|)?([a-zA-Z0-9é♀♂]+)}}/;
   //fallback parser
   let obj = generic(tmpl, name);
   if (obj) {

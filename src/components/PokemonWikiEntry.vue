@@ -9,7 +9,7 @@
       <div class="column">
         <div>
           <h2 class="subtitle">Wiki entry</h2>
-          <p v-html="$store.state.pokemonWikiEntries[pokemonId].text.introduction"></p>
+          <p v-html="$store.state.pokemonWikiEntries[pokemonId].text.introduction.html"></p>
           <p class="copyright">&copy; Bulbapedia contributors, licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/2.5/" target="_blank" rel="noopener">CC BY-NC-SA 2.5</a></p>
         </div>
       </div>
