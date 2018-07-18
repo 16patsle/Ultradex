@@ -10,9 +10,17 @@
         <b-collapse class="wiki-collapse">
           <h2 slot="trigger" slot-scope="props" class="subtitle wiki-entry-header"><fa-icon :icon="props.open ? 'caret-down' : 'caret-right'" fixed-width title="Show/hide wiki entry"/>Wiki entry</h2>
           <p v-html="$store.state.pokemonWikiEntries[pokemonId].text.introduction.html"></p>
-          <b-collapse :open="false" class="wiki-collapse">
-            <h3 slot="trigger" slot-scope="biologyProps"><fa-icon :icon="biologyProps.open ? 'caret-down' : 'caret-right'" fixed-width title="Show/hide section"/>{{ $store.state.pokemonWikiEntries[pokemonId].text.biology.title }}</h3>
-            <p v-html="$store.state.pokemonWikiEntries[pokemonId].text.biology.html"></p>
+          <b-collapse v-for="section in makeSortedArray($store.state.pokemonWikiEntries[pokemonId].text)" :key="section.title" :open="false" class="wiki-collapse">
+            <PokemonHeading slot="trigger" slot-scope="sectionProps" :level="3 + parseInt(section.depth)"><fa-icon :icon="sectionProps.open ? 'caret-down' : 'caret-right'" fixed-width title="Show/hide section"/>{{ section.title }}</PokemonHeading>
+            <p class="content" v-html="section.html"></p>
+            <b-collapse v-for="section2 in section.children" :key="section2.title" :open="false" class="wiki-collapse">
+              <PokemonHeading slot="trigger" slot-scope="section2Props" :level="3 + parseInt(section2.depth)"><fa-icon :icon="section2Props.open ? 'caret-down' : 'caret-right'" fixed-width title="Show/hide section"/>{{ section2.title }}</PokemonHeading>
+              <p class="content" v-html="section2.html"></p>
+              <b-collapse v-for="section3 in section2.children" :key="section3.title" :open="false" class="wiki-collapse">
+                <PokemonHeading slot="trigger" slot-scope="section3Props" :level="3 + parseInt(section3.depth)"><fa-icon :icon="section3Props.open ? 'caret-down' : 'caret-right'" fixed-width title="Show/hide section"/>{{ section3.title }}</PokemonHeading>
+                <p class="content" v-html="section3.html"></p>
+              </b-collapse>
+            </b-collapse>
           </b-collapse>
           <p class="copyright">&copy; Bulbapedia contributors, licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/2.5/" target="_blank" rel="noopener">CC BY-NC-SA 2.5</a></p>
         </b-collapse>
@@ -22,8 +30,13 @@
 </template>
 
 <script>
+import PokemonHeading from "@/components/PokemonHeading.vue";
+
 export default {
   name: "PokemonWikiEntry",
+  components: {
+    PokemonHeading
+  },
   props: {
     pokemonId: {
       type: Number,
@@ -46,6 +59,28 @@ export default {
     this.fetchPokemonWikiEntry();
   },
   methods: {
+    makeSortedArray(object) {
+      const array = [];
+      for (const section in object) {
+        array[object[section].index] = object[section];
+      }
+      return array
+        .slice(1)
+        .filter(Object)
+        .filter(section => {
+          switch (section.title) {
+            case "Game data":
+            case "In other languages":
+            case "Notes":
+            case "Related articles":
+            case "External links":
+            case "References":
+              return false;
+            default:
+              return true;
+          }
+        });
+    },
     fetchPokemonWikiEntry() {
       if (!this.pokemonEntry) {
         this.loading = true;

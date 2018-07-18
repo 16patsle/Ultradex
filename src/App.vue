@@ -69,6 +69,14 @@ main.main-view {
   font-size: 1.35rem;
 }
 
+#app main.main-view h4 {
+  font-size: 1.2rem;
+}
+
+#app main.main-view h5 {
+  font-size: 1.05rem;
+}
+
 #app main.main-view h3,
 #app main.main-view h4,
 #app main.main-view h5,
