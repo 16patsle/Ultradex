@@ -8,7 +8,7 @@
 export default {
   name: "PokemonSprite",
   props: {
-    sprite: { type: String, required: true },
+    sprite: { type: String, default: null },
     pokemonName: { type: String, required: true },
     spriteName: { type: String, required: true }
   }
@@ -35,7 +35,7 @@ img {
 img:after {
   content: attr(alt);
 
-  font-size: 12px;
+  font-size: 1rem;
   color: rgb(100, 100, 100);
   line-height: 2;
 
@@ -43,6 +43,7 @@ img:after {
   position: absolute;
   width: 192px;
   height: 192px;
+  padding: 5px;
   left: 50%;
   margin-left: -96px;
   top: 50%;
