@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="variety-wrapper">
     <b-loading :is-full-page="false" :active="loading"></b-loading>
     <b-notification v-if="error" type="is-danger">
       <h2 class="subtitle">ERROR!</h2>
@@ -14,7 +14,7 @@
           <PokemonSprite v-if="pokemon.sprites.back_default" :sprite="pokemon.sprites.back_default" :pokemonName="pokemonNameLocalized | titlecase" spriteName="back"/>
         </div>
       </div>
-      <PokemonStats :height="pokemon.height" :weight="pokemon.weight" :stats="pokemon.stats" class="column is-half is-one-third-desktop is-one-fourth-widescreen"/>
+      <PokemonStats :height="pokemon.height" :weight="pokemon.weight" :stats="pokemon.stats" class="pokemon-stats column is-half is-one-third-desktop is-one-fourth-widescreen"/>
     </div>
   </div>
 </template>
@@ -128,8 +128,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-div.wrapper {
+div.variety-wrapper {
   position: relative;
   min-height: 250px;
+  margin-bottom: 1rem;
+}
+.pokemon-stats {
+  margin: 0.5rem;
 }
 </style>

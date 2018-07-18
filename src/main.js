@@ -12,7 +12,9 @@ import {
   faFeatherAlt,
   faShieldAlt,
   faBolt,
-  faHeart
+  faHeart,
+  faCaretDown,
+  faCaretRight
 } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -22,7 +24,9 @@ library.add([
   faFeatherAlt,
   faShieldAlt,
   faBolt,
-  faHeart
+  faHeart,
+  faCaretDown,
+  faCaretRight
 ]);
 
 Vue.component("fa-icon", FontAwesomeIcon);

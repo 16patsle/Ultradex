@@ -7,7 +7,6 @@
       <p v-if="pokemon.evolves_from_species">Evolves from: {{ pokemon.evolves_from_species.name | capitalize }}</p>
       <hr>
       <PokemonDefaultVariety :pokemonVariety="pokemonDefaultVariety" :pokemonSpecies="pokemon" @loaded="defaultVarietyLoaded = true"/>
-      <hr>
       <b-collapse v-if="pokemonOtherVarieties.length > 0" :open="false" class="other-varieties-collapse">
         <h2 slot="trigger" slot-scope="props" class="subtitle other-varieties-header"><fa-icon :icon="props.open ? 'caret-down' : 'caret-right'" fixed-width title="Show/hide other varieties"></fa-icon>Other varieties: {{ pokemonOtherVarieties.length }}</h2>
         <div v-for="pokemonVariety in pokemonOtherVarieties" v-if="defaultVarietyLoaded" :key="pokemonVariety.pokemon.name">
