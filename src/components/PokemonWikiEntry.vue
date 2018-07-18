@@ -3,7 +3,7 @@
     <b-loading :is-full-page="false" :active="loading"></b-loading>
     <b-notification v-if="error" type="is-danger">
       <h2 class="subtitle">ERROR!</h2>
-      <p>{{ error }}</p>
+      <p>{{ JSON.stringify(error) }}</p>
     </b-notification>
     <div v-if="$store.state.pokemonWikiEntries[pokemonId]" class="columns">
       <div class="column">
