@@ -1,5 +1,11 @@
+const fixedEncodeURIComponent = str => {
+  return encodeURIComponent(str).replace(/[!'*]/g, function(c) {
+    return "%" + c.charCodeAt(0).toString(16);
+  });
+};
+
 const linkifyHref = str => {
-  return str.replace(new RegExp(" ", "g"), "_");
+  return fixedEncodeURIComponent(str.replace(new RegExp(" ", "g"), "_"));
 };
 
 module.exports = {
