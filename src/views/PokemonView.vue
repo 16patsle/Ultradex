@@ -86,5 +86,6 @@ export default {
 <style>
 div.pokemon-view {
   position: relative;
+  min-height: 300px;
 }
 </style>
