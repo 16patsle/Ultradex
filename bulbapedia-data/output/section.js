@@ -39,7 +39,8 @@ const doSection = (section, options) => {
     html += section
       .sentences()
       .map(s => doSentence(s, options))
-      .join(" ");
+      .join(" ")
+      .replace(/NEWPARAGRAPH<\/span>/g, '</span></p><p class="text">');
     html += "\n  </p>\n";
   }
   return '<div class="wiki-section">\n' + html + "</div>\n";

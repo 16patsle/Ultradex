@@ -10,7 +10,7 @@ const parse = {
   table: require("wtf_wikipedia/src/section/table"),
   references: require("wtf_wikipedia/src/section/references"),
   templates: require("../templates"),
-  eachSentence: require("wtf_wikipedia/src/sentence").eachSentence
+  eachSentence: require("../sentence").eachSentence
 };
 const section_reg = /[\n^](={1,5}[^=]{1,200}?={1,5})/g;
 
