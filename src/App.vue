@@ -44,7 +44,7 @@ aside.sidebar-view {
 }
 
 main.main-view {
-  height: 100%;
+  max-height: 100%;
   overflow-y: scroll;
 }
 

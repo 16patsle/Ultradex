@@ -9,16 +9,16 @@
       <div class="column">
         <b-collapse class="wiki-collapse">
           <h2 slot="trigger" slot-scope="props" class="subtitle wiki-entry-header"><fa-icon :icon="props.open ? 'caret-down' : 'caret-right'" fixed-width title="Show/hide wiki entry"/>Wiki entry</h2>
-          <p v-html="$store.state.pokemonWikiEntries[pokemonId].text.introduction.html"></p>
+          <div class="content" v-html="$store.state.pokemonWikiEntries[pokemonId].text.introduction.html"></div>
           <b-collapse v-for="section in makeSortedArray($store.state.pokemonWikiEntries[pokemonId].text)" :key="section.title" :open="false" class="wiki-collapse">
             <PokemonHeading slot="trigger" slot-scope="sectionProps" :level="3 + parseInt(section.depth)"><fa-icon :icon="sectionProps.open ? 'caret-down' : 'caret-right'" fixed-width title="Show/hide section"/>{{ section.title }}</PokemonHeading>
-            <p class="content" v-html="section.html"></p>
+            <div class="content" v-html="section.html"></div>
             <b-collapse v-for="section2 in section.children" :key="section2.title" :open="false" class="wiki-collapse">
               <PokemonHeading slot="trigger" slot-scope="section2Props" :level="3 + parseInt(section2.depth)"><fa-icon :icon="section2Props.open ? 'caret-down' : 'caret-right'" fixed-width title="Show/hide section"/>{{ section2.title }}</PokemonHeading>
-              <p class="content" v-html="section2.html"></p>
+              <div class="content" v-html="section2.html"></div>
               <b-collapse v-for="section3 in section2.children" :key="section3.title" :open="false" class="wiki-collapse">
                 <PokemonHeading slot="trigger" slot-scope="section3Props" :level="3 + parseInt(section3.depth)"><fa-icon :icon="section3Props.open ? 'caret-down' : 'caret-right'" fixed-width title="Show/hide section"/>{{ section3.title }}</PokemonHeading>
-                <p class="content" v-html="section3.html"></p>
+                <div class="content" v-html="section3.html"></div>
               </b-collapse>
             </b-collapse>
           </b-collapse>
@@ -116,6 +116,7 @@ div.wiki-wrapper {
 .copyright {
   padding-top: 8px;
   padding-left: 10px;
+  margin-bottom: 2rem;
   font-size: 0.8rem;
 }
 
@@ -136,5 +137,14 @@ h2.wiki-entry-header {
   font-weight: 400;
   line-height: 1.125;
   margin-bottom: 0.6666em;
+}
+
+.wiki-wrapper .content {
+  margin-bottom: 1.5rem;
+}
+</style>
+<style>
+.wiki-wrapper .content .main-article-link {
+  padding-bottom: 10px;
 }
 </style>
