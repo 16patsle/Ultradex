@@ -34,13 +34,13 @@ const doSection = (section, options) => {
       .join("\n");
   }
   //finally, write the sentence text.
-  if (options.sentences === true) {
-    html += '  <div class="text">\n    ';
+  if (options.sentences === true && section.sentences().length) {
+    html += '  <p class="text">\n    ';
     html += section
       .sentences()
       .map(s => doSentence(s, options))
       .join(" ");
-    html += "\n  </div>\n";
+    html += "\n  </p>\n";
   }
   return '<div class="wiki-section">\n' + html + "</div>\n";
 };

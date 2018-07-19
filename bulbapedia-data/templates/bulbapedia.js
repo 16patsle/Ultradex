@@ -1,5 +1,7 @@
 const getInside = require("wtf_wikipedia/src/templates/parsers/inside");
 const pipeList = require("wtf_wikipedia/src/templates/parsers/pipeList");
+const linkTemplate = require("./linkTemplate");
+const { linkify } = require("./linkify");
 
 const bulbapedia = {
   //https://bulbapedia.bulbagarden.net/wiki/Template:Ash
@@ -12,26 +14,36 @@ const bulbapedia = {
   },
   main: tmpl => {
     const obj = getInside(tmpl);
-    return `<a class="link" href="https://bulbapedia.bulbagarden.net/wiki/${obj.data.replace(
-      new RegExp(" ", "g"),
-      "_"
-    )}" target="_blank" rel="noopener">Read about ${
-      obj.data
-    } on Bulbapedia</a>`;
+    return `<div class="main-article-link">${linkify(
+      obj.data,
+      `Read about ${obj.data} on Bulbapedia.`
+    )}</div>`;
   },
+  //https://bulbapedia.bulbagarden.net/wiki/Template:Game
   game: tmpl => {
     const obj = pipeList(tmpl);
     const name = obj.data[0] || "";
     const s = obj.data[1] || "";
-    return `<a class="link" href="https://bulbapedia.bulbagarden.net/wiki/${(
-      "Pokémon " +
-      name +
-      " Version" +
-      s
-    ).replace(
-      new RegExp(" ", "g"),
-      "_"
-    )}" target="_blank" rel="noopener">Pokemon ${obj.data[0]}</a>`;
+    return linkify(`Pokémon ${name} Version${s}`, `Pokemon ${name}`);
+  },
+  //https://bulbapedia.bulbagarden.net/wiki/Template:M
+  m: tmpl => {
+    return linkTemplate(tmpl, "", " (move)");
+  },
+  //https://bulbapedia.bulbagarden.net/wiki/Template:TCG
+  tcg: tmpl => {
+    return linkTemplate(tmpl, "", " (TCG)");
+  },
+  //https://bulbapedia.bulbagarden.net/wiki/Template:TFG
+  tfg: tmpl => {
+    return linkTemplate(tmpl, "", " (TFG)");
+  },
+  "tfg id": tmpl => {
+    const obj = pipeList(tmpl);
+    const tfg = obj.data[0] || "";
+    const name = obj.data[1] || "";
+    const id = obj.data[2] || "";
+    return linkify(`${name} (${tfg} ${id})`, name);
   }
 };
 
