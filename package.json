@@ -1,7 +1,8 @@
 {
-  "name": "vue-pokedex",
+  "name": "ultradex",
   "version": "0.1.0",
   "private": true,
+  "license": "Apache-2.0",
   "scripts": {
     "postinstall": "npm run bulbapedia",
     "serve": "vue-cli-service serve",
