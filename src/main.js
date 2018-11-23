@@ -19,8 +19,8 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import "./registerServiceWorker";
-import Buefy from "buefy";
-import "buefy/lib/buefy.css";
+import Buefy from "buefy/dist/buefy";
+import "buefy/dist/buefy.css";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faWeightHanging,
