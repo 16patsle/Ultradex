@@ -1,10 +1,12 @@
 <template>
   <div id="app">
     <div class="columns">
-      <aside class="sidebar-view column is-one-third is-narrow-tablet is-one-quarter-widescreen">
-        <router-view name="sidebar"></router-view>
+      <aside v-show="showSidebar" class="sidebar-view column is-one-third is-narrow-tablet is-one-quarter-widescreen">
+        <MenuToggleButton :open="showSidebar" @click="toggleSidebar">Toggle Sidebar</MenuToggleButton>
+        <router-view name="sidebar" class="sidebar-content"></router-view>
       </aside>
       <div class="column main-container">
+        <MenuToggleButton v-show="!showSidebar" :open="showSidebar" @click="toggleSidebar">Toggle Sidebar</MenuToggleButton>
         <nav id="nav">
           <router-link to="/">Home</router-link> |
           <router-link to="/about">About</router-link>
@@ -16,6 +18,27 @@
     </div>
   </div>
 </template>
+
+<script>
+import MenuToggleButton from "./components/MenuToggleButton";
+
+export default {
+  components: {
+    MenuToggleButton
+  },
+  data() {
+    return {
+      showSidebar: true
+    };
+  },
+  methods: {
+    toggleSidebar() {
+      this.showSidebar = !this.showSidebar;
+    }
+  }
+};
+</script>
+
 
 <style>
 body {
@@ -38,9 +61,16 @@ aside.sidebar-view {
   height: 100vh;
   overflow-y: scroll;
   margin-left: 0.75rem;
-  margin-right: 0.75rem;
   margin-top: 0.75rem;
+}
+
+aside.sidebar-view .sidebar-content {
   text-align: center;
+}
+
+div.main-container {
+  margin-left: 0.75rem;
+  margin-top: 0.75rem;
 }
 
 main.main-view {
@@ -49,7 +79,11 @@ main.main-view {
 }
 
 #nav {
-  padding: 30px;
+  display: inline-block;
+  padding-bottom: calc(0.375em - 1px);
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+  padding-top: calc(0.375em - 1px);
 }
 
 #nav a {

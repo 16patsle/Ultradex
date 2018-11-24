@@ -30,7 +30,9 @@ import {
   faBolt,
   faHeart,
   faCaretDown,
-  faCaretRight
+  faCaretRight,
+  faBars,
+  faTimes
 } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -42,7 +44,9 @@ library.add([
   faBolt,
   faHeart,
   faCaretDown,
-  faCaretRight
+  faCaretRight,
+  faBars,
+  faTimes
 ]);
 
 Vue.component("fa-icon", FontAwesomeIcon);
