@@ -47,7 +47,9 @@ library.add([
 
 Vue.component("fa-icon", FontAwesomeIcon);
 
-Vue.use(Buefy);
+Vue.use(Buefy, {
+  defaultIconPack: "fas"
+});
 
 Vue.config.productionTip = false;
 
