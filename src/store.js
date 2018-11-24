@@ -66,7 +66,16 @@ export default new Vuex.Store({
     getPokemonWikiEntry({ commit }, { pokemonId }) {
       return fetch(`./data/${pokemonId}.json`)
         .then(response => {
-          return response.json();
+          if (
+            response.headers.get("Content-Type").split(";")[0] ==
+            "application/json"
+          ) {
+            return response.json();
+          } else {
+            throw `Data has wrong type. Expected application/json, got ${
+              response.headers.get("Content-Type").split(";")[0]
+            }`;
+          }
         })
         .then(data => {
           commit("getPokemonWikiEntry", {
