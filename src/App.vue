@@ -5,7 +5,7 @@
         <MenuToggleButton :open="showSidebar" @click="toggleSidebar">Toggle Sidebar</MenuToggleButton>
         <router-view name="sidebar" class="sidebar-content"></router-view>
       </aside>
-      <div class="column main-container">
+      <div v-show="showMain" class="column main-container">
         <MenuToggleButton v-show="!showSidebar" :open="showSidebar" @click="toggleSidebar">Toggle Sidebar</MenuToggleButton>
         <nav id="nav">
           <router-link to="/">Home</router-link> |
@@ -31,9 +31,31 @@ export default {
       showSidebar: true
     };
   },
+  computed: {
+    showMain() {
+      if (this.showSidebar && window.matchMedia("(max-width: 768px)").matches) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+  },
+  created() {
+    this.$router.beforeEach((to, from, next) => {
+      console.log(to, from);
+      if (this.showSidebar) {
+        this.toggleSidebar(true);
+      }
+      next();
+    });
+  },
   methods: {
-    toggleSidebar() {
-      this.showSidebar = !this.showSidebar;
+    toggleSidebar(onlyIfMobile) {
+      if (onlyIfMobile && window.matchMedia("(max-width: 768px)").matches) {
+        this.showSidebar = !this.showSidebar;
+      } else {
+        this.showSidebar = !this.showSidebar;
+      }
     }
   }
 };
@@ -49,7 +71,6 @@ body {
 #app {
   height: 100%;
   width: 100%;
-  overflow-y: hidden;
 }
 
 #app .columns {
@@ -75,7 +96,6 @@ div.main-container {
 
 main.main-view {
   max-height: 100%;
-  overflow-y: scroll;
 }
 
 #nav {
