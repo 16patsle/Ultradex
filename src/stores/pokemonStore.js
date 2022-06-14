@@ -31,11 +31,11 @@ export const usePokemonStore = defineStore("pokemon", {
       }
     },
     async fetchPokemonWikiEntry({ pokemonId }) {
-      const response = await fetch(`./data/${pokemonId}.json`);
+      const response = await fetch(`/data/${pokemonId}.json`);
       if (
         response.headers.get("Content-Type").split(";")[0] == "application/json"
       ) {
-        const data = response.json();
+        const data = await response.json();
         if (pokemonId && data) {
           this.pokemonWikiEntries[pokemonId] = data;
         }
