@@ -15,8 +15,8 @@
           v-show="!showSidebar"
           :open="showSidebar"
           @click="toggleSidebar"
-          >Toggle Sidebar</MenuToggleButton
-        >
+          >Toggle Sidebar
+        </MenuToggleButton>
         <nav id="nav">
           <router-link to="/">Home</router-link> |
           <router-link to="/about">About</router-link>
@@ -29,46 +29,36 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed, ref } from "vue";
+import { useRouter } from "vue-router";
 import MenuToggleButton from "./components/MenuToggleButton";
 
-export default {
-  components: {
-    MenuToggleButton,
-  },
-  data() {
-    return {
-      showSidebar: true,
-    };
-  },
-  computed: {
-    showMain() {
-      if (this.showSidebar && window.matchMedia("(max-width: 768px)").matches) {
-        return false;
-      } else {
-        return true;
-      }
-    },
-  },
-  created() {
-    this.$router.beforeEach((to, from, next) => {
-      console.log(to, from);
-      if (this.showSidebar) {
-        this.toggleSidebar(true);
-      }
-      next();
-    });
-  },
-  methods: {
-    toggleSidebar(onlyIfMobile) {
-      if (onlyIfMobile && window.matchMedia("(max-width: 768px)").matches) {
-        this.showSidebar = !this.showSidebar;
-      } else {
-        this.showSidebar = !this.showSidebar;
-      }
-    },
-  },
+const showSidebar = ref(true);
+
+const showMain = computed(() => {
+  if (showSidebar.value && window.matchMedia("(max-width: 768px)").matches) {
+    return false;
+  } else {
+    return true;
+  }
+});
+
+const toggleSidebar = (onlyIfMobile) => {
+  if (onlyIfMobile && window.matchMedia("(max-width: 768px)").matches) {
+    showSidebar.value = !showSidebar.value;
+  } else {
+    showSidebar.value = !showSidebar.value;
+  }
 };
+
+useRouter().beforeEach((to, from, next) => {
+  console.log(to, from);
+  if (showSidebar.value) {
+    toggleSidebar(true);
+  }
+  next();
+});
 </script>
 
 <style>
