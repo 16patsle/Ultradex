@@ -60,13 +60,13 @@ app.use(Oruga, bulmaConfig);
 
 app.use(createPinia());
 
-app.config.globalProperties.capitalize = function (value) {
+app.config.globalProperties.$capitalize = function (value) {
   if (!value) return "";
   value = value.toString();
   return value.charAt(0).toUpperCase() + value.slice(1);
 };
 
-app.config.globalProperties.titlecase = function (value) {
+app.config.globalProperties.$titlecase = function (value) {
   if (!value) return "";
   value = value.toString();
   value = value.split(" ");
