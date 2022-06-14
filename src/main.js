@@ -19,8 +19,9 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import "./registerServiceWorker";
-import Buefy from "buefy/dist/buefy";
-import "buefy/dist/buefy.css";
+import Oruga from "@oruga-ui/oruga";
+import { bulmaConfig } from "@oruga-ui/theme-bulma";
+import "@oruga-ui/theme-bulma/dist/bulma.css";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faWeightHanging,
@@ -32,7 +33,7 @@ import {
   faCaretDown,
   faCaretRight,
   faBars,
-  faTimes
+  faTimes,
 } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -46,29 +47,27 @@ library.add([
   faCaretDown,
   faCaretRight,
   faBars,
-  faTimes
+  faTimes,
 ]);
 
 Vue.component("fa-icon", FontAwesomeIcon);
 
-Vue.use(Buefy, {
-  defaultIconPack: "fas"
-});
+Vue.use(Oruga, bulmaConfig);
 
 Vue.config.productionTip = false;
 
-Vue.filter("capitalize", function(value) {
+Vue.filter("capitalize", function (value) {
   if (!value) return "";
   value = value.toString();
   return value.charAt(0).toUpperCase() + value.slice(1);
 });
 
-Vue.filter("titlecase", function(value) {
+Vue.filter("titlecase", function (value) {
   if (!value) return "";
   value = value.toString();
   value = value.split(" ");
   const newValue = [];
-  value.forEach(val => {
+  value.forEach((val) => {
     newValue.push(val.charAt(0).toUpperCase() + val.slice(1));
   });
   return newValue.join(" ");
@@ -77,5 +76,5 @@ Vue.filter("titlecase", function(value) {
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount("#app");

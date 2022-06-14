@@ -1,29 +1,96 @@
 <template>
   <div class="wiki-wrapper">
-    <b-loading :is-full-page="false" :active="loading"></b-loading>
-    <b-notification v-if="error" type="is-danger">
+    <o-loading :full-page="false" :active="loading"></o-loading>
+    <o-notification v-if="error" variant="danger">
       <h2 class="subtitle">ERROR!</h2>
       <p>{{ error.toString() }}</p>
-    </b-notification>
+    </o-notification>
     <div v-if="$store.state.pokemonWikiEntries[pokemonId]" class="columns">
       <div class="column">
-        <b-collapse class="wiki-collapse">
-          <h2 slot="trigger" slot-scope="props" class="subtitle wiki-entry-header"><fa-icon :icon="props.open ? 'caret-down' : 'caret-right'" fixed-width title="Show/hide wiki entry"/>Wiki entry</h2>
-          <div class="content" v-html="$store.state.pokemonWikiEntries[pokemonId].text.introduction.html"></div>
-          <b-collapse v-for="section in makeSortedArray($store.state.pokemonWikiEntries[pokemonId].text)" :key="section.title" :open="false" class="wiki-collapse">
-            <PokemonHeading slot="trigger" slot-scope="sectionProps" :level="3 + parseInt(section.depth)"><fa-icon :icon="sectionProps.open ? 'caret-down' : 'caret-right'" fixed-width title="Show/hide section"/>{{ section.title }}</PokemonHeading>
+        <o-collapse class="wiki-collapse">
+          <h2
+            slot="trigger"
+            slot-scope="props"
+            class="subtitle wiki-entry-header"
+          >
+            <fa-icon
+              :icon="props.open ? 'caret-down' : 'caret-right'"
+              fixed-width
+              title="Show/hide wiki entry"
+            />Wiki entry
+          </h2>
+          <div
+            class="content"
+            v-html="
+              $store.state.pokemonWikiEntries[pokemonId].text.introduction.html
+            "
+          ></div>
+          <o-collapse
+            v-for="section in makeSortedArray(
+              $store.state.pokemonWikiEntries[pokemonId].text
+            )"
+            :key="section.title"
+            :open="false"
+            class="wiki-collapse"
+          >
+            <PokemonHeading
+              slot="trigger"
+              slot-scope="sectionProps"
+              :level="3 + parseInt(section.depth)"
+              ><fa-icon
+                :icon="sectionProps.open ? 'caret-down' : 'caret-right'"
+                fixed-width
+                title="Show/hide section"
+              />{{ section.title }}</PokemonHeading
+            >
             <div class="content" v-html="section.html"></div>
-            <b-collapse v-for="section2 in section.children" :key="section2.title" :open="false" class="wiki-collapse">
-              <PokemonHeading slot="trigger" slot-scope="section2Props" :level="3 + parseInt(section2.depth)"><fa-icon :icon="section2Props.open ? 'caret-down' : 'caret-right'" fixed-width title="Show/hide section"/>{{ section2.title }}</PokemonHeading>
+            <o-collapse
+              v-for="section2 in section.children"
+              :key="section2.title"
+              :open="false"
+              class="wiki-collapse"
+            >
+              <PokemonHeading
+                slot="trigger"
+                slot-scope="section2Props"
+                :level="3 + parseInt(section2.depth)"
+                ><fa-icon
+                  :icon="section2Props.open ? 'caret-down' : 'caret-right'"
+                  fixed-width
+                  title="Show/hide section"
+                />{{ section2.title }}</PokemonHeading
+              >
               <div class="content" v-html="section2.html"></div>
-              <b-collapse v-for="section3 in section2.children" :key="section3.title" :open="false" class="wiki-collapse">
-                <PokemonHeading slot="trigger" slot-scope="section3Props" :level="3 + parseInt(section3.depth)"><fa-icon :icon="section3Props.open ? 'caret-down' : 'caret-right'" fixed-width title="Show/hide section"/>{{ section3.title }}</PokemonHeading>
+              <o-collapse
+                v-for="section3 in section2.children"
+                :key="section3.title"
+                :open="false"
+                class="wiki-collapse"
+              >
+                <PokemonHeading
+                  slot="trigger"
+                  slot-scope="section3Props"
+                  :level="3 + parseInt(section3.depth)"
+                  ><fa-icon
+                    :icon="section3Props.open ? 'caret-down' : 'caret-right'"
+                    fixed-width
+                    title="Show/hide section"
+                  />{{ section3.title }}</PokemonHeading
+                >
                 <div class="content" v-html="section3.html"></div>
-              </b-collapse>
-            </b-collapse>
-          </b-collapse>
-          <p class="copyright">&copy; Bulbapedia contributors, licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/2.5/" target="_blank" rel="noopener">CC BY-NC-SA 2.5</a></p>
-        </b-collapse>
+              </o-collapse>
+            </o-collapse>
+          </o-collapse>
+          <p class="copyright">
+            &copy; Bulbapedia contributors, licensed under
+            <a
+              href="https://creativecommons.org/licenses/by-nc-sa/2.5/"
+              target="_blank"
+              rel="noopener"
+              >CC BY-NC-SA 2.5</a
+            >
+          </p>
+        </o-collapse>
       </div>
     </div>
   </div>
@@ -35,24 +102,24 @@ import PokemonHeading from "@/components/PokemonHeading.vue";
 export default {
   name: "PokemonWikiEntry",
   components: {
-    PokemonHeading
+    PokemonHeading,
   },
   props: {
     pokemonId: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       loading: false,
-      error: null
+      error: null,
     };
   },
   computed: {},
   watch: {
     // fetch data again if the route changes
-    pokemonId: "fetchPokemonWikiEntry"
+    pokemonId: "fetchPokemonWikiEntry",
   },
   created() {
     // fetch the pokemon data when the view is created
@@ -67,7 +134,7 @@ export default {
       return array
         .slice(1)
         .filter(Object)
-        .filter(section => {
+        .filter((section) => {
           switch (section.title) {
             case "Game data":
             case "In other languages":
@@ -88,21 +155,21 @@ export default {
 
         return this.$store
           .dispatch("getPokemonWikiEntry", {
-            pokemonId: this.pokemonId
+            pokemonId: this.pokemonId,
           })
           .then(() => {
             this.loading = false;
             this.$emit("loaded");
           })
-          .catch(err => {
+          .catch((err) => {
             this.loading = false;
             this.error = err;
           });
       } else {
         this.$emit("loaded");
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

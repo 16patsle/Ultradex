@@ -13,7 +13,7 @@
         :pokemonSpecies="pokemon"
         @loaded="defaultVarietyLoaded = true"
       />
-      <b-collapse
+      <o-collapse
         v-if="pokemonOtherVarieties.length > 0"
         :open="false"
         class="other-varieties-collapse"
@@ -38,7 +38,7 @@
             :pokemonDefaultVariety="pokemonDefaultVariety"
           />
         </div>
-      </b-collapse>
+      </o-collapse>
     </div>
   </div>
 </template>

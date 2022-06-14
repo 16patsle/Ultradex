@@ -4,11 +4,11 @@
       Pokémon Species: {{ pokemonNameLocalized }}
     </h1>
     <h1 v-else class="title">Pokémon Species</h1>
-    <b-loading :is-full-page="false" :active="loading"></b-loading>
-    <b-notification v-if="error" type="is-danger">
+    <o-loading :full-page="false" :active="loading"></o-loading>
+    <o-notification v-if="error" variant="danger">
       <h2 class="subtitle">ERROR!</h2>
       <p>{{ error.message }}</p>
-    </b-notification>
+    </o-notification>
     <div v-if="pokemon && !loading && !error" style="padding-bottom: 50px">
       <PokemonDetails :pokemon="pokemon" />
       <PokemonWikiEntry :pokemonId="pokemon.id" />

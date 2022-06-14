@@ -1,21 +1,47 @@
 <template>
   <div class="variety-wrapper">
-    <b-loading :is-full-page="false" :active="loading"></b-loading>
-    <b-notification v-if="error" type="is-danger">
+    <o-loading :full-page="false" :active="loading"></o-loading>
+    <o-notification v-if="error" variant="danger">
       <h2 class="subtitle">ERROR!</h2>
       <p>{{ error }}</p>
-    </b-notification>
+    </o-notification>
     <div v-if="pokemonVariety.pokemonData" class="columns">
       <div class="column">
         <div class="has-text-centered">
-          <PokemonType v-for="type in pokemonTypes" :key="type" :type="type" class="has-text-centered"/></div>
+          <PokemonType
+            v-for="type in pokemonTypes"
+            :key="type"
+            :type="type"
+            class="has-text-centered"
+          />
+        </div>
         <div class="has-text-centered">
-          <PokemonSprite v-if="pokemon.sprites.front_default" :sprite="pokemon.sprites.front_default" :pokemonName="pokemonNameLocalized | titlecase" spriteName="front"/>
-          <PokemonSprite v-else :sprite="pokemon.sprites.front_default" :pokemonName="pokemonNameLocalized | titlecase" spriteName="missing"/>
-          <PokemonSprite v-if="pokemon.sprites.back_default" :sprite="pokemon.sprites.back_default" :pokemonName="pokemonNameLocalized | titlecase" spriteName="back"/>
+          <PokemonSprite
+            v-if="pokemon.sprites.front_default"
+            :sprite="pokemon.sprites.front_default"
+            :pokemonName="pokemonNameLocalized | titlecase"
+            spriteName="front"
+          />
+          <PokemonSprite
+            v-else
+            :sprite="pokemon.sprites.front_default"
+            :pokemonName="pokemonNameLocalized | titlecase"
+            spriteName="missing"
+          />
+          <PokemonSprite
+            v-if="pokemon.sprites.back_default"
+            :sprite="pokemon.sprites.back_default"
+            :pokemonName="pokemonNameLocalized | titlecase"
+            spriteName="back"
+          />
         </div>
       </div>
-      <PokemonStats :height="pokemon.height" :weight="pokemon.weight" :stats="pokemon.stats" class="pokemon-stats column is-half is-one-third-desktop is-one-fourth-widescreen"/>
+      <PokemonStats
+        :height="pokemon.height"
+        :weight="pokemon.weight"
+        :stats="pokemon.stats"
+        class="pokemon-stats column is-half is-one-third-desktop is-one-fourth-widescreen"
+      />
     </div>
   </div>
 </template>
@@ -30,26 +56,26 @@ export default {
   components: {
     PokemonSprite,
     PokemonType,
-    PokemonStats
+    PokemonStats,
   },
   props: {
     pokemonVariety: {
       type: Object,
       default() {
         return {};
-      }
+      },
     },
     pokemonSpecies: {
       type: Object,
       default() {
         return {};
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       loading: false,
-      error: null
+      error: null,
     };
   },
   computed: {
@@ -88,11 +114,11 @@ export default {
           type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1);
       }
       return typesArray;
-    }
+    },
   },
   watch: {
     // fetch data again if the route changes
-    pokemonVariety: "fetchPokemonVariety"
+    pokemonVariety: "fetchPokemonVariety",
   },
   created() {
     // fetch the pokemon data when the view is created
@@ -109,21 +135,21 @@ export default {
             speciesId: this.$route.params.id,
             varietyId: /\S+\/([0-9]+)\//.exec(
               this.pokemonVariety.pokemon.url
-            )[1]
+            )[1],
           })
           .then(() => {
             this.loading = false;
             this.$emit("loaded");
           })
-          .catch(err => {
+          .catch((err) => {
             this.loading = false;
             this.error = err;
           });
       } else {
         this.$emit("loaded");
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
