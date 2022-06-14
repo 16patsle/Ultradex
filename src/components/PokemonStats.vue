@@ -29,34 +29,30 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "PokemonStats",
-  props: {
-    height: { type: Number, required: false, default: null },
-    weight: { type: Number, required: false, default: null },
-    stats: { type: Array, required: true },
-  },
-  methods: {
-    statIcon(name) {
-      switch (name) {
-        case "speed":
-          return "feather-alt";
-        case "special-defense":
-          return "shield-alt";
-        case "special-attack":
-          return "bolt";
-        case "defense":
-          return "shield-alt";
-        case "attack":
-          return "bolt";
-        case "hp":
-          return "heart";
-        default:
-          return null;
-      }
-    },
-  },
+<script setup>
+defineProps({
+  height: { type: Number, required: false, default: null },
+  weight: { type: Number, required: false, default: null },
+  stats: { type: Array, required: true },
+});
+
+const statIcon = (name) => {
+  switch (name) {
+    case "speed":
+      return "feather-alt";
+    case "special-defense":
+      return "shield-alt";
+    case "special-attack":
+      return "bolt";
+    case "defense":
+      return "shield-alt";
+    case "attack":
+      return "bolt";
+    case "hp":
+      return "heart";
+    default:
+      return null;
+  }
 };
 </script>
 

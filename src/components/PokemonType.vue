@@ -2,13 +2,13 @@
   <div :class="type.toLowerCase()">{{ type }}</div>
 </template>
 
-<script>
-export default {
-  name: "PokemonType",
-  props: {
-    type: { type: String, required: true },
+<script setup>
+defineProps({
+  type: {
+    type: String,
+    required: true,
   },
-};
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

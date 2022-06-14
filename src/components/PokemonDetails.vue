@@ -41,73 +41,54 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import PokemonVariety from "@/components/PokemonVariety.vue";
 import PokemonDefaultVariety from "@/components/PokemonDefaultVariety.vue";
+import { computed, ref } from "vue";
 
-export default {
-  name: "PokemonDetails",
-  components: {
-    PokemonVariety,
-    PokemonDefaultVariety,
-  },
-  props: {
-    pokemon: {
-      type: Object,
-      default() {
-        return null;
-      },
+const props = defineProps({
+  pokemon: {
+    type: Object,
+    default() {
+      return null;
     },
   },
-  data() {
-    return {
-      defaultVarietyLoaded: false,
-    };
-  },
-  computed: {
-    pokemonNameLocalized() {
-      for (let name of this.pokemon.names) {
-        if (name.language.name === "en") {
-          return name.name;
-        }
-      }
-      return this.pokemon.name;
-    },
-    pokemonGenusLocalized() {
-      for (let genus of this.pokemon.genera) {
-        if (genus.language.name === "en") {
-          return genus.genus;
-        }
-      }
-      return "";
-    },
-    pokemonFlavorTextLocalized() {
-      for (let flavorText of this.pokemon.flavor_text_entries) {
-        if (flavorText.language.name === "en") {
-          return flavorText.flavor_text;
-        }
-      }
-      return "";
-    },
-    pokemonDefaultVariety() {
-      return this.pokemon.varieties.reduce((acc, variety) => {
-        if (variety.is_default) {
-          acc = variety;
-        }
-        return acc;
-      });
-    },
-    pokemonOtherVarieties() {
-      return this.pokemon.varieties.reduce((acc, variety) => {
-        if (!variety.is_default) {
-          acc.push(variety);
-        }
-        return acc;
-      }, []);
-    },
-  },
-  methods: {},
-};
+});
+
+const defaultVarietyLoaded = ref(false);
+
+const pokemonGenusLocalized = computed(() => {
+  for (let genus of props.pokemon.genera) {
+    if (genus.language.name === "en") {
+      return genus.genus;
+    }
+  }
+  return "";
+});
+const pokemonFlavorTextLocalized = computed(() => {
+  for (let flavorText of props.pokemon.flavor_text_entries) {
+    if (flavorText.language.name === "en") {
+      return flavorText.flavor_text;
+    }
+  }
+  return "";
+});
+const pokemonDefaultVariety = computed(() => {
+  return props.pokemon.varieties.reduce((acc, variety) => {
+    if (variety.is_default) {
+      acc = variety;
+    }
+    return acc;
+  });
+});
+const pokemonOtherVarieties = computed(() => {
+  return props.pokemon.varieties.reduce((acc, variety) => {
+    if (!variety.is_default) {
+      acc.push(variety);
+    }
+    return acc;
+  }, []);
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

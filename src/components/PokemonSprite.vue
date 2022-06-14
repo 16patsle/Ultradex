@@ -7,15 +7,12 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "PokemonSprite",
-  props: {
-    sprite: { type: String, default: null },
-    pokemonName: { type: String, required: true },
-    spriteName: { type: String, required: true },
-  },
-};
+<script setup>
+defineProps({
+  sprite: { type: String, default: null },
+  pokemonName: { type: String, required: true },
+  spriteName: { type: String, required: true },
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

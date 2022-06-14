@@ -7,13 +7,10 @@
   <h6 v-else-if="level === 6"><slot></slot></h6>
 </template>
 
-<script>
-export default {
-  name: "PokemonHeading",
-  props: {
-    level: { type: Number, required: true },
-  },
-};
+<script setup>
+defineProps({
+  level: { type: Number, required: true },
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

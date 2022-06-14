@@ -16,78 +16,43 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import PokemonDetails from "@/components/PokemonDetails.vue";
 import PokemonWikiEntry from "@/components/PokemonWikiEntry.vue";
+import { computed, ref } from "vue";
+import { useRoute } from "vue-router";
 import { usePokemonStore } from "../stores/pokemonStore";
 
-export default {
-  name: "pokemon-view",
-  components: {
-    PokemonDetails,
-    PokemonWikiEntry,
-  },
-  data() {
-    return {
-      loading: false,
-      error: null,
-      pokemon: null,
-    };
-  },
-  computed: {
-    /*pokemon() {
-      const store = usePokemonStore();
-      return store.pokemon[this.$route.params.id];
-    },*/
-    pokemonNameLocalized() {
-      if (this.pokemon) {
-        for (let name of this.pokemon.names) {
-          if (name.language.name === "en") {
-            return name.name;
-          }
-        }
-        return this.pokemon.name;
-      }
-      return "";
-    },
-    pokemonGenusLocalized() {
-      if (this.pokemon) {
-        for (let genus of this.pokemon.genera) {
-          if (genus.language.name === "en") {
-            return genus.genus;
-          }
-        }
-      }
-      return "";
-    },
-  },
-  watch: {
-    // fetch data again if the route changes
-    $route: "fetchPokemon",
-  },
-  created() {
-    // fetch the pokemon data when the view is created
-    this.fetchPokemon();
-  },
-  methods: {
-    fetchPokemon() {
-      this.loading = true;
-      this.error = null;
+const loading = ref(false);
+const error = ref(null);
+const pokemon = ref(null);
 
-      const store = usePokemonStore();
-      return store
-        .fetchPokemonSpecies({ id: this.$route.params.id })
-        .then(() => {
-          this.loading = false;
-          this.pokemon = store.pokemon[this.$route.params.id];
-        })
-        .catch((err) => {
-          this.loading = false;
-          this.error = err;
-        });
-    },
-  },
+const pokemonNameLocalized = computed(() => {
+  for (let name of pokemon.value.names) {
+    if (name.language.name === "en") {
+      return name.name;
+    }
+  }
+  return pokemon.value.name;
+});
+
+const fetchPokemon = async () => {
+  loading.value = true;
+  error.value = null;
+
+  try {
+    const store = usePokemonStore();
+    const route = useRoute();
+    await store.fetchPokemonSpecies({ id: route.params.id });
+    loading.value = false;
+    pokemon.value = store.pokemon[route.params.id];
+  } catch (err) {
+    loading.value = false;
+    error.value = err;
+  }
 };
+
+fetchPokemon();
 </script>
 
 <style>

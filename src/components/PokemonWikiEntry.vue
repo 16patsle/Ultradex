@@ -99,6 +99,8 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["loaded"]);
+
 const loading = ref(false);
 const error = ref(null);
 const store = usePokemonStore();
@@ -139,13 +141,13 @@ const fetchPokemonWikiEntry = async () => {
         pokemonId: props.pokemonId,
       });
       loading.value = false;
-      $emit("loaded");
+      emit("loaded");
     } catch (err) {
       loading.value = false;
       error.value = err;
     }
   } else {
-    $emit("loaded");
+    emit("loaded");
   }
 };
 

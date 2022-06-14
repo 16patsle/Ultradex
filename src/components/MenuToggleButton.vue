@@ -1,5 +1,5 @@
 <template>
-  <button aria-label="Toggle Menu" class="button" @click="$emit('click')">
+  <button aria-label="Toggle Menu" class="button" @click="emit('click')">
     <div class="icon is-medium">
       <fa-icon
         :icon="open ? 'times' : 'bars'"
@@ -12,11 +12,10 @@
   </button>
 </template>
 
-<script>
-export default {
-  name: "MenuToggleButton",
-  props: {
-    open: { required: true, type: Boolean },
-  },
-};
+<script setup>
+defineProps({
+  open: { type: Boolean, required: true },
+});
+
+const emit = defineEmits(["click"]);
 </script>
