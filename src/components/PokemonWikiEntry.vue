@@ -5,7 +5,7 @@
       <h2 class="subtitle">ERROR!</h2>
       <p>{{ error.toString() }}</p>
     </o-notification>
-    <div v-if="$store.state.pokemonWikiEntries[pokemonId]" class="columns">
+    <div v-if="pokemonWikiEntry" class="columns">
       <div class="column">
         <o-collapse class="wiki-collapse">
           <template #trigger="props">
@@ -19,14 +19,10 @@
           </template>
           <div
             class="content"
-            v-html="
-              $store.state.pokemonWikiEntries[pokemonId].text.introduction.html
-            "
+            v-html="pokemonWikiEntry.text.introduction.html"
           ></div>
           <o-collapse
-            v-for="section in makeSortedArray(
-              $store.state.pokemonWikiEntries[pokemonId].text
-            )"
+            v-for="section in makeSortedArray(pokemonWikiEntry.text)"
             :key="section.title"
             :open="false"
             class="wiki-collapse"
@@ -93,6 +89,7 @@
 
 <script>
 import PokemonHeading from "@/components/PokemonHeading.vue";
+import { usePokemonStore } from "../stores/pokemonStore";
 
 export default {
   name: "PokemonWikiEntry",
@@ -111,7 +108,12 @@ export default {
       error: null,
     };
   },
-  computed: {},
+  computed: {
+    pokemonWikiEntry() {
+      const store = usePokemonStore();
+      return store.pokemonWikiEntries[this.pokemonId];
+    },
+  },
   watch: {
     // fetch data again if the route changes
     pokemonId: "fetchPokemonWikiEntry",
@@ -148,8 +150,9 @@ export default {
         this.loading = true;
         this.error = null;
 
-        return this.$store
-          .dispatch("getPokemonWikiEntry", {
+        const store = usePokemonStore();
+        return store
+          .fetchPokemonWikiEntry({
             pokemonId: this.pokemonId,
           })
           .then(() => {

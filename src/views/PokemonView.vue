@@ -19,6 +19,7 @@
 <script>
 import PokemonDetails from "@/components/PokemonDetails.vue";
 import PokemonWikiEntry from "@/components/PokemonWikiEntry.vue";
+import { usePokemonStore } from "../stores/pokemonStore";
 
 export default {
   name: "pokemon-view",
@@ -35,7 +36,8 @@ export default {
   },
   computed: {
     /*pokemon() {
-      return this.$store.state.pokemon[this.$route.params.id];
+      const store = usePokemonStore();
+      return store.pokemon[this.$route.params.id];
     },*/
     pokemonNameLocalized() {
       if (this.pokemon) {
@@ -72,11 +74,12 @@ export default {
       this.loading = true;
       this.error = null;
 
-      return this.$store
-        .dispatch("getPokemonSpecies", { id: this.$route.params.id })
+      const store = usePokemonStore();
+      return store
+        .fetchPokemonSpecies({ id: this.$route.params.id })
         .then(() => {
           this.loading = false;
-          this.pokemon = this.$store.state.pokemon[this.$route.params.id];
+          this.pokemon = store.pokemon[this.$route.params.id];
         })
         .catch((err) => {
           this.loading = false;

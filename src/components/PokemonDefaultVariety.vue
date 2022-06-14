@@ -50,6 +50,7 @@
 import PokemonSprite from "@/components/PokemonSprite.vue";
 import PokemonType from "@/components/PokemonType.vue";
 import PokemonStats from "@/components/PokemonStats.vue";
+import { usePokemonStore } from "../stores/pokemonStore";
 
 export default {
   name: "PokemonDefaultVariety",
@@ -130,8 +131,9 @@ export default {
         this.loading = true;
         this.error = null;
 
-        return this.$store
-          .dispatch("getPokemonVariety", {
+        const store = usePokemonStore();
+        return store
+          .fetchPokemonVariety({
             speciesId: this.$route.params.id,
             varietyId: /\S+\/([0-9]+)\//.exec(
               this.pokemonVariety.pokemon.url

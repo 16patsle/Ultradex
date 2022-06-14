@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { usePokemonStore } from "../stores/pokemonStore";
+
 export default {
   name: "PokemonLink",
   props: {
@@ -15,7 +17,8 @@ export default {
       return /\S+\/([0-9]+)\//.exec(this.pokemon.url)[1];
     },
     pokemonNameLocalized() {
-      let pokemon = this.$store.state.pokemon[this.pokemonId];
+      const store = usePokemonStore();
+      let pokemon = store.pokemon[this.pokemonId];
       if (pokemon) {
         for (let name of pokemon.names) {
           if (name.language.name === "en") {
@@ -23,7 +26,7 @@ export default {
           }
         }
       }
-      let name = this.$store.state.pokemonData[this.pokemonId - 1].name;
+      let name = store.pokemonData[this.pokemonId - 1].name;
       return name.charAt(0).toUpperCase() + name.slice(1);
     },
   },

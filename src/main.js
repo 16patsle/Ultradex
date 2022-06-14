@@ -17,11 +17,11 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import { router } from "./router";
-import store from "./store";
 import "./registerServiceWorker";
 import Oruga from "@oruga-ui/oruga";
 import { bulmaConfig } from "@oruga-ui/theme-bulma";
 import "@oruga-ui/theme-bulma/dist/bulma.css";
+import { createPinia } from "pinia";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faWeightHanging,
@@ -50,16 +50,15 @@ library.add([
   faTimes,
 ]);
 
-const app = createApp({
-  store,
-  render: (h) => h(App),
-});
+const app = createApp(App);
 
 app.use(router);
 
 app.component("fa-icon", FontAwesomeIcon);
 
 app.use(Oruga, bulmaConfig);
+
+app.use(createPinia());
 
 app.config.globalProperties.capitalize = function (value) {
   if (!value) return "";

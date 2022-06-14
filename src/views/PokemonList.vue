@@ -2,7 +2,7 @@
   <div class="pokemon-list">
     <h1>PokemonList</h1>
     <ul>
-      <li v-for="pokemon in $store.state.pokemonData" :key="pokemon.name">
+      <li v-for="pokemon in pokemonData" :key="pokemon.name">
         <PokemonLink :pokemon="pokemon" />
       </li>
     </ul>
@@ -11,20 +11,28 @@
 
 <script>
 import PokemonLink from "@/components/PokemonLink.vue";
+import { usePokemonStore } from "../stores/pokemonStore";
 
 export default {
   name: "pokemonList",
   components: {
     PokemonLink,
   },
+  computed: {
+    pokemonData() {
+      const store = usePokemonStore();
+      return store.pokemonData;
+    },
+  },
   mounted() {
-    this.$store.dispatch("getPokemonSpecies", { id: null }).then(() => {
+    const store = usePokemonStore();
+    store.fetchPokemonSpecies({ id: null }).then(() => {
       /*let requests = [];
-      for (let pokemon of this.$store.state.pokemonData) {
+      for (let pokemon of store.pokemonData) {
         let pokemonId = /\S+\/([0-9]+)\//.exec(pokemon.url)[1];
-        if (!this.$store.state.pokemon[pokemonId]) {
+        if (!store.pokemon[pokemonId]) {
           requests.push(
-            this.$store.dispatch("getPokemonSpecies", {
+            store.fetchPokemonSpecies({
               id: pokemonId
             })
           );
