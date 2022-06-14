@@ -2,7 +2,7 @@
   <div class="sprite-wrapper">
     <img
       :src="sprite"
-      :alt="(spriteName + ' sprite for ' + pokemonName) | capitalize"
+      :alt="$capitalize(spriteName + ' sprite for ' + pokemonName)"
     />
   </div>
 </template>

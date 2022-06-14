@@ -22,7 +22,7 @@
         />
       </div>
       <p>
-        {{ stat.stat.name.replace("-", " ").replace("hp", "HP") | titlecase }}:
+        {{ $titlecase(stat.stat.name.replace("-", " ").replace("hp", "HP")) }}:
         {{ stat.base_stat }}
       </p>
     </div>

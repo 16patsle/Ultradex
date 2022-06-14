@@ -3,9 +3,9 @@
     <div v-if="pokemon">
       <p class="subtitle">{{ pokemonFlavorTextLocalized }}</p>
       <p>Genus: {{ pokemonGenusLocalized }}</p>
-      <p>Color: {{ pokemon.color.name | capitalize }}</p>
+      <p>Color: {{ $capitalize(pokemon.color.name) }}</p>
       <p v-if="pokemon.evolves_from_species">
-        Evolves from: {{ pokemon.evolves_from_species.name | capitalize }}
+        Evolves from: {{ $capitalize(pokemon.evolves_from_species.name) }}
       </p>
       <hr />
       <PokemonDefaultVariety

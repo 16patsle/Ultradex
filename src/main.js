@@ -60,13 +60,13 @@ app.component("fa-icon", FontAwesomeIcon);
 
 app.use(Oruga, bulmaConfig);
 
-app.filter("capitalize", function (value) {
+app.config.globalProperties.capitalize = function (value) {
   if (!value) return "";
   value = value.toString();
   return value.charAt(0).toUpperCase() + value.slice(1);
-});
+};
 
-app.filter("titlecase", function (value) {
+app.config.globalProperties.titlecase = function (value) {
   if (!value) return "";
   value = value.toString();
   value = value.split(" ");
@@ -75,6 +75,6 @@ app.filter("titlecase", function (value) {
     newValue.push(val.charAt(0).toUpperCase() + val.slice(1));
   });
   return newValue.join(" ");
-});
+};
 
 app.mount("#app");

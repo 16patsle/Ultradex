@@ -9,7 +9,7 @@
       <div class="column">
         <div>
           <h3 class="variety-name">
-            Variety: {{ pokemonNameLocalized | titlecase }}
+            Variety: {{ $titlecase(pokemonNameLocalized) }}
           </h3>
         </div>
       </div>
@@ -28,19 +28,19 @@
           <PokemonSprite
             v-if="pokemon.sprites.front_default"
             :sprite="pokemon.sprites.front_default"
-            :pokemonName="pokemonNameLocalized | titlecase"
+            :pokemonName="$titlecase(pokemonNameLocalized)"
             spriteName="front"
           />
           <PokemonSprite
             v-else
             :sprite="pokemon.sprites.front_default"
-            :pokemonName="pokemonNameLocalized | titlecase"
+            :pokemonName="$titlecase(pokemonNameLocalized)"
             spriteName="missing"
           />
           <PokemonSprite
             v-if="pokemon.sprites.back_default"
             :sprite="pokemon.sprites.back_default"
-            :pokemonName="pokemonNameLocalized | titlecase"
+            :pokemonName="$titlecase(pokemonNameLocalized)"
             spriteName="back"
           />
         </div>
