@@ -3,14 +3,40 @@
     <div v-if="pokemon">
       <p class="subtitle">{{ pokemonFlavorTextLocalized }}</p>
       <p>Genus: {{ pokemonGenusLocalized }}</p>
-      <p>Color: {{ pokemon.color.name  | capitalize }}</p>
-      <p v-if="pokemon.evolves_from_species">Evolves from: {{ pokemon.evolves_from_species.name | capitalize }}</p>
-      <hr>
-      <PokemonDefaultVariety :pokemonVariety="pokemonDefaultVariety" :pokemonSpecies="pokemon" @loaded="defaultVarietyLoaded = true"/>
-      <b-collapse v-if="pokemonOtherVarieties.length > 0" :open="false" class="other-varieties-collapse">
-        <h2 slot="trigger" slot-scope="props" class="subtitle other-varieties-header"><fa-icon :icon="props.open ? 'caret-down' : 'caret-right'" fixed-width title="Show/hide other varieties"/>Other varieties: {{ pokemonOtherVarieties.length }}</h2>
-        <div v-for="pokemonVariety in pokemonOtherVarieties" v-if="defaultVarietyLoaded" :key="pokemonVariety.pokemon.name">
-          <PokemonVariety :pokemonVariety="pokemonVariety" :pokemonSpecies="pokemon" :pokemonDefaultVariety="pokemonDefaultVariety"/>
+      <p>Color: {{ pokemon.color.name | capitalize }}</p>
+      <p v-if="pokemon.evolves_from_species">
+        Evolves from: {{ pokemon.evolves_from_species.name | capitalize }}
+      </p>
+      <hr />
+      <PokemonDefaultVariety
+        :pokemonVariety="pokemonDefaultVariety"
+        :pokemonSpecies="pokemon"
+        @loaded="defaultVarietyLoaded = true"
+      />
+      <b-collapse
+        v-if="pokemonOtherVarieties.length > 0"
+        :open="false"
+        class="other-varieties-collapse"
+      >
+        <h2
+          slot="trigger"
+          slot-scope="props"
+          class="subtitle other-varieties-header"
+        >
+          <fa-icon
+            :icon="props.open ? 'caret-down' : 'caret-right'"
+            fixed-width
+            title="Show/hide other varieties"
+          />Other varieties: {{ pokemonOtherVarieties.length }}
+        </h2>
+        <div v-if="defaultVarietyLoaded">
+          <PokemonVariety
+            v-for="pokemonVariety in pokemonOtherVarieties"
+            :key="pokemonVariety.pokemon.name"
+            :pokemonVariety="pokemonVariety"
+            :pokemonSpecies="pokemon"
+            :pokemonDefaultVariety="pokemonDefaultVariety"
+          />
         </div>
       </b-collapse>
     </div>
@@ -25,19 +51,19 @@ export default {
   name: "PokemonDetails",
   components: {
     PokemonVariety,
-    PokemonDefaultVariety
+    PokemonDefaultVariety,
   },
   props: {
     pokemon: {
       type: Object,
       default() {
         return null;
-      }
-    }
+      },
+    },
   },
   data() {
     return {
-      defaultVarietyLoaded: false
+      defaultVarietyLoaded: false,
     };
   },
   computed: {
@@ -55,6 +81,7 @@ export default {
           return genus.genus;
         }
       }
+      return "";
     },
     pokemonFlavorTextLocalized() {
       for (let flavorText of this.pokemon.flavor_text_entries) {
@@ -62,6 +89,7 @@ export default {
           return flavorText.flavor_text;
         }
       }
+      return "";
     },
     pokemonDefaultVariety() {
       return this.pokemon.varieties.reduce((acc, variety) => {
@@ -78,9 +106,9 @@ export default {
         }
         return acc;
       }, []);
-    }
+    },
   },
-  methods: {}
+  methods: {},
 };
 </script>
 

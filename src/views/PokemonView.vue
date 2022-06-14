@@ -1,15 +1,17 @@
 <template>
   <div class="pokemon-view">
-    <h1 v-if="pokemon && !loading && !error" class="title">Pokémon Species: {{ pokemonNameLocalized }}</h1>
+    <h1 v-if="pokemon && !loading && !error" class="title">
+      Pokémon Species: {{ pokemonNameLocalized }}
+    </h1>
     <h1 v-else class="title">Pokémon Species</h1>
     <b-loading :is-full-page="false" :active="loading"></b-loading>
     <b-notification v-if="error" type="is-danger">
       <h2 class="subtitle">ERROR!</h2>
       <p>{{ error.message }}</p>
     </b-notification>
-    <div v-if="pokemon && !loading && !error" style="padding-bottom: 50px;">
-      <PokemonDetails :pokemon="pokemon"/>
-      <PokemonWikiEntry :pokemonId="pokemon.id"/>
+    <div v-if="pokemon && !loading && !error" style="padding-bottom: 50px">
+      <PokemonDetails :pokemon="pokemon" />
+      <PokemonWikiEntry :pokemonId="pokemon.id" />
     </div>
   </div>
 </template>
@@ -22,13 +24,13 @@ export default {
   name: "pokemon-view",
   components: {
     PokemonDetails,
-    PokemonWikiEntry
+    PokemonWikiEntry,
   },
   data() {
     return {
       loading: false,
       error: null,
-      pokemon: null
+      pokemon: null,
     };
   },
   computed: {
@@ -44,6 +46,7 @@ export default {
         }
         return this.pokemon.name;
       }
+      return "";
     },
     pokemonGenusLocalized() {
       if (this.pokemon) {
@@ -53,11 +56,12 @@ export default {
           }
         }
       }
-    }
+      return "";
+    },
   },
   watch: {
     // fetch data again if the route changes
-    $route: "fetchPokemon"
+    $route: "fetchPokemon",
   },
   created() {
     // fetch the pokemon data when the view is created
@@ -74,12 +78,12 @@ export default {
           this.loading = false;
           this.pokemon = this.$store.state.pokemon[this.$route.params.id];
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.error = err;
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

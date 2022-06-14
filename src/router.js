@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
-import About from "./views/About.vue";
+import HomeView from "./views/HomeView.vue";
+import AboutView from "./views/AboutView.vue";
 import SidebarMenu from "./views/SidebarMenu.vue";
 import PokemonList from "./views/PokemonList.vue";
 import PokemonView from "./views/PokemonView.vue";
@@ -15,32 +15,32 @@ export default new Router({
       name: "home",
       components: {
         sidebar: SidebarMenu,
-        main: Home
-      }
+        main: HomeView,
+      },
     },
     {
       path: "/about",
       name: "about",
       components: {
         sidebar: SidebarMenu,
-        main: About
-      }
+        main: AboutView,
+      },
     },
     {
       path: "/pokemon",
       name: "pokemon",
       components: {
         sidebar: PokemonList,
-        main: Home
-      }
+        main: HomeView,
+      },
     },
     {
       path: "/pokemon/:id",
       name: "pokemon-view",
       components: {
         sidebar: PokemonList,
-        main: PokemonView
-      }
-    }
-  ]
+        main: PokemonView,
+      },
+    },
+  ],
 });
