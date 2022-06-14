@@ -1,13 +1,30 @@
 <template>
   <div class="stats-wrapper">
-    <div v-if="height" class="stat"><div class="icon is-medium"><fa-icon icon="arrows-alt-v" size="lg" fixed-width/></div>
-      <p>Height: {{height / 10}} m</p>
+    <div v-if="height" class="stat">
+      <div class="icon is-medium">
+        <fa-icon icon="arrows-alt-v" size="lg" fixed-width />
+      </div>
+      <p>Height: {{ height / 10 }} m</p>
     </div>
-    <div v-if="weight" class="stat"><div class="icon is-medium"><fa-icon icon="weight-hanging" size="lg" fixed-width/></div>
-      <p>Weight: {{weight / 10}} kg</p>
+    <div v-if="weight" class="stat">
+      <div class="icon is-medium">
+        <fa-icon icon="weight-hanging" size="lg" fixed-width />
+      </div>
+      <p>Weight: {{ weight / 10 }} kg</p>
     </div>
-    <div v-for="stat in stats" :key="stat.stat.name" class="stat"><div class="icon is-medium"><fa-icon v-if="statIcon(stat.stat.name)" :icon="statIcon(stat.stat.name)" size="lg" fixed-width/></div>
-      <p>{{ stat.stat.name.replace('-', ' ').replace('hp','HP') | titlecase }}: {{ stat.base_stat }}</p>
+    <div v-for="stat in stats" :key="stat.stat.name" class="stat">
+      <div class="icon is-medium">
+        <fa-icon
+          v-if="statIcon(stat.stat.name)"
+          :icon="statIcon(stat.stat.name)"
+          size="lg"
+          fixed-width
+        />
+      </div>
+      <p>
+        {{ stat.stat.name.replace("-", " ").replace("hp", "HP") | titlecase }}:
+        {{ stat.base_stat }}
+      </p>
     </div>
   </div>
 </template>
@@ -18,7 +35,7 @@ export default {
   props: {
     height: { type: Number, required: false, default: null },
     weight: { type: Number, required: false, default: null },
-    stats: { type: Array, required: true }
+    stats: { type: Array, required: true },
   },
   methods: {
     statIcon(name) {
@@ -38,8 +55,8 @@ export default {
         default:
           return null;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

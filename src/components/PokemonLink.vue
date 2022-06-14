@@ -1,12 +1,14 @@
 <template>
-  <router-link :to="'/pokemon/'+ pokemonId">{{pokemonNameLocalized}}</router-link>
+  <router-link :to="'/pokemon/' + pokemonId">{{
+    pokemonNameLocalized
+  }}</router-link>
 </template>
 
 <script>
 export default {
   name: "PokemonLink",
   props: {
-    pokemon: { type: Object, required: true }
+    pokemon: { type: Object, required: true },
   },
   computed: {
     pokemonId() {
@@ -23,11 +25,10 @@ export default {
       }
       let name = this.$store.state.pokemonData[this.pokemonId - 1].name;
       return name.charAt(0).toUpperCase() + name.slice(1);
-    }
-  }
+    },
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-</style>
+<style scoped></style>

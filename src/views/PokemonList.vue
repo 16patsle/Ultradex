@@ -2,7 +2,9 @@
   <div class="pokemon-list">
     <h1>PokemonList</h1>
     <ul>
-      <li v-for="pokemon in $store.state.pokemonData" :key="pokemon.name"><PokemonLink :pokemon="pokemon"/></li>
+      <li v-for="pokemon in $store.state.pokemonData" :key="pokemon.name">
+        <PokemonLink :pokemon="pokemon" />
+      </li>
     </ul>
   </div>
 </template>
@@ -13,7 +15,7 @@ import PokemonLink from "@/components/PokemonLink.vue";
 export default {
   name: "pokemonList",
   components: {
-    PokemonLink
+    PokemonLink,
   },
   mounted() {
     this.$store.dispatch("getPokemonSpecies", { id: null }).then(() => {
@@ -30,6 +32,6 @@ export default {
       }
       return Promise.all(requests);*/
     });
-  }
+  },
 };
 </script>

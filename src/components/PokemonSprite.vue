@@ -1,6 +1,9 @@
 <template>
   <div class="sprite-wrapper">
-    <img :src="sprite" :alt="spriteName + ' sprite for ' + pokemonName | capitalize">
+    <img
+      :src="sprite"
+      :alt="(spriteName + ' sprite for ' + pokemonName) | capitalize"
+    />
   </div>
 </template>
 
@@ -10,8 +13,8 @@ export default {
   props: {
     sprite: { type: String, default: null },
     pokemonName: { type: String, required: true },
-    spriteName: { type: String, required: true }
-  }
+    spriteName: { type: String, required: true },
+  },
 };
 </script>
 

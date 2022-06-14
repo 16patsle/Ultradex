@@ -1,12 +1,22 @@
 <template>
   <div id="app">
     <div class="columns">
-      <aside v-show="showSidebar" class="sidebar-view column is-one-third is-narrow-tablet is-one-quarter-widescreen">
-        <MenuToggleButton :open="showSidebar" @click="toggleSidebar">Toggle Sidebar</MenuToggleButton>
+      <aside
+        v-show="showSidebar"
+        class="sidebar-view column is-one-third is-narrow-tablet is-one-quarter-widescreen"
+      >
+        <MenuToggleButton :open="showSidebar" @click="toggleSidebar"
+          >Toggle Sidebar</MenuToggleButton
+        >
         <router-view name="sidebar" class="sidebar-content"></router-view>
       </aside>
       <div v-show="showMain" class="column main-container">
-        <MenuToggleButton v-show="!showSidebar" :open="showSidebar" @click="toggleSidebar">Toggle Sidebar</MenuToggleButton>
+        <MenuToggleButton
+          v-show="!showSidebar"
+          :open="showSidebar"
+          @click="toggleSidebar"
+          >Toggle Sidebar</MenuToggleButton
+        >
         <nav id="nav">
           <router-link to="/">Home</router-link> |
           <router-link to="/about">About</router-link>
@@ -24,11 +34,11 @@ import MenuToggleButton from "./components/MenuToggleButton";
 
 export default {
   components: {
-    MenuToggleButton
+    MenuToggleButton,
   },
   data() {
     return {
-      showSidebar: true
+      showSidebar: true,
     };
   },
   computed: {
@@ -38,7 +48,7 @@ export default {
       } else {
         return true;
       }
-    }
+    },
   },
   created() {
     this.$router.beforeEach((to, from, next) => {
@@ -56,11 +66,10 @@ export default {
       } else {
         this.showSidebar = !this.showSidebar;
       }
-    }
-  }
+    },
+  },
 };
 </script>
-
 
 <style>
 body {

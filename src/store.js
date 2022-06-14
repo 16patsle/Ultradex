@@ -8,7 +8,7 @@ export default new Vuex.Store({
   state: {
     pokemonData: null,
     pokemon: [],
-    pokemonWikiEntries: []
+    pokemonWikiEntries: [],
   },
   mutations: {
     getPokemonSpecies(state, { id, data }) {
@@ -34,38 +34,38 @@ export default new Vuex.Store({
       if (pokemonId && data) {
         state.pokemonWikiEntries[pokemonId] = data;
       }
-    }
+    },
   },
   actions: {
     getPokemonSpecies({ commit }, { id }) {
       if (id) {
-        return PokeApi.getPokemonSpecies(id).then(data => {
+        return PokeApi.getPokemonSpecies(id).then((data) => {
           commit("getPokemonSpecies", {
             id,
-            data
+            data,
           });
         });
       } else {
-        return PokeApi.getPokemonSpecies("?limit=1000").then(data => {
+        return PokeApi.getPokemonSpecies("?limit=1000").then((data) => {
           commit("getPokemonSpecies", {
             id: null,
-            data
+            data,
           });
         });
       }
     },
     getPokemonVariety({ commit }, { speciesId, varietyId }) {
-      return PokeApi.getPokemon(varietyId).then(data => {
+      return PokeApi.getPokemon(varietyId).then((data) => {
         commit("getPokemonVariety", {
           speciesId,
           varietyId,
-          data
+          data,
         });
       });
     },
     getPokemonWikiEntry({ commit }, { pokemonId }) {
       return fetch(`./data/${pokemonId}.json`)
-        .then(response => {
+        .then((response) => {
           if (
             response.headers.get("Content-Type").split(";")[0] ==
             "application/json"
@@ -77,12 +77,12 @@ export default new Vuex.Store({
             }`;
           }
         })
-        .then(data => {
+        .then((data) => {
           commit("getPokemonWikiEntry", {
             pokemonId,
-            data
+            data,
           });
         });
-    }
-  }
+    },
+  },
 });

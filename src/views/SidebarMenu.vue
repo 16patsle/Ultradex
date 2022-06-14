@@ -8,6 +8,6 @@
 <script>
 export default {
   name: "sidebarMenu",
-  components: {}
+  components: {},
 };
 </script>

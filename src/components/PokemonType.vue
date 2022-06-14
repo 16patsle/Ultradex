@@ -6,8 +6,8 @@
 export default {
   name: "PokemonType",
   props: {
-    type: { type: String, required: true }
-  }
+    type: { type: String, required: true },
+  },
 };
 </script>
 
