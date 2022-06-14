@@ -50,18 +50,13 @@ library.add([
   faTimes,
 ]);
 
-const app = createApp(App);
-
-app.use(router);
-
-app.component("fa-icon", FontAwesomeIcon);
-
-app
+const app = createApp(App)
+  .use(router)
+  .component("fa-icon", FontAwesomeIcon)
   .use(Collapse, bulmaConfig)
   .use(Loading, bulmaConfig)
-  .use(Notification, bulmaConfig);
-
-app.use(createPinia());
+  .use(Notification, bulmaConfig)
+  .use(createPinia());
 
 app.config.globalProperties.$capitalize = function (value) {
   if (!value) return "";
