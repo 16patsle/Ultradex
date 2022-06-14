@@ -17,7 +17,6 @@
     "@fortawesome/vue-fontawesome": "^3.0.0",
     "@oruga-ui/oruga-next": "^0.5.5",
     "@oruga-ui/theme-bulma": "^0.2.6",
-    "@vue/compat": "^3.2.37",
     "core-js": "^3.23.1",
     "pinia": "^2.0.14",
     "register-service-worker": "^1.7.2",
