@@ -19,7 +19,7 @@
 <script setup>
 import PokemonDetails from "@/components/PokemonDetails.vue";
 import PokemonWikiEntry from "@/components/PokemonWikiEntry.vue";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { usePokemonStore } from "../stores/pokemonStore";
 
@@ -36,13 +36,14 @@ const pokemonNameLocalized = computed(() => {
   return pokemon.value.name;
 });
 
+const route = useRoute();
+
 const fetchPokemon = async () => {
   loading.value = true;
   error.value = null;
 
   try {
     const store = usePokemonStore();
-    const route = useRoute();
     await store.fetchPokemonSpecies({ id: route.params.id });
     loading.value = false;
     pokemon.value = store.pokemon[route.params.id];
@@ -51,6 +52,11 @@ const fetchPokemon = async () => {
     error.value = err;
   }
 };
+
+watch(
+  () => route.params.id,
+  () => fetchPokemon()
+);
 
 fetchPokemon();
 </script>
