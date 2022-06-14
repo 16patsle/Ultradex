@@ -1,14 +1,12 @@
-import Vue from "vue";
-import Router from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "./views/HomeView.vue";
 import AboutView from "./views/AboutView.vue";
 import SidebarMenu from "./views/SidebarMenu.vue";
 import PokemonList from "./views/PokemonList.vue";
 import PokemonView from "./views/PokemonView.vue";
 
-Vue.use(Router);
-
-export default new Router({
+export const router = createRouter({
+  history: createWebHistory(),
   routes: [
     {
       path: "/",

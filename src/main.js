@@ -16,7 +16,7 @@
  */
 import { createApp } from "vue";
 import App from "./App.vue";
-import router from "./router";
+import { router } from "./router";
 import store from "./store";
 import "./registerServiceWorker";
 import Oruga from "@oruga-ui/oruga";
@@ -51,10 +51,11 @@ library.add([
 ]);
 
 const app = createApp({
-  router,
   store,
   render: (h) => h(App),
 });
+
+app.use(router);
 
 app.component("fa-icon", FontAwesomeIcon);
 
