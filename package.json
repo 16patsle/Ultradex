@@ -17,9 +17,10 @@
     "@fortawesome/vue-fontawesome": "^0.1.2",
     "@oruga-ui/oruga": "^0.5.5",
     "@oruga-ui/theme-bulma": "^0.2.6",
+    "@vue/compat": "^3.1.0",
     "core-js": "^3.23.0",
     "register-service-worker": "^1.7.2",
-    "vue": "^2.6.14",
+    "vue": "^3.1.0",
     "vue-router": "^3.5.4",
     "vuex": "^3.6.2"
   },
@@ -31,6 +32,7 @@
     "@vue/cli-plugin-pwa": "~5.0.4",
     "@vue/cli-service": "~5.0.4",
     "@vue/eslint-config-prettier": "^7.0.0",
+    "@vue/compiler-sfc": "^3.1.0",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
@@ -39,7 +41,6 @@
     "lint-staged": "^8.1.0",
     "prettier": "^2.7.0",
     "vue-cli-plugin-webpack-bundle-analyzer": "~4.0.0",
-    "vue-template-compiler": "^2.6.14",
     "wtf_wikipedia": "^4.4.0",
     "xml2json": "^0.11.2"
   },
