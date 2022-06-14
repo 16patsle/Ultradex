@@ -15,7 +15,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.8",
     "@fortawesome/pro-solid-svg-icons": "file:fortawesome-pro-solid-svg-icons-5.15.4.tgz",
     "@fortawesome/vue-fontawesome": "^3.0.0",
-    "@oruga-ui/oruga": "^0.5.5",
+    "@oruga-ui/oruga-next": "^0.5.5",
     "@oruga-ui/theme-bulma": "^0.2.6",
     "@vue/compat": "^3.2.37",
     "core-js": "^3.23.1",
