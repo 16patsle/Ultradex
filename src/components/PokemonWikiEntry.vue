@@ -8,17 +8,15 @@
     <div v-if="$store.state.pokemonWikiEntries[pokemonId]" class="columns">
       <div class="column">
         <o-collapse class="wiki-collapse">
-          <h2
-            slot="trigger"
-            slot-scope="props"
-            class="subtitle wiki-entry-header"
-          >
-            <fa-icon
-              :icon="props.open ? 'caret-down' : 'caret-right'"
-              fixed-width
-              title="Show/hide wiki entry"
-            />Wiki entry
-          </h2>
+          <template #trigger="props">
+            <h2 class="subtitle wiki-entry-header">
+              <fa-icon
+                :icon="props.open ? 'caret-down' : 'caret-right'"
+                fixed-width
+                title="Show/hide wiki entry"
+              />Wiki entry
+            </h2>
+          </template>
           <div
             class="content"
             v-html="
@@ -33,16 +31,15 @@
             :open="false"
             class="wiki-collapse"
           >
-            <PokemonHeading
-              slot="trigger"
-              slot-scope="sectionProps"
-              :level="3 + parseInt(section.depth)"
-              ><fa-icon
-                :icon="sectionProps.open ? 'caret-down' : 'caret-right'"
-                fixed-width
-                title="Show/hide section"
-              />{{ section.title }}</PokemonHeading
-            >
+            <template #trigger="sectionProps">
+              <PokemonHeading :level="3 + parseInt(section.depth)"
+                ><fa-icon
+                  :icon="sectionProps.open ? 'caret-down' : 'caret-right'"
+                  fixed-width
+                  title="Show/hide section"
+                />{{ section.title }}</PokemonHeading
+              >
+            </template>
             <div class="content" v-html="section.html"></div>
             <o-collapse
               v-for="section2 in section.children"
@@ -50,16 +47,15 @@
               :open="false"
               class="wiki-collapse"
             >
-              <PokemonHeading
-                slot="trigger"
-                slot-scope="section2Props"
-                :level="3 + parseInt(section2.depth)"
-                ><fa-icon
-                  :icon="section2Props.open ? 'caret-down' : 'caret-right'"
-                  fixed-width
-                  title="Show/hide section"
-                />{{ section2.title }}</PokemonHeading
-              >
+              <template #trigger="section2Props">
+                <PokemonHeading :level="3 + parseInt(section2.depth)"
+                  ><fa-icon
+                    :icon="section2Props.open ? 'caret-down' : 'caret-right'"
+                    fixed-width
+                    title="Show/hide section"
+                  />{{ section2.title }}</PokemonHeading
+                >
+              </template>
               <div class="content" v-html="section2.html"></div>
               <o-collapse
                 v-for="section3 in section2.children"
@@ -67,16 +63,15 @@
                 :open="false"
                 class="wiki-collapse"
               >
-                <PokemonHeading
-                  slot="trigger"
-                  slot-scope="section3Props"
-                  :level="3 + parseInt(section3.depth)"
-                  ><fa-icon
-                    :icon="section3Props.open ? 'caret-down' : 'caret-right'"
-                    fixed-width
-                    title="Show/hide section"
-                  />{{ section3.title }}</PokemonHeading
-                >
+                <template #trigger="section3Props">
+                  <PokemonHeading :level="3 + parseInt(section3.depth)"
+                    ><fa-icon
+                      :icon="section3Props.open ? 'caret-down' : 'caret-right'"
+                      fixed-width
+                      title="Show/hide section"
+                    />{{ section3.title }}</PokemonHeading
+                  >
+                </template>
                 <div class="content" v-html="section3.html"></div>
               </o-collapse>
             </o-collapse>

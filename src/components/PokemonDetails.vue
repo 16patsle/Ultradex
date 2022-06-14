@@ -18,17 +18,15 @@
         :open="false"
         class="other-varieties-collapse"
       >
-        <h2
-          slot="trigger"
-          slot-scope="props"
-          class="subtitle other-varieties-header"
-        >
-          <fa-icon
-            :icon="props.open ? 'caret-down' : 'caret-right'"
-            fixed-width
-            title="Show/hide other varieties"
-          />Other varieties: {{ pokemonOtherVarieties.length }}
-        </h2>
+        <template #trigger="props">
+          <h2 class="subtitle other-varieties-header">
+            <fa-icon
+              :icon="props.open ? 'caret-down' : 'caret-right'"
+              fixed-width
+              title="Show/hide other varieties"
+            />Other varieties: {{ pokemonOtherVarieties.length }}
+          </h2>
+        </template>
         <div v-if="defaultVarietyLoaded">
           <PokemonVariety
             v-for="pokemonVariety in pokemonOtherVarieties"
