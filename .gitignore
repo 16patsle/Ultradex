@@ -20,3 +20,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+
+# Font Awesome install files
+/fontawesome-solid.tar
+/fortawesome-pro-solid-svg-icons-*.tgz
