@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import Vue from "vue";
+import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
@@ -50,19 +50,23 @@ library.add([
   faTimes,
 ]);
 
-Vue.component("fa-icon", FontAwesomeIcon);
+const app = createApp({
+  router,
+  store,
+  render: (h) => h(App),
+});
 
-Vue.use(Oruga, bulmaConfig);
+app.component("fa-icon", FontAwesomeIcon);
 
-Vue.config.productionTip = false;
+app.use(Oruga, bulmaConfig);
 
-Vue.filter("capitalize", function (value) {
+app.filter("capitalize", function (value) {
   if (!value) return "";
   value = value.toString();
   return value.charAt(0).toUpperCase() + value.slice(1);
 });
 
-Vue.filter("titlecase", function (value) {
+app.filter("titlecase", function (value) {
   if (!value) return "";
   value = value.toString();
   value = value.split(" ");
@@ -73,8 +77,4 @@ Vue.filter("titlecase", function (value) {
   return newValue.join(" ");
 });
 
-new Vue({
-  router,
-  store,
-  render: (h) => h(App),
-}).$mount("#app");
+app.mount("#app");
