@@ -87,88 +87,69 @@
   </div>
 </template>
 
-<script>
-import PokemonHeading from "@/components/PokemonHeading.vue";
+<script setup>
+import { computed, ref } from "vue";
 import { usePokemonStore } from "../stores/pokemonStore";
+import PokemonHeading from "@/components/PokemonHeading.vue";
 
-export default {
-  name: "PokemonWikiEntry",
-  components: {
-    PokemonHeading,
+const props = defineProps({
+  pokemonId: {
+    type: Number,
+    required: true,
   },
-  props: {
-    pokemonId: {
-      type: Number,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      loading: false,
-      error: null,
-    };
-  },
-  computed: {
-    pokemonWikiEntry() {
-      const store = usePokemonStore();
-      return store.pokemonWikiEntries[this.pokemonId];
-    },
-  },
-  watch: {
-    // fetch data again if the route changes
-    pokemonId: "fetchPokemonWikiEntry",
-  },
-  created() {
-    // fetch the pokemon data when the view is created
-    this.fetchPokemonWikiEntry();
-  },
-  methods: {
-    makeSortedArray(object) {
-      const array = [];
-      for (const section in object) {
-        array[object[section].index] = object[section];
-      }
-      return array
-        .slice(1)
-        .filter(Object)
-        .filter((section) => {
-          switch (section.title) {
-            case "Game data":
-            case "In other languages":
-            case "Notes":
-            case "Related articles":
-            case "External links":
-            case "References":
-              return false;
-            default:
-              return true;
-          }
-        });
-    },
-    fetchPokemonWikiEntry() {
-      if (!this.pokemonEntry) {
-        this.loading = true;
-        this.error = null;
+});
 
-        const store = usePokemonStore();
-        return store
-          .fetchPokemonWikiEntry({
-            pokemonId: this.pokemonId,
-          })
-          .then(() => {
-            this.loading = false;
-            this.$emit("loaded");
-          })
-          .catch((err) => {
-            this.loading = false;
-            this.error = err;
-          });
-      } else {
-        this.$emit("loaded");
+const loading = ref(false);
+const error = ref(null);
+const store = usePokemonStore();
+const pokemonWikiEntry = computed(
+  () => store.pokemonWikiEntries[props.pokemonId]
+);
+
+const makeSortedArray = (object) => {
+  const array = [];
+  for (const section in object) {
+    array[object[section].index] = object[section];
+  }
+  return array
+    .slice(1)
+    .filter(Object)
+    .filter((section) => {
+      switch (section.title) {
+        case "Game data":
+        case "In other languages":
+        case "Notes":
+        case "Related articles":
+        case "External links":
+        case "References":
+          return false;
+        default:
+          return true;
       }
-    },
-  },
+    });
 };
+
+const fetchPokemonWikiEntry = async () => {
+  if (!store.pokemonWikiEntries[props.pokemonId]) {
+    loading.value = true;
+    error.value = null;
+
+    try {
+      await store.fetchPokemonWikiEntry({
+        pokemonId: props.pokemonId,
+      });
+      loading.value = false;
+      $emit("loaded");
+    } catch (err) {
+      loading.value = false;
+      error.value = err;
+    }
+  } else {
+    $emit("loaded");
+  }
+};
+
+fetchPokemonWikiEntry();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
