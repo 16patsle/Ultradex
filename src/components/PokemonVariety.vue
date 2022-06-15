@@ -17,6 +17,8 @@
         </div>
       </div>
     </div>
+    <p v-if="defaultForm?.is_mega">Mega evolution form</p>
+    <p v-else-if="defaultForm?.is_battle_only">Battle-only form</p>
     <div v-if="pokemonVariety.pokemonData" class="columns">
       <div class="column">
         <div class="has-text-centered">
@@ -88,6 +90,12 @@ const loading = ref(false);
 const error = ref(false);
 
 const pokemon = computed(() => props.pokemonVariety.pokemonData);
+const defaultForm = computed(
+  () =>
+    props.pokemonVariety.pokemonData?.forms.find(
+      (form) => form.data?.is_default
+    )?.data
+);
 
 const pokemonNameLocalized = computed(() =>
   pokemonNameLocalizedVariety(
