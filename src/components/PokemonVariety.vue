@@ -112,15 +112,23 @@ const fetchPokemonVariety = async () => {
     try {
       const store = usePokemonStore();
       const route = useRoute();
+      const varietyId = /\S+\/([0-9]+)\//.exec(
+        props.pokemonVariety.pokemon.url
+      )[1];
       await store.fetchPokemonVariety({
         speciesId: route.params.id,
-        varietyId: /\S+\/([0-9]+)\//.exec(props.pokemonVariety.pokemon.url)[1],
+        varietyId,
+      });
+      await store.fetchPokemonVarietyForms({
+        speciesId: route.params.id,
+        varietyId,
       });
       loading.value = false;
       emit("loaded");
     } catch (err) {
       loading.value = false;
       error.value = err;
+      console.error(err);
     }
   } else {
     emit("loaded");

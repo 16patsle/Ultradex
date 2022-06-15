@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import PokeApi from "@16patsle/pokeapi.js/dist/pokeapi.esm.js";
+import { idFromUrl } from "../utils/idFromUrl";
 
 export const usePokemonStore = defineStore("pokemon", {
   state: () => ({
@@ -26,6 +27,19 @@ export const usePokemonStore = defineStore("pokemon", {
             data.name
           ) {
             this.pokemon[speciesId].varieties[varietyIndex].pokemonData = data;
+          }
+        }
+      }
+    },
+    async fetchPokemonVarietyForms({ speciesId, varietyId }) {
+      const pokemon = this.pokemon[speciesId];
+      for (let varietyIndex in pokemon.varieties) {
+        const variety = pokemon.varieties[varietyIndex];
+        if (idFromUrl(variety.pokemon.url) === varietyId) {
+          for (let formIndex in variety.pokemonData.forms) {
+            const form = variety.pokemonData.forms[formIndex];
+            const formId = idFromUrl(form.url);
+            form.data = await PokeApi.getPokemonForm(formId);
           }
         }
       }
