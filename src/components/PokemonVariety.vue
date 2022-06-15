@@ -92,7 +92,7 @@ const pokemon = computed(() => props.pokemonVariety.pokemonData);
 const pokemonNameLocalized = computed(() =>
   pokemonNameLocalizedVariety(
     props.pokemonSpecies,
-    props.pokemonVariety.pokemon
+    props.pokemonVariety.pokemonData
   )
 );
 const pokemonTypes = computed(() => {
