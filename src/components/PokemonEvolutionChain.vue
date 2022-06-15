@@ -6,11 +6,7 @@
       <p>{{ error }}</p>
     </o-notification>
     <div v-if="chain">
-      <PokemonEvolutionStep
-        v-for="step in evolutionSteps"
-        :key="step.species.name"
-        :evolutionStep="step"
-      />
+      <PokemonEvolutionStep :evolutionStep="chain.chain" />
     </div>
   </div>
 </template>
@@ -19,7 +15,6 @@
 import { computed, ref } from "vue";
 import { usePokemonStore } from "../stores/pokemonStore";
 import PokemonEvolutionStep from "./PokemonEvolutionStep.vue";
-import { mapEvolutionStep } from "@/utils/mapEvolutionStep";
 
 const props = defineProps({
   chainId: {
@@ -38,9 +33,6 @@ const loading = ref(false);
 const error = ref(false);
 
 const chain = computed(() => store.pokemonEvolutionChains[props.chainId]);
-const evolutionSteps = computed(() => mapEvolutionStep(chain.value.chain));
-
-console.log(evolutionSteps);
 
 const fetchEvolutionChain = async () => {
   if (!store.pokemonEvolutionChains[props.chainId]) {
