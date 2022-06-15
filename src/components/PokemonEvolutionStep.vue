@@ -1,16 +1,14 @@
 <template>
   <div class="evolution-step-wrapper">
-    <p><PokemonLink :pokemon="evolutionStep.species" /></p>
-    <div v-if="details">
-      <p v-if="details.trigger.name === 'use-item'">
-        Using {{ details.item?.name }}
-      </p>
-      <p v-if="details.trigger.name === 'level-up'">After level up when</p>
-      <p v-if="details.min_level">level > {{ details.min_level }}</p>
-      <p v-if="details.min_happiness">
-        happiness > {{ details.min_happiness }}
-      </p>
-      <p v-if="details.location">location is {{ details.location.name }}</p>
+    <div>
+      <p><PokemonLink :pokemon="evolutionStep.species" /></p>
+      <ul v-if="props.evolutionStep.evolution_details">
+        <PokemonEvolutionDetails
+          v-for="(details, i) in props.evolutionStep.evolution_details"
+          :key="i"
+          :details="details"
+        />
+      </ul>
     </div>
 
     <PokemonEvolutionStep
@@ -22,8 +20,8 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
 import PokemonLink from "./PokemonLink.vue";
+import PokemonEvolutionDetails from "./PokemonEvolutionDetails.vue";
 
 const props = defineProps({
   evolutionStep: {
@@ -31,8 +29,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-const details = computed(() => props.evolutionStep.evolution_details?.[0]);
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -40,5 +36,11 @@ const details = computed(() => props.evolutionStep.evolution_details?.[0]);
 .evolution-step-wrapper {
   display: flex;
   flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+ul {
+  list-style: disc;
+  padding-left: 1.5em;
 }
 </style>
