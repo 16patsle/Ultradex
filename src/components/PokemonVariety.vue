@@ -62,6 +62,7 @@ import PokemonSprite from "@/components/PokemonSprite.vue";
 import PokemonType from "@/components/PokemonType.vue";
 import PokemonStats from "@/components/PokemonStats.vue";
 import { usePokemonStore } from "../stores/pokemonStore";
+import { pokemonNameLocalizedVariety } from "../utils/pokemonNameLocalized";
 
 const props = defineProps({
   pokemonVariety: {
@@ -89,31 +90,12 @@ const error = ref(false);
 
 const pokemon = computed(() => props.pokemonVariety.pokemonData);
 
-const pokemonNameLocalized = computed(() => {
-  let localizedName;
-  for (let name of props.pokemonSpecies.names) {
-    if (name.language.name === "en") {
-      localizedName = name.name;
-      break;
-    }
-  }
-  if (pokemon.value.name === props.pokemonSpecies.name) {
-    return localizedName;
-  } else if (pokemon.value.name.includes(props.pokemonSpecies.name)) {
-    return (
-      pokemon.value.name
-        .toLowerCase()
-        .replace(props.pokemonSpecies.name, "")
-        .replace("-", " ")
-        .replace("-", " ") +
-      " " +
-      localizedName
-    );
-  } else {
-    localizedName = pokemon.value.name;
-    return localizedName.charAt(0).toUpperCase() + localizedName.slice(1);
-  }
-});
+const pokemonNameLocalized = computed(() =>
+  pokemonNameLocalizedVariety(
+    props.pokemonSpecies,
+    props.pokemonVariety.pokemon
+  )
+);
 const pokemonTypes = computed(() => {
   let typesArray = [];
   for (let type of pokemon.value.types) {

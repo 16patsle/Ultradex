@@ -1,7 +1,7 @@
 <template>
   <div class="pokemon-view">
     <h1 v-if="pokemon && !loading && !error" class="title">
-      Pokémon Species: {{ pokemonNameLocalized }}
+      Pokémon Species: {{ pokemonName }}
     </h1>
     <h1 v-else class="title">Pokémon Species</h1>
     <o-loading :full-page="false" :active="loading"></o-loading>
@@ -22,19 +22,13 @@ import PokemonWikiEntry from "@/components/PokemonWikiEntry.vue";
 import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { usePokemonStore } from "../stores/pokemonStore";
+import { pokemonNameLocalized } from "@/utils/pokemonNameLocalized";
 
 const loading = ref(false);
 const error = ref(null);
 const pokemon = ref(null);
 
-const pokemonNameLocalized = computed(() => {
-  for (let name of pokemon.value.names) {
-    if (name.language.name === "en") {
-      return name.name;
-    }
-  }
-  return pokemon.value.name;
-});
+const pokemonName = computed(() => pokemonNameLocalized(pokemon.value));
 
 const route = useRoute();
 

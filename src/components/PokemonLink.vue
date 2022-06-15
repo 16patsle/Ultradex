@@ -1,27 +1,22 @@
 <template>
-  <router-link :to="'/pokemon/' + pokemonId">{{
-    pokemonNameLocalized
-  }}</router-link>
+  <router-link :to="'/pokemon/' + pokemonId">{{ pokemonName }}</router-link>
 </template>
 
 <script setup>
 import { computed } from "vue";
 import { usePokemonStore } from "../stores/pokemonStore";
+import { pokemonNameLocalized } from "../utils/pokemonNameLocalized";
 
 const props = defineProps({
   pokemon: { type: Object, required: true },
 });
 
 const pokemonId = computed(() => /\S+\/([0-9]+)\//.exec(props.pokemon.url)[1]);
-const pokemonNameLocalized = computed(() => {
+const pokemonName = computed(() => {
   const store = usePokemonStore();
   let pokemon = store.pokemon[pokemonId.value];
   if (pokemon) {
-    for (let name of pokemon.names) {
-      if (name.language.name === "en") {
-        return name.name;
-      }
-    }
+    return pokemonNameLocalized(pokemon);
   }
   let name = store.pokemonData[pokemonId.value - 1].name;
   return name.charAt(0).toUpperCase() + name.slice(1);
