@@ -21,13 +21,13 @@
         class="other-varieties-collapse"
       >
         <template #trigger="props">
-          <h2 class="subtitle other-varieties-header">
-            <fa-icon
-              :icon="props.open ? 'caret-down' : 'caret-right'"
-              fixed-width
-              title="Show/hide other varieties"
-            />Other varieties: {{ pokemonOtherVarieties.length }}
-          </h2>
+          <PokemonCollapseTrigger
+            :open="props.open"
+            class="other-varieties-header"
+            title="Show/hide other varieties"
+          >
+            Other varieties: {{ pokemonOtherVarieties.length }}
+          </PokemonCollapseTrigger>
         </template>
         <div v-if="defaultVarietyLoaded">
           <PokemonVariety
@@ -47,7 +47,8 @@
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import PokemonVariety from "@/components/PokemonVariety.vue";
-import PokemonEvolutionChain from "./PokemonEvolutionChain.vue";
+import PokemonEvolutionChain from "@/components/PokemonEvolutionChain.vue";
+import PokemonCollapseTrigger from "@/components/PokemonCollapseTrigger.vue";
 import { idFromUrl } from "@/utils/idFromUrl";
 
 const props = defineProps({

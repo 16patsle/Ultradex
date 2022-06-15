@@ -9,13 +9,13 @@
       <div class="column">
         <o-collapse class="wiki-collapse">
           <template #trigger="props">
-            <h2 class="subtitle wiki-entry-header">
-              <fa-icon
-                :icon="props.open ? 'caret-down' : 'caret-right'"
-                fixed-width
-                title="Show/hide wiki entry"
-              />Wiki entry
-            </h2>
+            <PokemonCollapseTrigger
+              :open="props.open"
+              class="wiki-entry-header"
+              title="Show/hide wiki entry"
+            >
+              Wiki entry
+            </PokemonCollapseTrigger>
           </template>
           <div
             class="content"
@@ -91,6 +91,7 @@
 import { computed, ref } from "vue";
 import { usePokemonStore } from "../stores/pokemonStore";
 import PokemonHeading from "@/components/PokemonHeading.vue";
+import PokemonCollapseTrigger from "@/components/PokemonCollapseTrigger.vue";
 
 const props = defineProps({
   pokemonId: {
