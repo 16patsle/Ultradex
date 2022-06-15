@@ -6,6 +6,7 @@ export const usePokemonStore = defineStore("pokemon", {
   state: () => ({
     pokemonData: [],
     pokemon: [],
+    pokemonEvolutionChains: [],
     pokemonWikiEntries: [],
   }),
   actions: {
@@ -43,6 +44,10 @@ export const usePokemonStore = defineStore("pokemon", {
           }
         }
       }
+    },
+    async fetchPokemonEvolutionChain(chainId) {
+      const data = await PokeApi.getEvolutionChain(chainId);
+      this.pokemonEvolutionChains[chainId] = data;
     },
     async fetchPokemonWikiEntry({ pokemonId }) {
       const response = await fetch(`/data/${pokemonId}.json`);
