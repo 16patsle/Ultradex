@@ -4,9 +4,11 @@
       <p class="subtitle">{{ pokemonFlavorTextLocalized }}</p>
       <p>Genus: {{ pokemonGenusLocalized }}</p>
       <p>Color: {{ $capitalize(pokemon.color.name) }}</p>
-      <p v-if="pokemon.evolves_from_species">
-        Evolves from: <PokemonLink :pokemon="pokemon.evolves_from_species" />
-      </p>
+      <PokemonEvolutionChain
+        v-if="pokemon.evolution_chain.url"
+        :chainId="idFromUrl(pokemon.evolution_chain.url)"
+        :speciesId="route.params.id"
+      />
       <hr />
       <PokemonVariety
         :pokemonVariety="pokemonDefaultVariety"
@@ -42,9 +44,11 @@
 </template>
 
 <script setup>
-import PokemonVariety from "@/components/PokemonVariety.vue";
-import PokemonLink from "./PokemonLink.vue";
 import { computed, ref } from "vue";
+import { useRoute } from "vue-router";
+import PokemonVariety from "@/components/PokemonVariety.vue";
+import PokemonEvolutionChain from "./PokemonEvolutionChain.vue";
+import { idFromUrl } from "@/utils/idFromUrl";
 
 const props = defineProps({
   pokemon: {
@@ -56,6 +60,7 @@ const props = defineProps({
 });
 
 const defaultVarietyLoaded = ref(false);
+const route = useRoute();
 
 const pokemonGenusLocalized = computed(() => {
   for (let genus of props.pokemon.genera) {
