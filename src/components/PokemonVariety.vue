@@ -55,119 +55,95 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed, ref } from "vue";
+import { useRoute } from "vue-router";
 import PokemonSprite from "@/components/PokemonSprite.vue";
 import PokemonType from "@/components/PokemonType.vue";
 import PokemonStats from "@/components/PokemonStats.vue";
 import { usePokemonStore } from "../stores/pokemonStore";
 
-export default {
-  name: "PokemonVariety",
-  components: {
-    PokemonSprite,
-    PokemonType,
-    PokemonStats,
-  },
-  props: {
-    pokemonVariety: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-    pokemonSpecies: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-    pokemonDefaultVariety: {
-      type: Object,
-      default() {
-        return {};
-      },
+const props = defineProps({
+  pokemonVariety: {
+    type: Object,
+    default() {
+      return {};
     },
   },
-  data() {
-    return {
-      loading: false,
-      error: null,
-    };
-  },
-  computed: {
-    pokemon() {
-      return this.pokemonVariety.pokemonData;
-    },
-    pokemonDefault() {
-      return this.pokemonDefaultVariety.pokemonData;
-    },
-    pokemonNameLocalized() {
-      let localizedName;
-      for (let name of this.pokemonSpecies.names) {
-        if (name.language.name === "en") {
-          localizedName = name.name;
-          break;
-        }
-      }
-      if (this.pokemon.name === this.pokemonSpecies.name) {
-        return localizedName;
-      } else if (this.pokemon.name.includes(this.pokemonSpecies.name)) {
-        return (
-          this.pokemon.name
-            .toLowerCase()
-            .replace(this.pokemonSpecies.name, "")
-            .replace("-", " ")
-            .replace("-", " ") +
-          " " +
-          localizedName
-        );
-      } else {
-        localizedName = this.pokemon.name;
-        return localizedName.charAt(0).toUpperCase() + localizedName.slice(1);
-      }
-    },
-    pokemonTypes() {
-      let typesArray = [];
-      for (let type of this.pokemon.types) {
-        typesArray[type.slot - 1] =
-          type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1);
-      }
-      return typesArray;
+  pokemonSpecies: {
+    type: Object,
+    default() {
+      return {};
     },
   },
-  watch: {
-    // fetch data again if the route changes
-    pokemonVariety: "fetchPokemonVariety",
+  pokemonDefaultVariety: {
+    type: Object,
+    default() {
+      return {};
+    },
   },
-  created() {
-    // fetch the pokemon data when the view is created
-    this.fetchPokemonVariety();
-  },
-  methods: {
-    fetchPokemonVariety() {
-      if (!this.pokemonVariety.pokemonData) {
-        this.loading = true;
-        this.error = null;
+});
 
-        const store = usePokemonStore();
-        return store
-          .fetchPokemonVariety({
-            speciesId: this.$route.params.id,
-            varietyId: /\S+\/([0-9]+)\//.exec(
-              this.pokemonVariety.pokemon.url
-            )[1],
-          })
-          .then(() => {
-            this.loading = false;
-          })
-          .catch((err) => {
-            this.loading = false;
-            this.error = err;
-          });
-      }
-    },
-  },
+const loading = ref(false);
+const error = ref(false);
+
+const pokemon = computed(() => props.pokemonVariety.pokemonData);
+
+const pokemonNameLocalized = computed(() => {
+  let localizedName;
+  for (let name of props.pokemonSpecies.names) {
+    if (name.language.name === "en") {
+      localizedName = name.name;
+      break;
+    }
+  }
+  if (pokemon.value.name === props.pokemonSpecies.name) {
+    return localizedName;
+  } else if (pokemon.value.name.includes(props.pokemonSpecies.name)) {
+    return (
+      pokemon.value.name
+        .toLowerCase()
+        .replace(props.pokemonSpecies.name, "")
+        .replace("-", " ")
+        .replace("-", " ") +
+      " " +
+      localizedName
+    );
+  } else {
+    localizedName = pokemon.value.name;
+    return localizedName.charAt(0).toUpperCase() + localizedName.slice(1);
+  }
+});
+const pokemonTypes = computed(() => {
+  let typesArray = [];
+  for (let type of pokemon.value.types) {
+    typesArray[type.slot - 1] =
+      type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1);
+  }
+  return typesArray;
+});
+
+const fetchPokemonVariety = async () => {
+  if (!props.pokemonVariety.pokemonData) {
+    loading.value = true;
+    error.value = null;
+
+    try {
+      const store = usePokemonStore();
+      const route = useRoute();
+      await store.fetchPokemonVariety({
+        speciesId: route.params.id,
+        varietyId: /\S+\/([0-9]+)\//.exec(props.pokemonVariety.pokemon.url)[1],
+      });
+      loading.value = false;
+    } catch (err) {
+      loading.value = false;
+      error.value = err;
+    }
+  }
 };
+
+fetchPokemonVariety();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
