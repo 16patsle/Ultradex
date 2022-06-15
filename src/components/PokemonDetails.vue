@@ -5,7 +5,7 @@
       <p>Genus: {{ pokemonGenusLocalized }}</p>
       <p>Color: {{ $capitalize(pokemon.color.name) }}</p>
       <p v-if="pokemon.evolves_from_species">
-        Evolves from: {{ $capitalize(pokemon.evolves_from_species.name) }}
+        Evolves from: <PokemonLink :pokemon="pokemon.evolves_from_species" />
       </p>
       <hr />
       <PokemonDefaultVariety
@@ -44,6 +44,7 @@
 <script setup>
 import PokemonVariety from "@/components/PokemonVariety.vue";
 import PokemonDefaultVariety from "@/components/PokemonDefaultVariety.vue";
+import PokemonLink from "./PokemonLink.vue";
 import { computed, ref } from "vue";
 
 const props = defineProps({
