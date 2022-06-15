@@ -3,7 +3,7 @@ import PokeApi from "@16patsle/pokeapi.js/dist/pokeapi.esm.js";
 
 export const usePokemonStore = defineStore("pokemon", {
   state: () => ({
-    pokemonData: null,
+    pokemonData: [],
     pokemon: [],
     pokemonWikiEntries: [],
   }),
