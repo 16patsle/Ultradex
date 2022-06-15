@@ -1,6 +1,17 @@
 <template>
   <div class="evolution-step-wrapper">
-    <p>Evolves from: <PokemonLink :pokemon="evolutionStep.species" /></p>
+    <p><PokemonLink :pokemon="evolutionStep.species" /></p>
+    <div v-if="details">
+      <p v-if="details.trigger.name === 'use-item'">
+        Using {{ details.item?.name }}
+      </p>
+      <p v-if="details.trigger.name === 'level-up'">After level up when</p>
+      <p v-if="details.min_level">level > {{ details.min_level }}</p>
+      <p v-if="details.min_happiness">
+        happiness > {{ details.min_happiness }}
+      </p>
+      <p v-if="details.location">location is {{ details.location.name }}</p>
+    </div>
 
     <PokemonEvolutionStep
       v-for="step in evolutionStep.evolves_to"
@@ -25,4 +36,9 @@ const details = computed(() => props.evolutionStep.evolution_details?.[0]);
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+.evolution-step-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+</style>
