@@ -27,14 +27,14 @@
             :open="false"
             class="wiki-collapse"
           >
-            <template #trigger="sectionProps">
-              <PokemonHeading :level="3 + parseInt(section.depth)"
-                ><fa-icon
-                  :icon="sectionProps.open ? 'caret-down' : 'caret-right'"
-                  fixed-width
-                  title="Show/hide section"
-                />{{ section.title }}</PokemonHeading
+            <template #trigger="props">
+              <PokemonCollapseTrigger
+                :level="3 + parseInt(section.depth)"
+                :open="props.open"
+                title="Show/hide section"
               >
+                {{ section.title }}
+              </PokemonCollapseTrigger>
             </template>
             <div class="content" v-html="section.html"></div>
             <o-collapse
@@ -43,14 +43,14 @@
               :open="false"
               class="wiki-collapse"
             >
-              <template #trigger="section2Props">
-                <PokemonHeading :level="3 + parseInt(section2.depth)"
-                  ><fa-icon
-                    :icon="section2Props.open ? 'caret-down' : 'caret-right'"
-                    fixed-width
-                    title="Show/hide section"
-                  />{{ section2.title }}</PokemonHeading
+              <template #trigger="props">
+                <PokemonCollapseTrigger
+                  :level="3 + parseInt(section2.depth)"
+                  :open="props.open"
+                  title="Show/hide section"
                 >
+                  {{ section2.title }}
+                </PokemonCollapseTrigger>
               </template>
               <div class="content" v-html="section2.html"></div>
               <o-collapse
@@ -59,14 +59,14 @@
                 :open="false"
                 class="wiki-collapse"
               >
-                <template #trigger="section3Props">
-                  <PokemonHeading :level="3 + parseInt(section3.depth)"
-                    ><fa-icon
-                      :icon="section3Props.open ? 'caret-down' : 'caret-right'"
-                      fixed-width
-                      title="Show/hide section"
-                    />{{ section3.title }}</PokemonHeading
+                <template #trigger="props">
+                  <PokemonCollapseTrigger
+                    :level="3 + parseInt(section3.depth)"
+                    :open="props.open"
+                    title="Show/hide section"
                   >
+                    {{ section3.title }}
+                  </PokemonCollapseTrigger>
                 </template>
                 <div class="content" v-html="section3.html"></div>
               </o-collapse>
