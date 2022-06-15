@@ -8,7 +8,7 @@
         Evolves from: <PokemonLink :pokemon="pokemon.evolves_from_species" />
       </p>
       <hr />
-      <PokemonDefaultVariety
+      <PokemonVariety
         :pokemonVariety="pokemonDefaultVariety"
         :pokemonSpecies="pokemon"
         @loaded="defaultVarietyLoaded = true"
@@ -43,7 +43,6 @@
 
 <script setup>
 import PokemonVariety from "@/components/PokemonVariety.vue";
-import PokemonDefaultVariety from "@/components/PokemonDefaultVariety.vue";
 import PokemonLink from "./PokemonLink.vue";
 import { computed, ref } from "vue";
 

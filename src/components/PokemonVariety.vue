@@ -5,7 +5,10 @@
       <h2 class="subtitle">ERROR!</h2>
       <p>{{ error }}</p>
     </o-notification>
-    <div v-if="pokemonVariety.pokemonData" class="columns">
+    <div
+      v-if="!pokemonVariety.is_default && pokemonVariety.pokemonData"
+      class="columns"
+    >
       <div class="column">
         <div>
           <h3 class="variety-name">
@@ -58,10 +61,10 @@
 <script setup>
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
+import { usePokemonStore } from "../stores/pokemonStore";
 import PokemonSprite from "@/components/PokemonSprite.vue";
 import PokemonType from "@/components/PokemonType.vue";
 import PokemonStats from "@/components/PokemonStats.vue";
-import { usePokemonStore } from "../stores/pokemonStore";
 import { pokemonNameLocalizedVariety } from "../utils/pokemonNameLocalized";
 
 const props = defineProps({
@@ -77,13 +80,9 @@ const props = defineProps({
       return {};
     },
   },
-  pokemonDefaultVariety: {
-    type: Object,
-    default() {
-      return {};
-    },
-  },
 });
+
+const emit = defineEmits(["loaded"]);
 
 const loading = ref(false);
 const error = ref(false);
@@ -118,10 +117,13 @@ const fetchPokemonVariety = async () => {
         varietyId: /\S+\/([0-9]+)\//.exec(props.pokemonVariety.pokemon.url)[1],
       });
       loading.value = false;
+      emit("loaded");
     } catch (err) {
       loading.value = false;
       error.value = err;
     }
+  } else {
+    emit("loaded");
   }
 };
 
