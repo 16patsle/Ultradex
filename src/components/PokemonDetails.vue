@@ -4,11 +4,6 @@
       <p class="subtitle">{{ pokemonFlavorTextLocalized }}</p>
       <p>Genus: {{ pokemonGenusLocalized }}</p>
       <p>Color: {{ $capitalize(pokemon.color.name) }}</p>
-      <PokemonEvolutionChain
-        v-if="pokemon.evolution_chain.url"
-        :chainId="idFromUrl(pokemon.evolution_chain.url)"
-        :speciesId="route.params.id"
-      />
       <hr />
       <PokemonVariety
         :pokemonVariety="pokemonDefaultVariety"
@@ -16,14 +11,33 @@
         @loaded="defaultVarietyLoaded = true"
       />
       <o-collapse
-        v-if="pokemonOtherVarieties.length > 0"
+        v-if="pokemon.evolution_chain.url"
         :open="false"
-        class="other-varieties-collapse"
+        class="details-collapse"
       >
         <template #trigger="props">
           <PokemonCollapseTrigger
             :open="props.open"
-            class="other-varieties-header"
+            class="details-collapse-header"
+            title="Show/hide evolution chain"
+          >
+            Evolution chain
+          </PokemonCollapseTrigger>
+        </template>
+        <PokemonEvolutionChain
+          :chainId="idFromUrl(pokemon.evolution_chain.url)"
+          :speciesId="route.params.id"
+        />
+      </o-collapse>
+      <o-collapse
+        v-if="pokemonOtherVarieties.length > 0"
+        :open="false"
+        class="details-collapse"
+      >
+        <template #trigger="props">
+          <PokemonCollapseTrigger
+            :open="props.open"
+            class="details-collapse-header"
             title="Show/hide other varieties"
           >
             Other varieties: {{ pokemonOtherVarieties.length }}
@@ -99,8 +113,8 @@ const pokemonOtherVarieties = computed(() => {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.other-varieties-collapse,
-h2.other-varieties-header {
+.details-collapse,
+.details-collapse-header {
   padding-bottom: 10px;
 }
 </style>
