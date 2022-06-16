@@ -1,6 +1,6 @@
 <template>
   <div class="evolution-step-wrapper">
-    <div>
+    <div class="block">
       <p><PokemonLink :pokemon="evolutionStep.species" /></p>
       <ul v-if="props.evolutionStep.evolution_details">
         <PokemonEvolutionDetails
@@ -11,11 +11,13 @@
       </ul>
     </div>
 
-    <PokemonEvolutionStep
-      v-for="step in evolutionStep.evolves_to"
-      :key="step.species.name"
-      :evolutionStep="step"
-    />
+    <div class="block ml-5">
+      <PokemonEvolutionStep
+        v-for="step in evolutionStep.evolves_to"
+        :key="step.species.name"
+        :evolutionStep="step"
+      />
+    </div>
   </div>
 </template>
 
@@ -33,12 +35,6 @@ const props = defineProps({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.evolution-step-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5em;
-}
-
 ul {
   list-style: disc;
   padding-left: 1.5em;

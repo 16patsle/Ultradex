@@ -5,7 +5,7 @@
       <h2 class="subtitle">ERROR!</h2>
       <p>{{ error }}</p>
     </o-notification>
-    <div v-if="chain">
+    <div v-if="chain" class="notification">
       <PokemonEvolutionStep :evolutionStep="chain.chain" />
     </div>
   </div>
