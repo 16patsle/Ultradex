@@ -6,6 +6,7 @@
     <div v-if="details.trigger.name === 'level-up'">
       After level up when:
       <ul>
+        <li v-if="details.gender">gender is {{ genders[details.gender] }}</li>
         <li v-if="details.known_move_type">
           knowing a {{ details.known_move_type.name }} type move
         </li>
@@ -34,6 +35,12 @@ defineProps({
     required: true,
   },
 });
+
+const genders = {
+  1: "female",
+  2: "male",
+  3: "genderless",
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
