@@ -1,18 +1,18 @@
 <template>
-  <div class="stats-wrapper">
-    <div v-if="height" class="stat">
+  <div class="stats-wrapper notification">
+    <div v-if="height" class="stat py-1">
       <div class="icon is-medium">
         <fa-icon icon="arrows-alt-v" size="lg" fixed-width />
       </div>
       <p>Height: {{ height / 10 }} m</p>
     </div>
-    <div v-if="weight" class="stat">
+    <div v-if="weight" class="stat py-1">
       <div class="icon is-medium">
         <fa-icon icon="weight-hanging" size="lg" fixed-width />
       </div>
       <p>Weight: {{ weight / 10 }} kg</p>
     </div>
-    <div v-for="stat in stats" :key="stat.stat.name" class="stat">
+    <div v-for="stat in stats" :key="stat.stat.name" class="stat py-1">
       <div class="icon is-medium">
         <fa-icon
           v-if="statIcon(stat.stat.name)"
@@ -58,12 +58,14 @@ const statIcon = (name) => {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-div.stats-wrapper {
-  background-color: #eee;
+.stats-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem;
+  align-items: center;
 }
 
 .stat {
-  padding: 5px 0;
   font-size: 1.1rem;
 }
 

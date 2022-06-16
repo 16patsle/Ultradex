@@ -54,7 +54,7 @@
         :height="pokemon.height"
         :weight="pokemon.weight"
         :stats="pokemon.stats"
-        class="pokemon-stats column is-half is-one-third-desktop is-one-fourth-widescreen"
+        class="pokemon-stats column is-5"
       />
     </div>
   </div>
