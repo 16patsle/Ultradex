@@ -16,9 +16,15 @@ import { usePokemonStore } from "../stores/pokemonStore";
 import { pokemonNameLocalized } from "../utils/pokemonNameLocalized";
 import PokemonSpriteIcon from "./PokemonSpriteIcon.vue";
 
-const props = defineProps<{
-  pokemon: NamedAPIResource;
-}>();
+const props = withDefaults(
+  defineProps<{
+    pokemon: NamedAPIResource;
+    loadingPaused?: boolean;
+  }>(),
+  {
+    loadingPaused: false,
+  }
+);
 
 const store = usePokemonStore();
 
@@ -44,7 +50,7 @@ const variety = computed(() => {
 });
 
 const fetchPokemonVariety = async () => {
-  if (!variety.value) {
+  if (!variety.value && !props.loadingPaused) {
     error.value = "";
 
     try {
