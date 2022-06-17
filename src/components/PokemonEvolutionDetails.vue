@@ -13,7 +13,13 @@
         <li v-if="details.known_move_type">
           knowing a {{ details.known_move_type.name }} type move
         </li>
-        <li v-if="details.location">location is {{ details.location.name }}</li>
+        <li v-if="details.location">
+          location is
+          <PokemonLocation
+            v-if="details.location"
+            :location="details.location"
+          />
+        </li>
         <li v-if="details.min_affection">
           affection is {{ details.min_affection }} or more
         </li>
@@ -33,6 +39,7 @@
 
 <script setup lang="ts">
 import PokemonItem from "./PokemonItem.vue";
+import PokemonLocation from "./PokemonLocation.vue";
 import type { EvolutionDetail } from "@/types/EvolutionChain";
 
 defineProps<{

@@ -6,6 +6,8 @@ declare module "@16patsle/pokeapi.js/dist/pokeapi.esm.js" {
   import type { PokemonForm } from "./PokemonForm";
   import type { Item } from "./Item";
   import type { Location } from "@/types/Location";
+  import type { Region } from "@/types/Region";
+
   interface PokeApi {
     getPokemonSpecies(id: number): Promise<PokemonSpecies>;
     getPokemonSpecies(id: string): Promise<{ results: NamedAPIResource[] }>; // TODO: Resolve this hack
@@ -14,6 +16,7 @@ declare module "@16patsle/pokeapi.js/dist/pokeapi.esm.js" {
     getPokemonForm(id: number): Promise<PokemonForm>;
     getItem(itemId: number): Promise<Item>;
     getLocation(locationId: number): Promise<Location>;
+    getRegion(regionId: number): Promise<Region>;
   }
 
   const PokeApi: PokeApi;
