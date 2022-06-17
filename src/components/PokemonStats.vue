@@ -10,6 +10,7 @@
       v-for="stat in stats"
       :key="stat.stat.name"
       :icon="statIcon(stat.stat.name)"
+      :class="'order-' + statOrder(stat.stat.name)"
     >
       {{ $titlecase(stat.stat.name.replace("-", " ").replace("hp", "HP")) }}:
       {{ stat.base_stat }}
@@ -44,6 +45,23 @@ const statIcon = (name) => {
       return null;
   }
 };
+
+// Use the order CSS property to improve the layout
+const statOrder = (name) => {
+  switch (name) {
+    case "speed":
+      return 1;
+    case "hp":
+      return 2;
+    case "special-defense":
+    case "special-attack":
+    case "defense":
+    case "attack":
+      return 3;
+    default:
+      return null;
+  }
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -53,5 +71,15 @@ const statIcon = (name) => {
   grid-template-columns: 1fr 1fr;
   gap: 0.25rem;
   align-items: center;
+}
+
+.order-1 {
+  order: 1;
+}
+.order-2 {
+  order: 2;
+}
+.order-3 {
+  order: 3;
 }
 </style>
