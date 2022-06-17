@@ -16,7 +16,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import PokemonDetails from "@/components/PokemonDetails.vue";
 import PokemonWikiEntry from "@/components/PokemonWikiEntry.vue";
 import { computed, ref, watch } from "vue";
@@ -25,7 +25,7 @@ import { usePokemonStore } from "../stores/pokemonStore";
 import { pokemonNameLocalized } from "@/utils/pokemonNameLocalized";
 
 const loading = ref(false);
-const error = ref(null);
+const error = ref<any>(null);
 const pokemon = ref(null);
 
 const pokemonName = computed(() => pokemonNameLocalized(pokemon.value));
@@ -38,7 +38,7 @@ const fetchPokemon = async () => {
 
   try {
     const store = usePokemonStore();
-    await store.fetchPokemonSpecies({ id: route.params.id });
+    await store.fetchPokemonSpecies(route.params.id);
     loading.value = false;
     pokemon.value = store.pokemon[route.params.id];
   } catch (err) {

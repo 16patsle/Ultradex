@@ -87,7 +87,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from "vue";
 import { usePokemonStore } from "../stores/pokemonStore";
 import PokemonCollapseTrigger from "@/components/PokemonCollapseTrigger.vue";
@@ -102,7 +102,7 @@ const props = defineProps({
 const emit = defineEmits(["loaded"]);
 
 const loading = ref(false);
-const error = ref(null);
+const error = ref<any>(null);
 const store = usePokemonStore();
 const pokemonWikiEntry = computed(
   () => store.pokemonWikiEntries[props.pokemonId]
@@ -137,9 +137,7 @@ const fetchPokemonWikiEntry = async () => {
     error.value = null;
 
     try {
-      await store.fetchPokemonWikiEntry({
-        pokemonId: props.pokemonId,
-      });
+      await store.fetchPokemonWikiEntry(props.pokemonId);
       loading.value = false;
       emit("loaded");
     } catch (err) {

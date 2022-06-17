@@ -60,7 +60,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { usePokemonStore } from "../stores/pokemonStore";
@@ -68,28 +68,22 @@ import PokemonSprite from "@/components/PokemonSprite.vue";
 import PokemonType from "@/components/PokemonType.vue";
 import PokemonStats from "@/components/PokemonStats.vue";
 import { pokemonNameLocalizedVariety } from "../utils/pokemonNameLocalized";
+import type {
+  PokemonSpecies,
+  PokemonSpeciesVariety,
+} from "@/types/PokemonSpecies";
 
-const props = defineProps({
-  pokemonVariety: {
-    type: Object,
-    default() {
-      return {};
-    },
-  },
-  pokemonSpecies: {
-    type: Object,
-    default() {
-      return {};
-    },
-  },
-});
+const props = defineProps<{
+  pokemonVariety: PokemonSpeciesVariety;
+  pokemonSpecies: PokemonSpecies;
+}>();
 
 const emit = defineEmits(["loaded"]);
 
 const loading = ref(false);
-const error = ref(false);
+const error = ref<any>(null);
 
-const pokemon = computed(() => props.pokemonVariety.pokemonData);
+const pokemon = computed(() => props.pokemonVariety.pokemonData!);
 const defaultForm = computed(
   () =>
     props.pokemonVariety.pokemonData?.forms.find(
@@ -123,14 +117,8 @@ const fetchPokemonVariety = async () => {
       const varietyId = /\S+\/([0-9]+)\//.exec(
         props.pokemonVariety.pokemon.url
       )[1];
-      await store.fetchPokemonVariety({
-        speciesId: route.params.id,
-        varietyId,
-      });
-      await store.fetchPokemonVarietyForms({
-        speciesId: route.params.id,
-        varietyId,
-      });
+      await store.fetchPokemonVariety(route.params.id, varietyId);
+      await store.fetchPokemonVarietyForms(route.params.id, varietyId);
       loading.value = false;
       emit("loaded");
     } catch (err) {
