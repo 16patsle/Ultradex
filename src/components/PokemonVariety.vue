@@ -1,14 +1,11 @@
 <template>
   <div class="variety-wrapper">
-    <o-loading :full-page="false" :active="loading"></o-loading>
+    <o-loading :full-page="false" :active="!pokemon"></o-loading>
     <o-notification v-if="error" variant="danger">
       <h2 class="subtitle">ERROR!</h2>
       <p>{{ error }}</p>
     </o-notification>
-    <div
-      v-if="!pokemonVariety.is_default && pokemonVariety.pokemonData"
-      class="columns"
-    >
+    <div v-if="!isDefault && pokemon" class="columns">
       <div class="column">
         <div>
           <h3 class="variety-name">
@@ -19,7 +16,7 @@
     </div>
     <p v-if="defaultForm?.is_mega">Mega evolution form</p>
     <p v-else-if="defaultForm?.is_battle_only">Battle-only form</p>
-    <div v-if="pokemonVariety.pokemonData" class="columns">
+    <div v-if="pokemon" class="columns">
       <div class="column">
         <div class="has-text-centered">
           <PokemonType
@@ -62,40 +59,33 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { useRoute } from "vue-router";
 import { usePokemonStore } from "../stores/pokemonStore";
 import PokemonSprite from "@/components/PokemonSprite.vue";
 import PokemonType from "@/components/PokemonType.vue";
 import PokemonStats from "@/components/PokemonStats.vue";
 import { pokemonNameLocalizedVariety } from "../utils/pokemonNameLocalized";
-import type {
-  PokemonSpecies,
-  PokemonSpeciesVariety,
-} from "@/types/PokemonSpecies";
 
-const props = defineProps<{
-  pokemonVariety: PokemonSpeciesVariety;
-  pokemonSpecies: PokemonSpecies;
-}>();
+const props = withDefaults(
+  defineProps<{
+    pokemonVarietyId: number;
+    isDefault: boolean;
+  }>(),
+  { isDefault: false }
+);
 
 const emit = defineEmits(["loaded"]);
 
-const loading = ref(false);
-const error = ref<any>(null);
+const store = usePokemonStore();
 
-const pokemon = computed(() => props.pokemonVariety.pokemonData!);
+const error = ref("");
+
+const pokemon = computed(() => store.pokemonVarieties[props.pokemonVarietyId]);
 const defaultForm = computed(
-  () =>
-    props.pokemonVariety.pokemonData?.forms.find(
-      (form) => form.data?.is_default
-    )?.data
+  () => pokemon.value?.forms.find((form) => form.data?.is_default)?.data
 );
 
 const pokemonNameLocalized = computed(() =>
-  pokemonNameLocalizedVariety(
-    props.pokemonSpecies,
-    props.pokemonVariety.pokemonData
-  )
+  pokemonNameLocalizedVariety(store.currentPokemon, pokemon.value)
 );
 const pokemonTypes = computed(() => {
   const typesArray = [];
@@ -107,23 +97,22 @@ const pokemonTypes = computed(() => {
 });
 
 const fetchPokemonVariety = async () => {
-  if (!props.pokemonVariety.pokemonData) {
-    loading.value = true;
-    error.value = null;
+  if (!pokemon.value) {
+    error.value = "";
 
     try {
-      const store = usePokemonStore();
-      const route = useRoute();
-      const varietyId = /\S+\/([0-9]+)\//.exec(
-        props.pokemonVariety.pokemon.url
-      )[1];
-      await store.fetchPokemonVariety(route.params.id, varietyId);
-      await store.fetchPokemonVarietyForms(route.params.id, varietyId);
-      loading.value = false;
+      await store.fetchPokemonVariety(
+        store.currentlyShowingId,
+        props.pokemonVarietyId
+      );
+      await store.fetchPokemonVarietyForms(props.pokemonVarietyId);
       emit("loaded");
     } catch (err) {
-      loading.value = false;
-      error.value = err;
+      if (err instanceof Error) {
+        error.value = err.message;
+      } else {
+        error.value = JSON.stringify(err);
+      }
       console.error(err);
     }
   } else {

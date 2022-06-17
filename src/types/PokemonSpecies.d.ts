@@ -157,8 +157,4 @@ export type PokemonSpeciesVariety = {
    * The Pokémon variety.
    */
   pokemon: NamedAPIResource;
-  /**
-   * TODO: Refactor
-   */
-  pokemonData?: Pokemon;
 };

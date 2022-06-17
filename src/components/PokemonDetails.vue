@@ -6,9 +6,8 @@
       <p>Color: {{ $capitalize(pokemon.color.name) }}</p>
       <hr />
       <PokemonVariety
-        :pokemonVariety="pokemonDefaultVariety"
-        :pokemonSpecies="pokemon"
-        @loaded="defaultVarietyLoaded = true"
+        :pokemonVarietyId="idFromUrl(pokemonDefaultVariety.pokemon.url)"
+        isDefault
       />
       <o-collapse
         v-if="pokemon.evolution_chain.url"
@@ -43,13 +42,11 @@
             Other varieties: {{ pokemonOtherVarieties.length }}
           </PokemonCollapseTrigger>
         </template>
-        <div v-if="defaultVarietyLoaded">
+        <div>
           <PokemonVariety
             v-for="pokemonVariety in pokemonOtherVarieties"
             :key="pokemonVariety.pokemon.name"
-            :pokemonVariety="pokemonVariety"
-            :pokemonSpecies="pokemon"
-            :pokemonDefaultVariety="pokemonDefaultVariety"
+            :pokemonVarietyId="idFromUrl(pokemonVariety.pokemon.url)"
           />
         </div>
       </o-collapse>
@@ -58,27 +55,21 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { useRoute } from "vue-router";
 import PokemonVariety from "@/components/PokemonVariety.vue";
 import PokemonEvolutionChain from "@/components/PokemonEvolutionChain.vue";
 import PokemonCollapseTrigger from "@/components/PokemonCollapseTrigger.vue";
 import { idFromUrl } from "@/utils/idFromUrl";
+import { usePokemonStore } from "@/stores/pokemonStore";
 
-const props = defineProps({
-  pokemon: {
-    type: Object,
-    default() {
-      return null;
-    },
-  },
-});
-
-const defaultVarietyLoaded = ref(false);
 const route = useRoute();
+const store = usePokemonStore();
+
+const pokemon = computed(() => store.currentPokemon);
 
 const pokemonGenusLocalized = computed(() => {
-  for (const genus of props.pokemon.genera) {
+  for (const genus of pokemon.value.genera) {
     if (genus.language.name === "en") {
       return genus.genus;
     }
@@ -86,7 +77,7 @@ const pokemonGenusLocalized = computed(() => {
   return "";
 });
 const pokemonFlavorTextLocalized = computed(() => {
-  for (const flavorText of props.pokemon.flavor_text_entries) {
+  for (const flavorText of pokemon.value.flavor_text_entries) {
     if (flavorText.language.name === "en") {
       return flavorText.flavor_text;
     }
@@ -94,7 +85,7 @@ const pokemonFlavorTextLocalized = computed(() => {
   return "";
 });
 const pokemonDefaultVariety = computed(() => {
-  return props.pokemon.varieties.reduce((acc, variety) => {
+  return pokemon.value.varieties.reduce((acc, variety) => {
     if (variety.is_default) {
       acc = variety;
     }
@@ -102,7 +93,7 @@ const pokemonDefaultVariety = computed(() => {
   });
 });
 const pokemonOtherVarieties = computed(() => {
-  return props.pokemon.varieties.reduce((acc, variety) => {
+  return pokemon.value.varieties.reduce((acc, variety) => {
     if (!variety.is_default) {
       acc.push(variety);
     }

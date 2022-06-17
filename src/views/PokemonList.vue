@@ -17,7 +17,7 @@ import { usePokemonStore } from "../stores/pokemonStore";
 const store = usePokemonStore();
 
 onMounted(() => {
-  store.fetchPokemonSpecies({ id: null }).then(() => {
+  store.fetchPokemonSpecies(null).then(() => {
     /*let requests = [];
       for (let pokemon of store.pokemonData) {
         let pokemonId = /\S+\/([0-9]+)\//.exec(pokemon.url)[1];
