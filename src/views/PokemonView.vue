@@ -23,6 +23,7 @@ import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { usePokemonStore } from "../stores/pokemonStore";
 import { pokemonNameLocalized } from "@/utils/pokemonNameLocalized";
+import { handleError } from "@/utils/handleError";
 
 const route = useRoute();
 const store = usePokemonStore();
@@ -41,12 +42,7 @@ const fetchPokemon = async () => {
   try {
     await store.fetchPokemonSpecies(store.currentlyShowingId);
   } catch (err) {
-    if (err instanceof Error) {
-      error.value = err.message;
-    } else {
-      error.value = JSON.stringify(err);
-    }
-    console.error(err);
+    error.value = handleError(err);
   }
 };
 

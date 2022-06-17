@@ -12,6 +12,7 @@
 </template>
 
 <script setup lang="ts">
+import { handleError } from "@/utils/handleError";
 import { computed, ref } from "vue";
 import { usePokemonStore } from "../stores/pokemonStore";
 import PokemonEvolutionStep from "./PokemonEvolutionStep.vue";
@@ -34,12 +35,7 @@ const fetchEvolutionChain = async () => {
     try {
       await store.fetchPokemonEvolutionChain(props.chainId);
     } catch (err) {
-      if (err instanceof Error) {
-        error.value = err.message;
-      } else {
-        error.value = JSON.stringify(err);
-      }
-      console.error(err);
+      error.value = handleError(err);
     }
   }
 };

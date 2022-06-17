@@ -59,6 +59,7 @@ import PokemonSprite from "@/components/PokemonSprite.vue";
 import PokemonType from "@/components/PokemonType.vue";
 import PokemonStats from "@/components/PokemonStats.vue";
 import { pokemonNameLocalizedVariety } from "../utils/pokemonNameLocalized";
+import { handleError } from "@/utils/handleError";
 
 const props = withDefaults(
   defineProps<{
@@ -103,12 +104,7 @@ const fetchPokemonVariety = async () => {
       await store.fetchPokemonVarietyForms(props.pokemonVarietyId);
       emit("loaded");
     } catch (err) {
-      if (err instanceof Error) {
-        error.value = err.message;
-      } else {
-        error.value = JSON.stringify(err);
-      }
-      console.error(err);
+      error.value = handleError(err);
     }
   } else {
     emit("loaded");

@@ -1,6 +1,6 @@
 <template>
   <div class="wiki-wrapper">
-    <o-loading :full-page="false" :active="loading"></o-loading>
+    <o-loading :full-page="false" :active="!pokemonWikiEntry"></o-loading>
     <o-notification v-if="error" variant="danger">
       <h2 class="subtitle">ERROR!</h2>
       <p>{{ error.toString() }}</p>
@@ -91,6 +91,7 @@
 import { computed, ref } from "vue";
 import { usePokemonStore } from "../stores/pokemonStore";
 import PokemonCollapseTrigger from "@/components/PokemonCollapseTrigger.vue";
+import { handleError } from "@/utils/handleError";
 
 const props = defineProps({
   pokemonId: {
@@ -101,9 +102,9 @@ const props = defineProps({
 
 const emit = defineEmits(["loaded"]);
 
-const loading = ref(false);
-const error = ref<any>(null);
 const store = usePokemonStore();
+
+const error = ref("");
 const pokemonWikiEntry = computed(
   () => store.pokemonWikiEntries[props.pokemonId]
 );
@@ -133,16 +134,13 @@ const makeSortedArray = (object) => {
 
 const fetchPokemonWikiEntry = async () => {
   if (!store.pokemonWikiEntries[props.pokemonId]) {
-    loading.value = true;
-    error.value = null;
+    error.value = "";
 
     try {
       await store.fetchPokemonWikiEntry(props.pokemonId);
-      loading.value = false;
       emit("loaded");
     } catch (err) {
-      loading.value = false;
-      error.value = err;
+      error.value = handleError(err);
     }
   } else {
     emit("loaded");
