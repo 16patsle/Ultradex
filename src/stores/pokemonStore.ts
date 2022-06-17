@@ -33,18 +33,6 @@ export const usePokemonStore = defineStore("pokemon", {
   },
   getters: {
     currentPokemon: (state) => state.pokemonSpecies[state.currentlyShowingId],
-    findDefaultVariety: (state) => (speciesId: number) => {
-      try {
-        const species = state.pokemonSpecies[speciesId];
-        const varietyData = species.varieties.find(
-          (variety) => variety.is_default
-        );
-        const varietyId = idFromUrl(varietyData?.pokemon.url);
-        return state.pokemonVarieties[varietyId];
-      } catch {
-        return undefined;
-      }
-    },
   },
   actions: {
     async fetchPokemonSpecies(id: number | null) {
@@ -66,6 +54,23 @@ export const usePokemonStore = defineStore("pokemon", {
           ) {
             this.pokemonVarieties[varietyId] = data;
           }
+        }
+      }
+    },
+    async fetchDefaultPokemonVariety(
+      speciesId: number
+    ): Promise<number | undefined> {
+      if (!this.pokemonSpecies[speciesId]) {
+        await this.fetchPokemonSpecies(speciesId);
+      }
+      for (const varietyIndex in this.pokemonSpecies[speciesId].varieties) {
+        const variety = this.pokemonSpecies[speciesId].varieties[varietyIndex];
+        if (variety.is_default) {
+          const varietyId = idFromUrl(variety.pokemon.url);
+          this.pokemonVarieties[varietyId] = await PokeApi.getPokemon(
+            varietyId
+          );
+          return varietyId;
         }
       }
     },
