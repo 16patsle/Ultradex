@@ -78,7 +78,7 @@ const defaultVarietyLoaded = ref(false);
 const route = useRoute();
 
 const pokemonGenusLocalized = computed(() => {
-  for (let genus of props.pokemon.genera) {
+  for (const genus of props.pokemon.genera) {
     if (genus.language.name === "en") {
       return genus.genus;
     }
@@ -86,7 +86,7 @@ const pokemonGenusLocalized = computed(() => {
   return "";
 });
 const pokemonFlavorTextLocalized = computed(() => {
-  for (let flavorText of props.pokemon.flavor_text_entries) {
+  for (const flavorText of props.pokemon.flavor_text_entries) {
     if (flavorText.language.name === "en") {
       return flavorText.flavor_text;
     }

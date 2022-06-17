@@ -90,7 +90,6 @@
 <script setup>
 import { computed, ref } from "vue";
 import { usePokemonStore } from "../stores/pokemonStore";
-import PokemonHeading from "@/components/PokemonHeading.vue";
 import PokemonCollapseTrigger from "@/components/PokemonCollapseTrigger.vue";
 
 const props = defineProps({

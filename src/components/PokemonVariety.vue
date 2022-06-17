@@ -104,8 +104,8 @@ const pokemonNameLocalized = computed(() =>
   )
 );
 const pokemonTypes = computed(() => {
-  let typesArray = [];
-  for (let type of pokemon.value.types) {
+  const typesArray = [];
+  for (const type of pokemon.value.types) {
     typesArray[type.slot - 1] =
       type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1);
   }

@@ -24,11 +24,11 @@ const store = usePokemonStore();
 
 const pokemonId = computed(() => /\S+\/([0-9]+)\//.exec(props.pokemon.url)[1]);
 const pokemonName = computed(() => {
-  let pokemon = store.pokemon[pokemonId.value];
+  const pokemon = store.pokemon[pokemonId.value];
   if (pokemon) {
     return pokemonNameLocalized(pokemon);
   }
-  let name = store.pokemonData[pokemonId.value - 1]?.name;
+  const name = store.pokemonData[pokemonId.value - 1]?.name;
   return name ? name.charAt(0).toUpperCase() + name.slice(1) : "";
 });
 </script>

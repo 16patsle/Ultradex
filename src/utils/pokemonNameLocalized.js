@@ -1,5 +1,5 @@
 export const pokemonNameLocalized = (pokemonSpecies) => {
-  for (let name of pokemonSpecies.names) {
+  for (const name of pokemonSpecies.names) {
     if (name.language.name === "en") {
       return name.name;
     }

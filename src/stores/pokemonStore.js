@@ -22,7 +22,7 @@ export const usePokemonStore = defineStore("pokemon", {
     async fetchPokemonVariety({ speciesId, varietyId }) {
       const data = await PokeApi.getPokemon(varietyId);
       if (this.pokemon[speciesId]) {
-        for (let varietyIndex in this.pokemon[speciesId].varieties) {
+        for (const varietyIndex in this.pokemon[speciesId].varieties) {
           if (
             this.pokemon[speciesId].varieties[varietyIndex].pokemon.name ===
             data.name
@@ -34,10 +34,10 @@ export const usePokemonStore = defineStore("pokemon", {
     },
     async fetchPokemonVarietyForms({ speciesId, varietyId }) {
       const pokemon = this.pokemon[speciesId];
-      for (let varietyIndex in pokemon.varieties) {
+      for (const varietyIndex in pokemon.varieties) {
         const variety = pokemon.varieties[varietyIndex];
         if (idFromUrl(variety.pokemon.url) === varietyId) {
-          for (let formIndex in variety.pokemonData.forms) {
+          for (const formIndex in variety.pokemonData.forms) {
             const form = variety.pokemonData.forms[formIndex];
             const formId = idFromUrl(form.url);
             form.data = await PokeApi.getPokemonForm(formId);
