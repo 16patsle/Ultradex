@@ -2,14 +2,14 @@
   <div class="pokemon-list">
     <h1>PokemonList</h1>
     <ul>
-      <li v-for="pokemon in store.pokemonData" :key="pokemon.name">
+      <li v-for="pokemon in store.pokemonList" :key="pokemon.name">
         <PokemonLink :pokemon="pokemon" class="is-justify-content-center" />
       </li>
     </ul>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import PokemonLink from "@/components/PokemonLink.vue";
 import { onMounted } from "vue";
 import { usePokemonStore } from "../stores/pokemonStore";

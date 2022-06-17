@@ -6,6 +6,7 @@ import type { PokemonSpecies } from "@/types/PokemonSpecies";
 import type { Pokemon } from "@/types/Pokemon";
 import type { PokemonForm } from "@/types/PokemonForm";
 import type { EvolutionChain } from "@/types/EvolutionChain";
+import type { NamedAPIResource } from "@/types/PokeApi";
 
 interface State {
   pokemonList: NamedAPIResource[];
@@ -46,7 +47,7 @@ export const usePokemonStore = defineStore("pokemon", {
     },
   },
   actions: {
-    async fetchPokemonSpecies(id: number) {
+    async fetchPokemonSpecies(id: number | null) {
       if (id) {
         const data = await PokeApi.getPokemonSpecies(id);
         this.pokemonSpecies[id] = data;

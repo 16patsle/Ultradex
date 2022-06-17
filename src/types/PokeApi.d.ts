@@ -11,7 +11,7 @@ declare module "@16patsle/pokeapi.js/dist/pokeapi.esm.js" {
   export default PokeApi;
 }
 
-type NamedAPIResource = {
+export type NamedAPIResource = {
   /**
    * The name of the referenced resource.
    */

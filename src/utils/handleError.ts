@@ -10,4 +10,4 @@ export const handleError = (err: unknown): string => {
   } else {
     return JSON.stringify(err);
   }
-}
+};

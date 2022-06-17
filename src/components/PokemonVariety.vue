@@ -64,7 +64,7 @@ import { handleError } from "@/utils/handleError";
 const props = withDefaults(
   defineProps<{
     pokemonVarietyId: number;
-    isDefault: boolean;
+    isDefault?: boolean;
   }>(),
   { isDefault: false }
 );
