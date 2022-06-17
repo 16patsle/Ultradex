@@ -32,6 +32,9 @@ const error = ref("");
 
 const pokemonId = computed(() => idFromUrl(props.pokemon.url));
 const pokemonName = computed(() => {
+  if (!pokemonId.value) {
+    return props.pokemon.name;
+  }
   const pokemon = store.pokemonSpecies[pokemonId.value];
   if (pokemon) {
     return pokemonNameLocalized(pokemon);
@@ -55,9 +58,11 @@ const fetchPokemonVariety = async () => {
 
     try {
       requestIdleCallback(async () => {
-        varietyId.value = await store.fetchDefaultPokemonVariety(
-          pokemonId.value
-        );
+        if (pokemonId.value) {
+          varietyId.value = await store.fetchDefaultPokemonVariety(
+            pokemonId.value
+          );
+        }
       });
     } catch (err) {
       error.value = handleError(err);

@@ -34,10 +34,12 @@ const error = ref("");
 
 const itemId = computed(() => idFromUrl(props.item.url));
 
-const itemData = computed(() => store.items[itemId.value]);
+const itemData = computed(() =>
+  itemId.value ? store.items[itemId.value] : null
+);
 
 const fetchItem = async () => {
-  if (!itemData.value) {
+  if (!itemData.value && itemId.value) {
     error.value = "";
 
     try {
