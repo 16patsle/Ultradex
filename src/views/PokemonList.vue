@@ -2,9 +2,16 @@
   <div class="pokemon-list">
     <h1>PokemonList</h1>
     <ul>
-      <li v-for="pokemon in store.pokemonList" :key="pokemon.name">
-        <PokemonLink :pokemon="pokemon" class="is-justify-content-center" />
-      </li>
+      <RecycleScroller
+        v-slot="{ item }"
+        :items="store.pokemonList"
+        :item-size="40"
+        key-field="name"
+      >
+        <li>
+          <PokemonLink :pokemon="item" class="is-justify-content-center" />
+        </li>
+      </RecycleScroller>
     </ul>
   </div>
 </template>

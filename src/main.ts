@@ -34,6 +34,8 @@ import {
   faTimes,
 } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { RecycleScroller } from "vue-virtual-scroller";
+import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
 
 import App from "./App.vue";
 import { router } from "./router";
@@ -58,7 +60,8 @@ const app = createApp(App)
   .component("fa-icon", FontAwesomeIcon)
   .use(Collapse, bulmaConfig)
   .use(Loading, bulmaConfig)
-  .use(Notification, bulmaConfig);
+  .use(Notification, bulmaConfig)
+  .component("RecycleScroller", RecycleScroller);
 
 app.config.globalProperties.$capitalize = function (value: string) {
   if (!value) return "";

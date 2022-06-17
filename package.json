@@ -27,7 +27,8 @@
     "pinia": "^2.0.14",
     "register-service-worker": "^1.7.2",
     "vue": "^3.2.37",
-    "vue-router": "^4.0.16"
+    "vue-router": "^4.0.16",
+    "vue-virtual-scroller": "^2.0.0-alpha.1"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.0",
