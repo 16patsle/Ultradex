@@ -5,13 +5,14 @@ import { idFromUrl } from "../utils/idFromUrl";
 import type { PokemonSpecies } from "@/types/PokemonSpecies";
 import type { Pokemon } from "@/types/Pokemon";
 import type { PokemonForm } from "@/types/PokemonForm";
+import type { EvolutionChain } from "@/types/EvolutionChain";
 
 interface State {
   pokemonList: NamedAPIResource[];
   pokemonSpecies: PokemonSpecies[];
   pokemonVarieties: Pokemon[];
   pokemonForms: PokemonForm[];
-  pokemonEvolutionChains: any[];
+  pokemonEvolutionChains: EvolutionChain[];
   pokemonWikiEntries: any[];
   currentlyShowingId: number;
 }

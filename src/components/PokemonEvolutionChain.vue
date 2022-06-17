@@ -1,6 +1,6 @@
 <template>
   <div class="evolution-chain-wrapper">
-    <o-loading :full-page="false" :active="loading"></o-loading>
+    <o-loading :full-page="false" :active="!chain"></o-loading>
     <o-notification v-if="error" variant="danger">
       <h2 class="subtitle">ERROR!</h2>
       <p>{{ error }}</p>
@@ -11,40 +11,34 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from "vue";
 import { usePokemonStore } from "../stores/pokemonStore";
 import PokemonEvolutionStep from "./PokemonEvolutionStep.vue";
 
-const props = defineProps({
-  chainId: {
-    type: String,
-    required: true,
-  },
-  speciesId: {
-    type: String,
-    required: true,
-  },
-});
+const props = defineProps<{
+  chainId: number;
+  speciesId: number;
+}>();
 
 const store = usePokemonStore();
 
-const loading = ref(false);
-const error = ref(false);
+const error = ref("");
 
 const chain = computed(() => store.pokemonEvolutionChains[props.chainId]);
 
 const fetchEvolutionChain = async () => {
   if (!store.pokemonEvolutionChains[props.chainId]) {
-    loading.value = true;
-    error.value = null;
+    error.value = "";
 
     try {
       await store.fetchPokemonEvolutionChain(props.chainId);
-      loading.value = false;
     } catch (err) {
-      loading.value = false;
-      error.value = err;
+      if (err instanceof Error) {
+        error.value = err.message;
+      } else {
+        error.value = JSON.stringify(err);
+      }
       console.error(err);
     }
   }

@@ -2,9 +2,9 @@
   <div class="evolution-step-wrapper">
     <div class="block">
       <p><PokemonLink :pokemon="evolutionStep.species" /></p>
-      <ul v-if="props.evolutionStep.evolution_details">
+      <ul v-if="evolutionStep.evolution_details">
         <PokemonEvolutionDetails
-          v-for="(details, i) in props.evolutionStep.evolution_details"
+          v-for="(details, i) in evolutionStep.evolution_details"
           :key="i"
           :details="details"
         />
@@ -21,16 +21,14 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import PokemonLink from "./PokemonLink.vue";
 import PokemonEvolutionDetails from "./PokemonEvolutionDetails.vue";
+import type { ChainLink } from "@/types/EvolutionChain";
 
-const props = defineProps({
-  evolutionStep: {
-    type: Object,
-    required: true,
-  },
-});
+defineProps<{
+  evolutionStep: ChainLink;
+}>();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

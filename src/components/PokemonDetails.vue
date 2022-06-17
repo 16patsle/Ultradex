@@ -25,7 +25,7 @@
         </template>
         <PokemonEvolutionChain
           :chainId="idFromUrl(pokemon.evolution_chain.url)"
-          :speciesId="route.params.id"
+          :speciesId="store.currentlyShowingId"
         />
       </o-collapse>
       <o-collapse
@@ -56,14 +56,12 @@
 
 <script setup>
 import { computed } from "vue";
-import { useRoute } from "vue-router";
 import PokemonVariety from "@/components/PokemonVariety.vue";
 import PokemonEvolutionChain from "@/components/PokemonEvolutionChain.vue";
 import PokemonCollapseTrigger from "@/components/PokemonCollapseTrigger.vue";
-import { idFromUrl } from "@/utils/idFromUrl";
 import { usePokemonStore } from "@/stores/pokemonStore";
+import { idFromUrl } from "@/utils/idFromUrl";
 
-const route = useRoute();
 const store = usePokemonStore();
 
 const pokemon = computed(() => store.currentPokemon);

@@ -28,13 +28,12 @@
   </li>
 </template>
 
-<script setup>
-defineProps({
-  details: {
-    type: Object,
-    required: true,
-  },
-});
+<script setup lang="ts">
+import type { EvolutionDetail } from "@/types/EvolutionChain";
+
+defineProps<{
+  details: EvolutionDetail;
+}>();
 
 const genders = {
   1: "female",
