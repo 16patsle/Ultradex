@@ -12,10 +12,8 @@
   </button>
 </template>
 
-<script setup>
-defineProps({
-  open: { type: Boolean, required: true },
-});
+<script setup lang="ts">
+defineProps<{ open: boolean }>();
 
 const emit = defineEmits(["click"]);
 </script>

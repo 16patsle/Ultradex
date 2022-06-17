@@ -7,12 +7,12 @@
   </div>
 </template>
 
-<script setup>
-defineProps({
-  sprite: { type: String, default: null },
-  pokemonName: { type: String, required: true },
-  spriteName: { type: String, required: true },
-});
+<script setup lang="ts">
+defineProps<{
+  sprite: string;
+  pokemonName: string;
+  spriteName: string;
+}>();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

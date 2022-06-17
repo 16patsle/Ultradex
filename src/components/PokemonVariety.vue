@@ -35,7 +35,7 @@
           />
           <PokemonSprite
             v-else
-            :sprite="pokemon.sprites.front_default"
+            sprite=""
             :pokemonName="$titlecase(pokemonNameLocalized)"
             spriteName="missing"
           />
@@ -47,12 +47,7 @@
           />
         </div>
       </div>
-      <PokemonStats
-        :height="pokemon.height"
-        :weight="pokemon.weight"
-        :stats="pokemon.stats"
-        class="pokemon-stats column is-5"
-      />
+      <PokemonStats :pokemon="pokemon" class="pokemon-stats column is-5" />
     </div>
   </div>
 </template>

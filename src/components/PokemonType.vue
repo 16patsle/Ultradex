@@ -2,13 +2,8 @@
   <div :class="type.toLowerCase()">{{ type }}</div>
 </template>
 
-<script setup>
-defineProps({
-  type: {
-    type: String,
-    required: true,
-  },
-});
+<script setup lang="ts">
+defineProps<{ type: string }>();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

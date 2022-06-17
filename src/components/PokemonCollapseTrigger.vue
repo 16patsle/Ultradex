@@ -8,18 +8,19 @@
   </PokemonHeading>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import PokemonHeading from "@/components/PokemonHeading.vue";
 
-defineProps({
-  level: { type: Number, default: 2 },
-  open: {
-    type: Boolean,
-    default: false,
-  },
-  title: {
-    type: String,
-    default: "Show/hide",
-  },
-});
+withDefaults(
+  defineProps<{
+    level?: number;
+    open?: boolean;
+    title?: string;
+  }>(),
+  {
+    level: 2,
+    open: false,
+    title: "Show/hide",
+  }
+);
 </script>

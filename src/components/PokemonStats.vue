@@ -1,13 +1,13 @@
 <template>
   <div class="stats-wrapper notification">
-    <PokemonStatItem v-if="height" icon="arrows-alt-v">
-      Height: {{ height / 10 }} m
+    <PokemonStatItem v-if="pokemon.height" icon="arrows-alt-v">
+      Height: {{ pokemon.height / 10 }} m
     </PokemonStatItem>
-    <PokemonStatItem v-if="weight" icon="weight-hanging">
-      Weight: {{ weight / 10 }} kg
+    <PokemonStatItem v-if="pokemon.weight" icon="weight-hanging">
+      Weight: {{ pokemon.weight / 10 }} kg
     </PokemonStatItem>
     <PokemonStatItem
-      v-for="stat in stats"
+      v-for="stat in pokemon.stats"
       :key="stat.stat.name"
       :icon="statIcon(stat.stat.name)"
       :class="'order-' + statOrder(stat.stat.name)"
@@ -18,16 +18,15 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import PokemonStatItem from "@/components/PokemonStatItem.vue";
+import type { Pokemon } from "@/types/Pokemon";
 
-defineProps({
-  height: { type: Number, required: false, default: null },
-  weight: { type: Number, required: false, default: null },
-  stats: { type: Array, required: true },
-});
+defineProps<{
+  pokemon: Pokemon;
+}>();
 
-const statIcon = (name) => {
+const statIcon = (name: string) => {
   switch (name) {
     case "speed":
       return "feather-alt";
@@ -42,12 +41,12 @@ const statIcon = (name) => {
     case "hp":
       return "heart";
     default:
-      return null;
+      return "";
   }
 };
 
 // Use the order CSS property to improve the layout
-const statOrder = (name) => {
+const statOrder = (name: string) => {
   switch (name) {
     case "speed":
       return 1;

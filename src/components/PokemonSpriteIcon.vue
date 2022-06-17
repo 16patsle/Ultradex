@@ -4,12 +4,13 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
+import type { Pokemon } from "@/types/Pokemon";
 
-const props = defineProps({
-  pokemonData: { type: Object, required: true },
-});
+const props = defineProps<{
+  pokemonData: Pokemon;
+}>();
 
 const iconData = computed(() => {
   const icon =

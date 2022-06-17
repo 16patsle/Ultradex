@@ -7,13 +7,8 @@
   </div>
 </template>
 
-<script setup>
-defineProps({
-  icon: {
-    type: String,
-    required: true,
-  },
-});
+<script setup lang="ts">
+defineProps<{ icon: string }>();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

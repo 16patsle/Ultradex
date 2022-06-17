@@ -7,10 +7,10 @@
   <h6 v-else-if="level === 6"><slot></slot></h6>
 </template>
 
-<script setup>
-defineProps({
-  level: { type: Number, required: true },
-});
+<script setup lang="ts">
+defineProps<{
+  level: number;
+}>();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
