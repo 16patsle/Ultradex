@@ -3,7 +3,7 @@
     <h1>PokemonList</h1>
     <ul>
       <li v-for="pokemon in store.pokemonData" :key="pokemon.name">
-        <PokemonLink :pokemon="pokemon" />
+        <PokemonLink :pokemon="pokemon" class="is-justify-content-center" />
       </li>
     </ul>
   </div>
