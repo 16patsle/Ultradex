@@ -7,6 +7,7 @@ import type { Pokemon } from "@/types/Pokemon";
 import type { PokemonForm } from "@/types/PokemonForm";
 import type { EvolutionChain } from "@/types/EvolutionChain";
 import type { NamedAPIResource } from "@/types/PokeApi";
+import type { Item } from "@/types/Item";
 
 interface State {
   pokemonList: NamedAPIResource[];
@@ -14,6 +15,7 @@ interface State {
   pokemonVarieties: Pokemon[];
   pokemonForms: PokemonForm[];
   pokemonEvolutionChains: EvolutionChain[];
+  items: Item[];
   pokemonWikiEntries: any[];
   currentlyShowingId: number;
 }
@@ -27,6 +29,7 @@ export const usePokemonStore = defineStore("pokemon", {
       pokemonVarieties: [],
       pokemonForms: [],
       pokemonEvolutionChains: [],
+      items: [],
       pokemonWikiEntries: [],
       currentlyShowingId: Number(route.params.id),
     };
@@ -88,6 +91,10 @@ export const usePokemonStore = defineStore("pokemon", {
     async fetchPokemonEvolutionChain(chainId: number) {
       const data = await PokeApi.getEvolutionChain(chainId);
       this.pokemonEvolutionChains[chainId] = data;
+    },
+    async fetchItem(itemId: number) {
+      const data = await PokeApi.getItem(itemId);
+      this.items[itemId] = data;
     },
     async fetchPokemonWikiEntry(pokemonId: number) {
       const response = await fetch(`/data/${pokemonId}.json`);

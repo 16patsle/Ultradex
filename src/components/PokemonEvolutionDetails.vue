@@ -1,8 +1,11 @@
 <template>
   <li>
-    <p v-if="details.trigger.name === 'use-item'">
-      After using {{ details.item?.name }}
-    </p>
+    <div
+      v-if="details.trigger.name === 'use-item'"
+      class="is-flex is-align-items-center"
+    >
+      After using <PokemonItem v-if="details.item" :item="details.item" />
+    </div>
     <div v-if="details.trigger.name === 'level-up'">
       After level up when:
       <ul>
@@ -29,6 +32,7 @@
 </template>
 
 <script setup lang="ts">
+import PokemonItem from "./PokemonItem.vue";
 import type { EvolutionDetail } from "@/types/EvolutionChain";
 
 defineProps<{
