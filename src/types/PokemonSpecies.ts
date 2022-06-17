@@ -1,3 +1,11 @@
+import type {
+  APIResource,
+  Description,
+  FlavorText,
+  Name,
+  NamedAPIResource,
+} from "./Common";
+
 export type PokemonSpecies = {
   /**
    * The identifier for this resource.
@@ -145,8 +153,6 @@ type PalParkEncounterArea = {
    */
   area: NamedAPIResource;
 };
-
-import type { Pokemon } from "./Pokemon";
 
 export type PokemonSpeciesVariety = {
   /**

@@ -1,3 +1,5 @@
+import type { NamedAPIResource } from "./Common";
+
 export type PokemonForm = {
   /**
    * The identifier for this resource.

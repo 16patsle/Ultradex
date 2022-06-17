@@ -1,3 +1,5 @@
+import type { NamedAPIResource } from "./Common";
+
 export type EvolutionChain = {
   /**
    * The identifier for this resource.
@@ -13,7 +15,7 @@ export type EvolutionChain = {
   chain: ChainLink;
 };
 
-type ChainLink = {
+export type ChainLink = {
   /**
    * Whether or not this link is for a baby Pokémon. This would only ever be true on the base link.
    */

@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import type { NamedAPIResource } from "@/types/PokeApi";
+import type { NamedAPIResource } from "@/types/Common";
 import { handleError } from "@/utils/handleError";
 import { idFromUrl } from "@/utils/idFromUrl";
 import { computed, ref, watch } from "vue";

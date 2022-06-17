@@ -1,3 +1,13 @@
+import type {
+  APIResource,
+  GenerationGameIndex,
+  MachineVersionDetail,
+  Name,
+  NamedAPIResource,
+  VerboseEffect,
+  VersionGroupFlavorText,
+} from "./Common";
+
 export type Item = {
   /**
    * The identifier for this resource.

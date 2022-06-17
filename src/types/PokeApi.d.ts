@@ -5,19 +5,9 @@ declare module "@16patsle/pokeapi.js/dist/pokeapi.esm.js" {
     getPokemon(id: number): Promise<Pokemon>;
     getEvolutionChain(id: number): Promise<any>;
     getPokemonForm(id: number): Promise<PokemonForm>;
+    getItem(itemId: number) :Promise<Item>;
   }
 
   const PokeApi: PokeApi;
   export default PokeApi;
 }
-
-export type NamedAPIResource = {
-  /**
-   * The name of the referenced resource.
-   */
-  name: string;
-  /**
-   * The URL of the referenced resource.
-   */
-  url: string;
-};

@@ -6,7 +6,7 @@ import type { PokemonSpecies } from "@/types/PokemonSpecies";
 import type { Pokemon } from "@/types/Pokemon";
 import type { PokemonForm } from "@/types/PokemonForm";
 import type { EvolutionChain } from "@/types/EvolutionChain";
-import type { NamedAPIResource } from "@/types/PokeApi";
+import type { NamedAPIResource } from "@/types/Common";
 import type { Item } from "@/types/Item";
 
 interface State {

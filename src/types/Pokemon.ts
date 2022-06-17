@@ -1,3 +1,4 @@
+import type { NamedAPIResource } from "./Common";
 import type { PokemonForm } from "./PokemonForm";
 
 export type Pokemon = {
