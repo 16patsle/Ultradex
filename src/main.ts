@@ -15,13 +15,11 @@
  * limitations under the License.
  */
 import { createApp } from "vue";
-import App from "./App.vue";
-import { router } from "./router";
-import "./registerServiceWorker";
+import { createPinia } from "pinia";
+
 import { Collapse, Loading, Notification } from "@oruga-ui/oruga-next";
 import { bulmaConfig } from "@oruga-ui/theme-bulma";
 import "@oruga-ui/theme-bulma/dist/bulma.css";
-import { createPinia } from "pinia";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faWeightHanging,
@@ -37,7 +35,11 @@ import {
 } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add([
+import App from "./App.vue";
+import { router } from "./router";
+import "./registerServiceWorker";
+
+library.add(
   faWeightHanging,
   faArrowsAltV,
   faFeatherAlt,
@@ -47,29 +49,29 @@ library.add([
   faCaretDown,
   faCaretRight,
   faBars,
-  faTimes,
-]);
+  faTimes
+);
 
 const app = createApp(App)
+  .use(createPinia())
   .use(router)
   .component("fa-icon", FontAwesomeIcon)
   .use(Collapse, bulmaConfig)
   .use(Loading, bulmaConfig)
-  .use(Notification, bulmaConfig)
-  .use(createPinia());
+  .use(Notification, bulmaConfig);
 
-app.config.globalProperties.$capitalize = function (value) {
+app.config.globalProperties.$capitalize = function (value: string) {
   if (!value) return "";
   value = value.toString();
   return value.charAt(0).toUpperCase() + value.slice(1);
 };
 
-app.config.globalProperties.$titlecase = function (value) {
+app.config.globalProperties.$titlecase = function (value: string) {
   if (!value) return "";
   value = value.toString();
-  value = value.split(" ");
-  const newValue = [];
-  value.forEach((val) => {
+  const valueSplit = value.split(" ");
+  const newValue: string[] = [];
+  valueSplit.forEach((val) => {
     newValue.push(val.charAt(0).toUpperCase() + val.slice(1));
   });
   return newValue.join(" ");

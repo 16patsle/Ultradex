@@ -1,7 +1,8 @@
+/* eslint-env node */
 const smartReplace = require("wtf_wikipedia/src/lib/smartReplace");
 const { parseLine } = require("wtf_wikipedia/src/sentence");
 
-const parseTitle = function(title) {
+const parseTitle = function (title) {
   const parsedTitle = parseLine(title);
 
   return {
@@ -16,25 +17,25 @@ const parseTitle = function(title) {
     },
     italic() {
       return [];
-    }
+    },
   };
 };
 
 // sanitize links, bold, italic
-const doTitle = function(title) {
+const doTitle = function (title) {
   title = parseTitle(title);
   let text = title.text();
   //turn links into plain text
-  title.links().forEach(link => {
-    let str = link.text || link.page;
+  title.links().forEach((link) => {
+    const str = link.text || link.page;
     text = smartReplace(text, str, str);
   });
   //sanitize bolds
-  title.bold().forEach(str => {
+  title.bold().forEach((str) => {
     text = smartReplace(text, str, str);
   });
   //sanitize italics
-  title.italic().forEach(str => {
+  title.italic().forEach((str) => {
     text = smartReplace(text, str, str);
   });
   // remove simple templates

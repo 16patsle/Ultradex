@@ -1,7 +1,11 @@
 .DS_Store
 node_modules
+coverage
+*.local
 /dist
 /public/data
+/cypress/videos/
+/cypress/screenshots/
 
 # local env files
 .env.local
@@ -13,13 +17,14 @@ yarn-debug.log*
 yarn-error.log*
 
 # Editor directories and files
+.vscode/*
+!.vscode/extensions.json
 .idea
-.vscode
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
-*.sw*
+*.sw?
 
 # Font Awesome install files
 /fontawesome-solid.tar

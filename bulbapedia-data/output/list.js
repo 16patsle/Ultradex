@@ -1,6 +1,7 @@
-const doList = list => {
+/* eslint-env node */
+const doList = (list) => {
   let html = "<ul>\n";
-  list.forEach(o => {
+  list.forEach((o) => {
     html += "  <li>" + o.text() + "</li>\n";
   });
   html += "<ul>\n";

@@ -1,3 +1,4 @@
+/* eslint-env node */
 const helpers = require("wtf_wikipedia/src/lib/helpers");
 const parseLinks = require("wtf_wikipedia/src/sentence/links");
 const parseFmt = require("wtf_wikipedia/src/sentence/formatting");
@@ -10,7 +11,7 @@ const cat_reg = new RegExp(
 );
 
 //return only rendered text of wiki links
-const resolve_links = function(line) {
+const resolve_links = function (line) {
   // categories, images, files
   line = line.replace(cat_reg, "");
   // [[Common links]]
@@ -45,10 +46,10 @@ function postprocess(line) {
 
 function parseLine(line) {
   let obj = {
-    text: postprocess(line)
+    text: postprocess(line),
   };
   //pull-out the [[links]]
-  let links = parseLinks(line);
+  const links = parseLinks(line);
   if (links) {
     obj.links = links;
   }
@@ -59,7 +60,7 @@ function parseLine(line) {
   return obj;
 }
 
-const parseSentences = function(r, wiki) {
+const parseSentences = function (r, wiki) {
   let sentences = sentenceParser(wiki);
   sentences = sentences.map(parseLine);
   r.sentences = sentences;
@@ -68,5 +69,5 @@ const parseSentences = function(r, wiki) {
 
 module.exports = {
   eachSentence: parseSentences,
-  parseLine: parseLine
+  parseLine: parseLine,
 };

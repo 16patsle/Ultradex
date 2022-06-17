@@ -1,3 +1,4 @@
+/* eslint-env node */
 const Section = require("wtf_wikipedia/src/section/Section");
 const find_recursive = require("wtf_wikipedia/src/lib/recursive_match");
 
@@ -10,11 +11,11 @@ const parse = {
   table: require("wtf_wikipedia/src/section/table"),
   references: require("wtf_wikipedia/src/section/references"),
   templates: require("../templates"),
-  eachSentence: require("../sentence").eachSentence
+  eachSentence: require("../sentence").eachSentence,
 };
 const section_reg = /[\n^](={1,5}[^=]{1,200}?={1,5})/g;
 
-const doSection = function(section, wiki, options) {
+const doSection = function (section, wiki, options) {
   // //parse the <ref></ref> tags
   wiki = parse.references(section, wiki, options);
   //parse-out all {{templates}}
@@ -25,7 +26,7 @@ const doSection = function(section, wiki, options) {
   wiki = parse.list(section, wiki);
   // //parse+remove scary '[[ [[]] ]]' stuff
   //second, remove [[file:...[[]] ]] recursions
-  let matches = find_recursive("[", "]", wiki);
+  const matches = find_recursive("[", "]", wiki);
   wiki = parse.image(matches, section, wiki, options);
   wiki = parse.interwiki(matches, section, wiki, options);
   //do each sentence
@@ -35,16 +36,16 @@ const doSection = function(section, wiki, options) {
   return section;
 };
 
-const splitSections = function(wiki, options) {
-  let split = wiki.split(section_reg); //.filter(s => s);
-  let sections = [];
+const splitSections = function (wiki, options) {
+  const split = wiki.split(section_reg); //.filter(s => s);
+  const sections = [];
   for (let i = 0; i < split.length; i += 2) {
-    let heading = split[i - 1] || "";
-    let content = split[i] || "";
+    const heading = split[i - 1] || "";
+    const content = split[i] || "";
     let section = {
       title: "",
       depth: null,
-      templates: []
+      templates: [],
     };
     //figure-out title/depth
     section = parse.heading(section, heading);

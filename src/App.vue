@@ -32,7 +32,7 @@
 <script setup>
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
-import MenuToggleButton from "./components/MenuToggleButton";
+import MenuToggleButton from "./components/MenuToggleButton.vue";
 
 const showSidebar = ref(true);
 

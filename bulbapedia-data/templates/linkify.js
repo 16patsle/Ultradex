@@ -1,10 +1,11 @@
-const fixedEncodeURIComponent = str => {
-  return encodeURIComponent(str).replace(/[!'*]/g, function(c) {
+/* eslint-env node */
+const fixedEncodeURIComponent = (str) => {
+  return encodeURIComponent(str).replace(/[!'*]/g, function (c) {
     return "%" + c.charCodeAt(0).toString(16);
   });
 };
 
-const linkifyHref = str => {
+const linkifyHref = (str) => {
   return fixedEncodeURIComponent(str.replace(new RegExp(" ", "g"), "_"));
 };
 
@@ -14,5 +15,5 @@ module.exports = {
     return `<a class="link" href="https://bulbapedia.bulbagarden.net/wiki/${linkifyHref(
       href
     )}" target="_blank" rel="noopener">${linkText}</a>`;
-  }
+  },
 };

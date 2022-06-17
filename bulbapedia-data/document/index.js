@@ -1,23 +1,24 @@
+/* eslint-env node */
 const redirects = require("wtf_wikipedia/src/document/redirects");
 const disambig = require("wtf_wikipedia/src/document/disambig");
 const preProcess = require("wtf_wikipedia/src/document/preProcess");
 const parse = {
   section: require("../section"),
   // templates: require('./templates'),
-  categories: require("wtf_wikipedia/src/document/categories")
+  categories: require("wtf_wikipedia/src/document/categories"),
 };
 
 //convert wikiscript markup lang to json
-const main = function(wiki, options) {
+const main = function (wiki, options) {
   options = options || {};
   wiki = wiki || "";
-  let r = {
+  const r = {
     type: "page",
     sections: [],
     interwiki: {},
     categories: [],
     coordinates: [],
-    citations: []
+    citations: [],
   };
   //detect if page is just redirect, and return
   if (redirects.isRedirect(wiki) === true) {

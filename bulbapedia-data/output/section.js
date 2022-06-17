@@ -1,3 +1,4 @@
+/* eslint-env node */
 const doSentence = require("./sentence");
 const doList = require("./list");
 const doTable = require("wtf_wikipedia/src/output/html/table");
@@ -7,15 +8,15 @@ const doSection = (section, options) => {
   let html = "";
   //make the header
   if (options.title === true && section.title()) {
-    let num = 1 + section.depth;
+    const num = 1 + section.depth;
     html += "  <h" + num + ">" + section.title() + "</h" + num + ">";
     html += "\n";
   }
   //put any images under the header
   if (options.images === true) {
-    let imgs = section.images();
+    const imgs = section.images();
     if (imgs.length > 0) {
-      html += imgs.map(image => makeImage(image)).join("\n");
+      html += imgs.map((image) => makeImage(image)).join("\n");
       html += "\n";
     }
   }
@@ -23,14 +24,14 @@ const doSection = (section, options) => {
   if (options.tables === true) {
     html += section
       .tables()
-      .map(t => doTable(t, options))
+      .map((t) => doTable(t, options))
       .join("\n");
   }
   // //make a html bullet-list
   if (section.lists() && options.lists === true) {
     html += section
       .lists()
-      .map(list => doList(list, options))
+      .map((list) => doList(list, options))
       .join("\n");
   }
   //finally, write the sentence text.
@@ -38,7 +39,7 @@ const doSection = (section, options) => {
     html += '  <p class="text">\n    ';
     html += section
       .sentences()
-      .map(s => doSentence(s, options))
+      .map((s) => doSentence(s, options))
       .join(" ")
       .replace(/NEWPARAGRAPH<\/span>/g, '</span></p><p class="text">');
     html += "\n  </p>\n";

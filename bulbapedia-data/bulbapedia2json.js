@@ -1,3 +1,4 @@
+/* eslint-env node */
 const parser = require("xml2json");
 const fs = require("fs-extra");
 const path = require("path");
@@ -16,35 +17,35 @@ const doTitle = require("./output/title");
   }
 
   const {
-    mediawiki: { page }
+    mediawiki: { page },
   } = parser.toJson(xml, {
     object: true,
-    coerce: true
+    coerce: true,
   });
 
-  for (let pageIndex in page) {
+  for (const pageIndex in page) {
     page[pageIndex] = {
       title: page[pageIndex].title.replace(" (Pokémon)", ""),
       document: new Document(page[pageIndex].revision.text.$t),
-      text: {}
+      text: {},
     };
 
-    for (let template of page[pageIndex].document.sections()[0].data
+    for (const template of page[pageIndex].document.sections()[0].data
       .templates) {
       if (template.template === "pokémon infobox") {
         page[pageIndex].id = parseInt(template.data.ndex, 10);
       }
     }
-    for (let sectionIndex in page[pageIndex].document.sections()) {
+    for (const sectionIndex in page[pageIndex].document.sections()) {
       if (sectionIndex === "0") {
         page[pageIndex].text.introduction = {
           html: doSection(page[pageIndex].document.sections()[sectionIndex], {
             title: false,
             sentences: true,
             tables: true,
-            lists: true
+            lists: true,
           }),
-          index: 0
+          index: 0,
         };
       } else if (
         page[pageIndex].document.sections()[sectionIndex].depth === 0
@@ -66,14 +67,14 @@ const doTitle = require("./output/title");
               title: false,
               sentences: true,
               tables: true,
-              lists: true
+              lists: true,
             }),
             index: sectionIndex,
             title: doTitle(
               page[pageIndex].document.sections()[sectionIndex].title()
             ),
             depth: page[pageIndex].document.sections()[sectionIndex].data.depth,
-            children: {}
+            children: {},
           };
         }
 
@@ -117,16 +118,17 @@ const doTitle = require("./output/title");
                     title: false,
                     sentences: true,
                     tables: true,
-                    lists: true
+                    lists: true,
                   }
                 ),
                 index: sectionIndexChild - sectionIndex - 1,
                 title: doTitle(
                   page[pageIndex].document.sections()[sectionIndexChild].title()
                 ),
-                depth: page[pageIndex].document.sections()[sectionIndexChild]
-                  .data.depth,
-                children: {}
+                depth:
+                  page[pageIndex].document.sections()[sectionIndexChild].data
+                    .depth,
+                children: {},
               };
             }
           } else if (
@@ -175,7 +177,7 @@ const doTitle = require("./output/title");
                           title: false,
                           sentences: true,
                           tables: true,
-                          lists: true
+                          lists: true,
                         }
                       ),
                       index: sectionIndexChild2 - sectionIndexChild,
@@ -184,10 +186,10 @@ const doTitle = require("./output/title");
                           .sections()
                           [sectionIndexChild2].title()
                       ),
-                      depth: page[pageIndex].document.sections()[
-                        sectionIndexChild2
-                      ].data.depth,
-                      children: {}
+                      depth:
+                        page[pageIndex].document.sections()[sectionIndexChild2]
+                          .data.depth,
+                      children: {},
                     };
                   }
                 } catch (err) {
@@ -255,7 +257,7 @@ const doTitle = require("./output/title");
                               title: false,
                               sentences: true,
                               tables: true,
-                              lists: true
+                              lists: true,
                             }
                           ),
                           index: sectionIndexChild3 - sectionIndexChild2,
@@ -264,9 +266,10 @@ const doTitle = require("./output/title");
                               .sections()
                               [sectionIndexChild3].title()
                           ),
-                          depth: page[pageIndex].document.sections()[
-                            sectionIndexChild3
-                          ].data.depth
+                          depth:
+                            page[pageIndex].document.sections()[
+                              sectionIndexChild3
+                            ].data.depth,
                         };
                       }
                     } catch (err) {
@@ -299,7 +302,7 @@ const doTitle = require("./output/title");
       JSON.stringify(page[pageIndex])
     );
   }
-})().catch(err => console.log(err));
+})().catch((err) => console.log(err));
 
 // Start reading from stdin so we don't exit.
 // process.stdin.resume();

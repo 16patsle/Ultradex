@@ -1,3 +1,4 @@
+/* eslint-env node */
 // const findRecursive = require('../../lib/recursive_match');
 const getName = require("wtf_wikipedia/src/templates/parsers/_getName");
 const getTemplates = require("wtf_wikipedia/src/templates/parsers/_getTemplates");
@@ -27,22 +28,25 @@ const inlineParsers = Object.assign(
 );
 const bigParsers = Object.assign({}, geo, pronounce, misc, external);
 
-const doTemplate = function(tmpl, wiki, r) {
-  let name = getName(tmpl);
+const doTemplate = function (tmpl, wiki, r) {
+  const name = getName(tmpl);
   //we explicitly ignore these templates
-  if (ignore.hasOwnProperty(name) === true) {
+  if (Object.prototype.hasOwnProperty.call(ignore, name) === true) {
     wiki = wiki.replace(tmpl, "");
     return wiki;
   }
   //string-replacement templates
-  if (inlineParsers.hasOwnProperty(name) === true && inlineParsers[name]) {
-    let str = inlineParsers[name](tmpl, r);
+  if (
+    Object.prototype.hasOwnProperty.call(inlineParsers, name) === true &&
+    inlineParsers[name]
+  ) {
+    const str = inlineParsers[name](tmpl, r);
     wiki = wiki.replace(tmpl, str);
     return wiki;
   }
   //section-template parsers
-  if (bigParsers.hasOwnProperty(name) === true) {
-    let obj = bigParsers[name](tmpl);
+  if (Object.prototype.hasOwnProperty.call(bigParsers, name) === true) {
+    const obj = bigParsers[name](tmpl);
     if (obj) {
       r.templates.push(obj);
     }
@@ -52,7 +56,7 @@ const doTemplate = function(tmpl, wiki, r) {
 
   const regex = /{{[a-zA-Z0-9é ]+\|(?:[a-zA-Z0-9é ]*\|)*([a-zA-Z0-9é♀♂ ]+)}}/;
   //fallback parser
-  let obj = generic(tmpl, name);
+  const obj = generic(tmpl, name);
   if (obj) {
     r.templates.push(obj);
     if (regex.test(tmpl)) {
@@ -74,17 +78,17 @@ const doTemplate = function(tmpl, wiki, r) {
 };
 
 //reduce the scary recursive situations
-const allTemplates = function(r, wiki, options) {
+const allTemplates = function (r, wiki, options) {
   let templates = getTemplates(wiki);
   // console.log(templates);
   //first, do the nested ones
-  templates.nested.forEach(tmpl => {
+  templates.nested.forEach((tmpl) => {
     wiki = doTemplate(tmpl, wiki, r, options);
   });
   // console.log(wiki);
   //then, reparse wiki for the top-level ones
   templates = getTemplates(wiki);
-  templates.top.forEach(tmpl => {
+  templates.top.forEach((tmpl) => {
     wiki = doTemplate(tmpl, wiki, r, options);
   });
   return wiki;

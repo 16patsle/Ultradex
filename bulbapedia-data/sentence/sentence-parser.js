@@ -1,3 +1,4 @@
+/* eslint-env node */
 //split text into sentences, using regex
 //@spencermountain MIT
 
@@ -14,27 +15,27 @@ const elipses_reg = new RegExp("\\.\\.\\.* +?$");
 const hasWord = new RegExp("[a-z][a-z]", "i");
 
 //turn a nested array into one array
-const flatten = function(arr) {
+const flatten = function (arr) {
   let all = [];
-  arr.forEach(function(a) {
+  arr.forEach(function (a) {
     all = all.concat(a);
   });
   return all;
 };
 
-const naiive_split = function(text) {
+const naiive_split = function (text) {
   //first, split by newline
   let splits = text.replace(/(\n+)/g, "NEWPARAGRAPH\n").split(/(\n+)/);
-  splits = splits.filter(s => s.match(/\S/));
+  splits = splits.filter((s) => s.match(/\S/));
   //split by period, question-mark, and exclamation-mark
-  splits = splits.map(function(str) {
+  splits = splits.map(function (str) {
     return str.split(/(\S.+?[.!?])(?=\s+|$)/g);
   });
   return flatten(splits);
 };
 
 // if this looks like a period within a wikipedia link, return false
-const isBalanced = function(str) {
+const isBalanced = function (str) {
   str = str || "";
   const open = str.split(/\[\[/) || [];
   const closed = str.split(/\]\]/) || [];
@@ -49,10 +50,10 @@ const isBalanced = function(str) {
   return true;
 };
 
-const sentence_parser = function(text) {
-  let sentences = [];
+const sentence_parser = function (text) {
+  const sentences = [];
   //first do a greedy-split..
-  let chunks = [];
+  const chunks = [];
   //ensure it 'smells like' a sentence
   if (!text || typeof text !== "string" || !text.match(/\w/)) {
     return sentences;
@@ -60,10 +61,10 @@ const sentence_parser = function(text) {
   // This was the splitter regex updated to fix quoted punctuation marks.
   // let splits = text.split(/(\S.+?[.\?!])(?=\s+|$|")/g);
   // todo: look for side effects in this regex replacement:
-  let splits = naiive_split(text);
+  const splits = naiive_split(text);
   //filter-out the grap ones
   for (let i = 0; i < splits.length; i++) {
-    let s = splits[i];
+    const s = splits[i];
     if (!s || s === "") {
       continue;
     }
@@ -83,7 +84,7 @@ const sentence_parser = function(text) {
   }
 
   //detection of non-sentence chunks
-  const isSentence = function(hmm) {
+  const isSentence = function (hmm) {
     if (
       hmm.match(abbrev_reg) ||
       hmm.match(acronym_reg) ||

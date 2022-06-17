@@ -1,12 +1,13 @@
+/* eslint-env node */
 const smartReplace = require("wtf_wikipedia/src/lib/smartReplace");
 const helpers = require("wtf_wikipedia/src/lib/helpers");
 
 // create links, bold, italic in html
-const doSentence = function(sentence) {
+const doSentence = function (sentence) {
   let text = sentence.text();
   //console.log(sentence);
   //turn links into <a href>
-  sentence.links().forEach(link => {
+  sentence.links().forEach((link) => {
     let href = "";
     let classNames = "link";
     if (link.site) {
@@ -19,18 +20,18 @@ const doSentence = function(sentence) {
       href =
         "https://bulbapedia.bulbagarden.net/wiki/" + href.replace(/ /g, "_");
     }
-    let str = link.text || link.page;
-    let tag = `<a class="${classNames}" href="${href}" target="_blank" rel="noopener">${str}</a>`;
+    const str = link.text || link.page;
+    const tag = `<a class="${classNames}" href="${href}" target="_blank" rel="noopener">${str}</a>`;
     text = smartReplace(text, str, tag);
   });
   //support bolds
-  sentence.bold().forEach(str => {
-    let tag = "<b>" + str + "</b>";
+  sentence.bold().forEach((str) => {
+    const tag = "<b>" + str + "</b>";
     text = smartReplace(text, str, tag);
   });
   //do italics
-  sentence.italic().forEach(str => {
-    let tag = "<i>" + str + "</i>";
+  sentence.italic().forEach((str) => {
+    const tag = "<i>" + str + "</i>";
     text = smartReplace(text, str, tag);
   });
 

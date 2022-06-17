@@ -6,30 +6,11 @@
       check out the
       <a href="https://cli.vuejs.org" target="_blank">vue-cli documentation</a>.
     </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel"
-          target="_blank"
-          >babel</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa"
-          target="_blank"
-          >pwa</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint"
-          target="_blank"
-          >eslint</a
-        >
-      </li>
-    </ul>
+    <h3>
+      You’ve successfully created a project with
+      <a target="_blank" href="https://vitejs.dev/">Vite</a> +
+      <a target="_blank" href="https://vuejs.org/">Vue 3</a>. What's next?
+    </h3>
     <h3>Essential Links</h3>
     <ul>
       <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
@@ -42,16 +23,12 @@
     <h3>Ecosystem</h3>
     <ul>
       <li><a href="https://router.vuejs.org" target="_blank">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank">vuex</a></li>
       <li>
         <a
           href="https://github.com/vuejs/vue-devtools#vue-devtools"
           target="_blank"
           >vue-devtools</a
         >
-      </li>
-      <li>
-        <a href="https://vue-loader.vuejs.org" target="_blank">vue-loader</a>
       </li>
       <li>
         <a href="https://github.com/vuejs/awesome-vue" target="_blank"
@@ -62,13 +39,10 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "HelloWorld",
-  props: {
-    msg: { type: String, required: true },
-  },
-};
+<script setup lang="ts">
+defineProps<{
+  msg: string;
+}>();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
