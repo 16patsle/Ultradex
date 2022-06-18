@@ -1,7 +1,7 @@
 <template>
   <div class="pokemon-list">
     <h1>PokemonList</h1>
-    <ul v-if="false">
+    <ul>
       <RecycleScroller
         v-slot="{ item, active }"
         :items="store.pokemonList"
