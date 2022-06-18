@@ -1,14 +1,8 @@
 import { defineStore } from "pinia";
 import { useRoute } from "vue-router";
-import PokeApi from "@16patsle/pokeapi.js/dist/pokeapi.esm.js";
+import * as PokeApi from "@16patsle/pokeapi.js";
 import { idFromUrl } from "../utils/idFromUrl";
-import type { PokemonSpecies } from "@/types/PokemonSpecies";
-import type { Pokemon } from "@/types/Pokemon";
-import type { PokemonForm } from "@/types/PokemonForm";
-import type { EvolutionChain } from "@/types/EvolutionChain";
-import type { NamedAPIResource } from "@/types/Common";
-import type { Item } from "@/types/Item";
-import type { Location, Region } from "@/types/Location";
+import type { PokemonSpecies, Pokemon, PokemonForm, EvolutionChain, NamedAPIResource, Item, Location, Region } from "@16patsle/pokeapi.js";
 
 interface State {
   pokemonList: NamedAPIResource[];
