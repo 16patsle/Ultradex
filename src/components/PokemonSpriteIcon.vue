@@ -9,8 +9,8 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import type { Pokemon } from "@16patsle/pokeapi.js";
 import PokemonIcon from "./PokemonIcon.vue";
-import type { Pokemon } from "@/types/Pokemon";
 
 const props = defineProps<{
   pokemonData: Pokemon;

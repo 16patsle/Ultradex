@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import type { NamedAPIResource } from "@/types/Common";
+import type { NamedAPIResource } from "@16patsle/pokeapi.js";
 import { handleError } from "@/utils/handleError";
 import { idFromUrl } from "@/utils/idFromUrl";
 import { computed, ref } from "vue";

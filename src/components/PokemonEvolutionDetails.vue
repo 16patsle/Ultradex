@@ -38,9 +38,9 @@
 </template>
 
 <script setup lang="ts">
+import type { EvolutionDetail } from "@16patsle/pokeapi.js";
 import PokemonItem from "./PokemonItem.vue";
 import PokemonLocation from "./PokemonLocation.vue";
-import type { EvolutionDetail } from "@/types/EvolutionChain";
 
 defineProps<{
   details: EvolutionDetail;

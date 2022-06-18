@@ -19,8 +19,8 @@
 </template>
 
 <script setup lang="ts">
+import type { Pokemon } from "@16patsle/pokeapi.js";
 import PokemonStatItem from "@/components/PokemonStatItem.vue";
-import type { Pokemon } from "@/types/Pokemon";
 
 defineProps<{
   pokemon: Pokemon;

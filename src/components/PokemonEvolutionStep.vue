@@ -22,9 +22,9 @@
 </template>
 
 <script setup lang="ts">
+import type { ChainLink } from "@16patsle/pokeapi.js";
 import PokemonLink from "./PokemonLink.vue";
 import PokemonEvolutionDetails from "./PokemonEvolutionDetails.vue";
-import type { ChainLink } from "@/types/EvolutionChain";
 
 defineProps<{
   evolutionStep: ChainLink;

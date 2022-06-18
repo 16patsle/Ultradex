@@ -2,7 +2,16 @@ import { defineStore } from "pinia";
 import { useRoute } from "vue-router";
 import * as PokeApi from "@16patsle/pokeapi.js";
 import { idFromUrl } from "../utils/idFromUrl";
-import type { PokemonSpecies, Pokemon, PokemonForm, EvolutionChain, NamedAPIResource, Item, Location, Region } from "@16patsle/pokeapi.js";
+import type {
+  PokemonSpecies,
+  Pokemon,
+  PokemonForm,
+  EvolutionChain,
+  NamedAPIResource,
+  Item,
+  Location,
+  Region,
+} from "@16patsle/pokeapi.js";
 
 interface State {
   pokemonList: NamedAPIResource[];
