@@ -78,10 +78,12 @@ export const usePokemonStore = defineStore("pokemon", {
         const variety = this.pokemonSpecies[speciesId].varieties[varietyIndex];
         if (variety.is_default) {
           const varietyId = idFromUrl(variety.pokemon.url);
-          this.pokemonVarieties[varietyId] = await PokeApi.getPokemon(
-            varietyId
-          );
-          return varietyId;
+          if (varietyId) {
+            this.pokemonVarieties[varietyId] = await PokeApi.getPokemon(
+              varietyId
+            );
+            return varietyId;
+          }
         }
       }
     },
@@ -93,7 +95,9 @@ export const usePokemonStore = defineStore("pokemon", {
       for (const formIndex in variety.forms) {
         const form = variety.forms[Number(formIndex)];
         const formId = idFromUrl(form.url);
-        this.pokemonForms[formId] = await PokeApi.getPokemonForm(formId);
+        if (formId) {
+          this.pokemonForms[formId] = await PokeApi.getPokemonForm(formId);
+        }
       }
     },
     async fetchPokemonEvolutionChain(chainId: number) {
