@@ -72,7 +72,10 @@ const fetchPokemonVariety = async () => {
   }
 };
 
-watch(props, fetchPokemonVariety);
+watch(props, () => {
+  varietyId.value = undefined;
+  fetchPokemonVariety();
+});
 
 fetchPokemonVariety();
 </script>
