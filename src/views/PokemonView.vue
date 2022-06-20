@@ -33,7 +33,9 @@ const store = usePokemonStore();
 const error = ref("");
 
 const pokemon = computed(() => store.currentPokemon);
-const pokemonName = computed(() => pokemonNameLocalized(pokemon.value));
+const pokemonName = computed(() =>
+  pokemonNameLocalized(pokemon.value, store.language)
+);
 
 const fetchPokemon = async () => {
   if (!store.currentlyShowingId) {

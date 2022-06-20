@@ -24,6 +24,7 @@ interface State {
   regions: Region[];
   pokemonWikiEntries: any[];
   currentlyShowingId: number;
+  language: string;
 }
 
 export const usePokemonStore = defineStore("pokemon", {
@@ -40,6 +41,7 @@ export const usePokemonStore = defineStore("pokemon", {
       regions: [],
       pokemonWikiEntries: [],
       currentlyShowingId: Number(route.params.id),
+      language: "en",
     };
   },
   getters: {

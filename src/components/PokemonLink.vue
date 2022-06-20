@@ -42,7 +42,7 @@ const pokemonName = computed(() => {
   }
   const pokemon = store.pokemonSpecies[pokemonId.value];
   if (pokemon) {
-    return pokemonNameLocalized(pokemon);
+    return pokemonNameLocalized(pokemon, store.language);
   }
   const name = store.pokemonList[pokemonId.value - 1]?.name;
   return name ? name.charAt(0).toUpperCase() + name.slice(1) : "";

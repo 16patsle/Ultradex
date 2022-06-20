@@ -2,12 +2,13 @@ import type { PokemonSpecies, Pokemon } from "@16patsle/pokeapi.js";
 import { capitalize } from "@/utils/capitalize";
 import { findWithLanguage, getDefaultPokemonVarietyForm } from "./pokemonUtils";
 
-export const pokemonNameLocalized = (pokemonSpecies: PokemonSpecies) =>
-  findWithLanguage(pokemonSpecies.names, "en")?.name || pokemonSpecies.name;
+export const pokemonNameLocalized = (pokemonSpecies: PokemonSpecies, language = "en") =>
+  findWithLanguage(pokemonSpecies.names, language)?.name || pokemonSpecies.name;
 
 export const pokemonNameLocalizedVariety = (
   pokemonSpecies: PokemonSpecies,
-  pokemonVariety: Pokemon
+  pokemonVariety: Pokemon,
+  language = "en"
 ) => {
   const localizedName = pokemonNameLocalized(pokemonSpecies);
   if (pokemonVariety.name === pokemonSpecies.name) {
@@ -18,8 +19,8 @@ export const pokemonNameLocalizedVariety = (
     const form = getDefaultPokemonVarietyForm(pokemonVariety);
     if (form) {
       // The .names array is preferred, but not always available, fall back on .form_names
-      const name = findWithLanguage(form.names, "en");
-      const formName = findWithLanguage(form.form_names, "en");
+      const name = findWithLanguage(form.names, language);
+      const formName = findWithLanguage(form.form_names, language);
       return (name ?? formName)?.name || "";
     } else if (pokemonVariety.name.includes(pokemonSpecies.name)) {
       // Try creating a fallback name from the variety and species name

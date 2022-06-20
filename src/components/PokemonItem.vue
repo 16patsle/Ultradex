@@ -7,7 +7,7 @@
       type="default"
     />
     <span v-if="itemData">
-      {{ pokemonNameLocalized(itemData) }}
+      {{ pokemonNameLocalized(itemData, store.language) }}
     </span>
     <span v-else>
       {{ item.name }}

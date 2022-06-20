@@ -1,7 +1,14 @@
 <template>
   <span class="link-wrapper is-inline-flex is-align-items-center">
-    {{ locationData ? pokemonNameLocalized(locationData) : location.name
-    }}{{ regionData ? " in " + pokemonNameLocalized(regionData) : "" }}
+    {{
+      locationData
+        ? pokemonNameLocalized(locationData, store.language)
+        : location.name
+    }}{{
+      regionData
+        ? " in " + pokemonNameLocalized(regionData, store.language)
+        : ""
+    }}
   </span>
 </template>
 

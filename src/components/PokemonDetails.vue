@@ -73,11 +73,12 @@ const store = usePokemonStore();
 const pokemon = computed(() => store.currentPokemon);
 
 const pokemonGenusLocalized = computed(
-  () => findWithLanguage(pokemon.value.genera, "en")?.genus ?? ""
+  () => findWithLanguage(pokemon.value.genera, store.language)?.genus ?? ""
 );
 const pokemonFlavorTextLocalized = computed(
   () =>
-    findWithLanguage(pokemon.value.flavor_text_entries, "en")?.flavor_text ?? ""
+    findWithLanguage(pokemon.value.flavor_text_entries, store.language)
+      ?.flavor_text ?? ""
 );
 const pokemonDefaultVariety = computed(() =>
   getDefaultPokemonVariety(pokemon.value)

@@ -82,7 +82,11 @@ const defaultForm = computed(
 );
 
 const pokemonNameLocalized = computed(() =>
-  pokemonNameLocalizedVariety(store.currentPokemon, pokemon.value)
+  pokemonNameLocalizedVariety(
+    store.currentPokemon,
+    pokemon.value,
+    store.language
+  )
 );
 const pokemonTypes = computed(() => {
   const typesArray = [];

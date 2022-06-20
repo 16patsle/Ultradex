@@ -36,7 +36,7 @@ type ResourceWithLanguage = { language: { name: string } };
  */
 export function findWithLanguage<T extends ResourceWithLanguage>(
   array: T[],
-  language: string
+  language = "en"
 ) {
   return array.find((item) => item.language.name === language);
 }
