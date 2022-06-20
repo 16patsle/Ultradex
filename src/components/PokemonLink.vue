@@ -5,6 +5,7 @@
   >
     <slot />
     <PokemonSpriteIcon v-if="variety" :pokemonData="variety" />
+    <div v-else class="icon-placeholder" />
     <div>{{ pokemonName }}</div>
   </router-link>
 </template>
@@ -83,6 +84,11 @@ fetchPokemonVariety();
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .link-wrapper {
+  height: 40px;
+}
+
+.icon-placeholder {
+  width: 40px;
   height: 40px;
 }
 </style>
