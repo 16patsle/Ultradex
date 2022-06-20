@@ -1,15 +1,26 @@
 <template>
   <div :class="type">
-    <img :src="src" :alt="alt" loading="lazy" decoding="async" />
+    <img
+      :src="src"
+      :alt="alt"
+      :loading="lazy ? 'lazy' : 'eager'"
+      :decoding="lazy ? 'async' : 'sync'"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps<{
-  src: string;
-  alt: string;
-  type: "icon" | "default";
-}>();
+withDefaults(
+  defineProps<{
+    src: string;
+    alt: string;
+    type: "icon" | "default";
+    lazy?: boolean;
+  }>(),
+  {
+    lazy: true,
+  }
+);
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

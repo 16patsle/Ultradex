@@ -4,7 +4,7 @@
     class="link-wrapper is-flex is-align-items-center"
   >
     <slot />
-    <PokemonSpriteIcon v-if="variety" :pokemonData="variety" />
+    <PokemonSpriteIcon v-if="variety" :pokemonData="variety" :lazy="lazyIcon" />
     <div v-else class="icon-placeholder" />
     <div>{{ pokemonName }}</div>
   </router-link>
@@ -23,9 +23,11 @@ const props = withDefaults(
   defineProps<{
     pokemon: NamedAPIResource;
     loadingPaused?: boolean;
+    lazyIcon?: boolean;
   }>(),
   {
     loadingPaused: false,
+    lazyIcon: false,
   }
 );
 

@@ -3,6 +3,7 @@
     <img
       :src="sprite"
       :alt="$capitalize(spriteName + ' sprite for ' + pokemonName)"
+      loading="lazy"
     />
   </div>
 </template>

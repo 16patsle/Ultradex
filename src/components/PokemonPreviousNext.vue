@@ -4,6 +4,7 @@
       <PokemonLink
         v-if="previousPokemon"
         :pokemon="previousPokemon"
+        :lazyIcon="false"
         title="Previous pokémon"
       >
         &lt;
@@ -13,6 +14,7 @@
       <PokemonLink
         v-if="nextPokemon"
         :pokemon="nextPokemon"
+        :lazyIcon="false"
         class="is-flex-direction-row-reverse is-justify-content-end"
         title="Next pokémon"
       >
