@@ -1,3 +1,5 @@
+import { capitalize } from "@/utils/capitalize";
+
 export const pokemonNameLocalized = (pokemonSpecies) => {
   for (const name of pokemonSpecies.names) {
     if (name.language.name === "en") {
@@ -8,7 +10,7 @@ export const pokemonNameLocalized = (pokemonSpecies) => {
 };
 
 export const pokemonNameLocalizedVariety = (pokemonSpecies, pokemonVariety) => {
-  let localizedName = pokemonNameLocalized(pokemonSpecies);
+  const localizedName = pokemonNameLocalized(pokemonSpecies);
   if (pokemonVariety.name === pokemonSpecies.name) {
     // Default variety, use the species name
     return localizedName;
@@ -35,8 +37,7 @@ export const pokemonNameLocalizedVariety = (pokemonSpecies, pokemonVariety) => {
       );
     } else {
       // If all else fails, just capitalize the species name
-      localizedName = pokemonVariety.name;
-      return localizedName.charAt(0).toUpperCase() + localizedName.slice(1);
+      return capitalize(pokemonVariety.name);
     }
   }
 };

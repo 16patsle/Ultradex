@@ -12,7 +12,7 @@
       :icon="statIcon(stat.stat.name)"
       :class="'order-' + statOrder(stat.stat.name)"
     >
-      {{ $titlecase(stat.stat.name.replace("-", " ").replace("hp", "HP")) }}:
+      {{ titlecase(stat.stat.name.replace("-", " ").replace("hp", "HP")) }}:
       {{ stat.base_stat }}
     </PokemonStatItem>
   </div>
@@ -21,6 +21,7 @@
 <script setup lang="ts">
 import type { Pokemon } from "@16patsle/pokeapi.js";
 import PokemonStatItem from "@/components/PokemonStatItem.vue";
+import { titlecase } from "@/utils/titlecase";
 
 defineProps<{
   pokemon: Pokemon;

@@ -2,13 +2,15 @@
   <div class="sprite-wrapper">
     <img
       :src="sprite"
-      :alt="$capitalize(spriteName + ' sprite for ' + pokemonName)"
+      :alt="capitalize(spriteName + ' sprite for ' + pokemonName)"
       loading="lazy"
     />
   </div>
 </template>
 
 <script setup lang="ts">
+import { capitalize } from "@/utils/capitalize";
+
 defineProps<{
   sprite: string;
   pokemonName: string;

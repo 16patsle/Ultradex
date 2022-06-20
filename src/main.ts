@@ -63,21 +63,4 @@ const app = createApp(App)
   .use(Notification, bulmaConfig)
   .component("RecycleScroller", RecycleScroller);
 
-app.config.globalProperties.$capitalize = function (value: string) {
-  if (!value) return "";
-  value = value.toString();
-  return value.charAt(0).toUpperCase() + value.slice(1);
-};
-
-app.config.globalProperties.$titlecase = function (value: string) {
-  if (!value) return "";
-  value = value.toString();
-  const valueSplit = value.split(" ");
-  const newValue: string[] = [];
-  valueSplit.forEach((val) => {
-    newValue.push(val.charAt(0).toUpperCase() + val.slice(1));
-  });
-  return newValue.join(" ");
-};
-
 app.mount("#app");

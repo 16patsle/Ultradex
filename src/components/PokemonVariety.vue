@@ -9,7 +9,7 @@
       <div class="column">
         <div>
           <h3 class="variety-name">
-            Variety: {{ $titlecase(pokemonNameLocalized) }}
+            Variety: {{ titlecase(pokemonNameLocalized) }}
           </h3>
         </div>
       </div>
@@ -30,19 +30,19 @@
           <PokemonSprite
             v-if="pokemon.sprites.front_default"
             :sprite="pokemon.sprites.front_default"
-            :pokemonName="$titlecase(pokemonNameLocalized)"
+            :pokemonName="titlecase(pokemonNameLocalized)"
             spriteName="front"
           />
           <PokemonSprite
             v-else
             sprite=""
-            :pokemonName="$titlecase(pokemonNameLocalized)"
+            :pokemonName="titlecase(pokemonNameLocalized)"
             spriteName="missing"
           />
           <PokemonSprite
             v-if="pokemon.sprites.back_default"
             :sprite="pokemon.sprites.back_default"
-            :pokemonName="$titlecase(pokemonNameLocalized)"
+            :pokemonName="titlecase(pokemonNameLocalized)"
             spriteName="back"
           />
         </div>
@@ -60,6 +60,7 @@ import PokemonType from "@/components/PokemonType.vue";
 import PokemonStats from "@/components/PokemonStats.vue";
 import { pokemonNameLocalizedVariety } from "../utils/pokemonNameLocalized";
 import { handleError } from "@/utils/handleError";
+import { titlecase } from "@/utils/titlecase";
 
 const props = withDefaults(
   defineProps<{
