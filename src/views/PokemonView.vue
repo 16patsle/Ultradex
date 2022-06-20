@@ -1,5 +1,6 @@
 <template>
   <div class="pokemon-view">
+    <PokemonPreviousNext />
     <h1 v-if="pokemon && !error" class="title">
       Pokémon Species: {{ pokemonName }}
     </h1>
@@ -17,10 +18,11 @@
 </template>
 
 <script setup lang="ts">
-import PokemonDetails from "@/components/PokemonDetails.vue";
-import PokemonWikiEntry from "@/components/PokemonWikiEntry.vue";
 import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import PokemonDetails from "@/components/PokemonDetails.vue";
+import PokemonWikiEntry from "@/components/PokemonWikiEntry.vue";
+import PokemonPreviousNext from "@/components/PokemonPreviousNext.vue";
 import { usePokemonStore } from "../stores/pokemonStore";
 import { pokemonNameLocalized } from "@/utils/pokemonNameLocalized";
 import { handleError } from "@/utils/handleError";
