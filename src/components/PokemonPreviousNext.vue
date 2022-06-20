@@ -1,14 +1,23 @@
 <template>
   <div class="is-flex">
     <div class="column">
-      <PokemonLink v-if="previousPokemon" :pokemon="previousPokemon" />
+      <PokemonLink
+        v-if="previousPokemon"
+        :pokemon="previousPokemon"
+        title="Previous pokémon"
+      >
+        &lt;
+      </PokemonLink>
     </div>
     <div class="column">
       <PokemonLink
         v-if="nextPokemon"
         :pokemon="nextPokemon"
         class="is-flex-direction-row-reverse is-justify-content-end"
-      />
+        title="Next pokémon"
+      >
+        &gt;
+      </PokemonLink>
     </div>
   </div>
 </template>
