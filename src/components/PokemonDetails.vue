@@ -62,43 +62,29 @@ import PokemonCollapseTrigger from "@/components/PokemonCollapseTrigger.vue";
 import { usePokemonStore } from "@/stores/pokemonStore";
 import { idFromUrl } from "@/utils/idFromUrl";
 import { capitalize } from "@/utils/capitalize";
+import {
+  getDefaultPokemonVariety,
+  getOtherPokemonVarieties,
+  findWithLanguage,
+} from "@/utils/pokemonUtils";
 
 const store = usePokemonStore();
 
 const pokemon = computed(() => store.currentPokemon);
 
-const pokemonGenusLocalized = computed(() => {
-  for (const genus of pokemon.value.genera) {
-    if (genus.language.name === "en") {
-      return genus.genus;
-    }
-  }
-  return "";
-});
-const pokemonFlavorTextLocalized = computed(() => {
-  for (const flavorText of pokemon.value.flavor_text_entries) {
-    if (flavorText.language.name === "en") {
-      return flavorText.flavor_text;
-    }
-  }
-  return "";
-});
-const pokemonDefaultVariety = computed(() => {
-  return pokemon.value.varieties.reduce((acc, variety) => {
-    if (variety.is_default) {
-      acc = variety;
-    }
-    return acc;
-  });
-});
-const pokemonOtherVarieties = computed(() => {
-  return pokemon.value.varieties.reduce((acc, variety) => {
-    if (!variety.is_default) {
-      acc.push(variety);
-    }
-    return acc;
-  }, []);
-});
+const pokemonGenusLocalized = computed(
+  () => findWithLanguage(pokemon.value.genera, "en")?.genus ?? ""
+);
+const pokemonFlavorTextLocalized = computed(
+  () =>
+    findWithLanguage(pokemon.value.flavor_text_entries, "en")?.flavor_text ?? ""
+);
+const pokemonDefaultVariety = computed(() =>
+  getDefaultPokemonVariety(pokemon.value)
+);
+const pokemonOtherVarieties = computed(() =>
+  getOtherPokemonVarieties(pokemon.value)
+);
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
