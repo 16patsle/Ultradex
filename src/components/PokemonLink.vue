@@ -1,10 +1,12 @@
 <template>
-  <div class="link-wrapper is-flex is-align-items-center">
+  <router-link
+    :to="'/pokemon/' + pokemonId"
+    class="link-wrapper is-flex is-align-items-center"
+  >
+    <slot />
     <PokemonSpriteIcon v-if="variety" :pokemonData="variety" />
-    <div>
-      <router-link :to="'/pokemon/' + pokemonId">{{ pokemonName }}</router-link>
-    </div>
-  </div>
+    <div>{{ pokemonName }}</div>
+  </router-link>
 </template>
 
 <script setup lang="ts">
