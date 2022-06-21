@@ -1,8 +1,14 @@
 import type { PokemonSpecies, Pokemon, PokemonForm } from "@16patsle/pokeapi.js";
 import { capitalize } from "@/utils/capitalize";
 import { findWithLanguage, getDefaultPokemonVarietyForm } from "./pokemonUtils";
+import type { Name } from "@16patsle/pokeapi.js";
 
-export const pokemonNameLocalized = (pokemonSpecies: PokemonSpecies, language = "en") =>
+type ResourceWithNames = {
+  names: Name[]
+  name: string
+}
+
+export const pokemonNameLocalized = <T extends ResourceWithNames>(pokemonSpecies: T, language = "en") =>
   findWithLanguage(pokemonSpecies.names, language)?.name || pokemonSpecies.name;
 
 export const pokemonFormNameLocalized = (pokemonForm: PokemonForm, language = "en") => {
