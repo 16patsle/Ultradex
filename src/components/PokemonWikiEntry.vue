@@ -109,7 +109,7 @@ const pokemonWikiEntry = computed(
   () => store.pokemonWikiEntries[props.pokemonId]
 );
 
-const makeSortedArray = (object) => {
+const makeSortedArray = (object: { [x: string]: any }) => {
   const array = [];
   for (const section in object) {
     array[object[section].index] = object[section];

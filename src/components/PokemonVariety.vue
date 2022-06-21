@@ -61,6 +61,7 @@ import PokemonStats from "@/components/PokemonStats.vue";
 import { pokemonNameLocalizedVariety } from "../utils/pokemonNameLocalized";
 import { handleError } from "@/utils/handleError";
 import { titlecase } from "@/utils/titlecase";
+import { getDefaultPokemonVarietyForm } from "@/utils/pokemonUtils";
 
 const props = withDefaults(
   defineProps<{
@@ -77,9 +78,7 @@ const store = usePokemonStore();
 const error = ref("");
 
 const pokemon = computed(() => store.pokemonVarieties[props.pokemonVarietyId]);
-const defaultForm = computed(
-  () => pokemon.value?.forms.find((form) => form.data?.is_default)?.data
-);
+const defaultForm = computed(() => getDefaultPokemonVarietyForm(pokemon.value));
 
 const pokemonNameLocalized = computed(() =>
   pokemonNameLocalizedVariety(
