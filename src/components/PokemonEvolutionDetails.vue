@@ -6,6 +6,13 @@
     >
       After using <PokemonItem v-if="details.item" :item="details.item" />
     </div>
+    <div
+      v-if="details.trigger.name === 'trade'"
+      class="is-flex is-align-items-center"
+    >
+      After trading while holding
+      <PokemonItem v-if="details.held_item" :item="details.held_item" />
+    </div>
     <div v-if="details.trigger.name === 'level-up'">
       After level up when:
       <ul>
