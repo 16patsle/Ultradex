@@ -1,22 +1,32 @@
-import type { PokemonSpecies, Pokemon, PokemonForm } from "@16patsle/pokeapi.js";
+import type {
+  PokemonSpecies,
+  Pokemon,
+  PokemonForm,
+} from "@16patsle/pokeapi.js";
 import { capitalize } from "@/utils/capitalize";
 import { findWithLanguage, getDefaultPokemonVarietyForm } from "./pokemonUtils";
 import type { Name } from "@16patsle/pokeapi.js";
 
 type ResourceWithNames = {
-  names: Name[]
-  name: string
-}
+  names: Name[];
+  name: string;
+};
 
-export const pokemonNameLocalized = <T extends ResourceWithNames>(pokemonSpecies: T, language = "en") =>
+export const pokemonNameLocalized = <T extends ResourceWithNames>(
+  pokemonSpecies: T,
+  language = "en"
+) =>
   findWithLanguage(pokemonSpecies.names, language)?.name || pokemonSpecies.name;
 
-export const pokemonFormNameLocalized = (pokemonForm: PokemonForm, language = "en") => {
+export const pokemonFormNameLocalized = (
+  pokemonForm: PokemonForm,
+  language = "en"
+) => {
   // The .names array is preferred, but not always available, fall back on .form_names
   const name = findWithLanguage(pokemonForm.names, language);
   const formName = findWithLanguage(pokemonForm.form_names, language);
   return (name ?? formName)?.name || "";
-}
+};
 
 export const pokemonNameLocalizedVariety = (
   pokemonSpecies: PokemonSpecies,
