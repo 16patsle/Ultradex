@@ -78,7 +78,9 @@ const store = usePokemonStore();
 const error = ref("");
 
 const pokemon = computed(() => store.pokemonVarieties[props.pokemonVarietyId]);
-const defaultForm = computed(() => getDefaultPokemonVarietyForm(pokemon.value));
+const defaultForm = computed(() =>
+  pokemon.value ? getDefaultPokemonVarietyForm(pokemon.value) : undefined
+);
 
 const pokemonNameLocalized = computed(() =>
   pokemonNameLocalizedVariety(
