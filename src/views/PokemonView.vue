@@ -60,6 +60,7 @@ watch(
   }
 );
 
+store.currentlyShowingId = Number(route.params.id);
 fetchPokemon();
 </script>
 
