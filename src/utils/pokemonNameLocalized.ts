@@ -16,7 +16,10 @@ export const pokemonNameLocalized = <T extends ResourceWithNames>(
   pokemonSpecies: T,
   language = "en"
 ) =>
-  findWithLanguage(pokemonSpecies.names, language)?.name || pokemonSpecies.name;
+  pokemonSpecies
+    ? findWithLanguage(pokemonSpecies.names, language)?.name ??
+      pokemonSpecies.name
+    : "";
 
 export const pokemonFormNameLocalized = (
   pokemonForm: PokemonForm,
