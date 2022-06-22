@@ -8,6 +8,7 @@
         <MenuToggleButton :open="showSidebar" @click="toggleSidebar"
           >Toggle Sidebar</MenuToggleButton
         >
+        <AppNavbar isTouchMode />
         <router-view name="sidebar" class="sidebar-content"></router-view>
       </aside>
       <div v-show="showMain" class="column main-container">
@@ -17,11 +18,7 @@
           @click="toggleSidebar"
           >Toggle Sidebar
         </MenuToggleButton>
-        <nav id="nav">
-          <router-link to="/">Home</router-link> |
-          <router-link to="/about">About</router-link>
-          <LanguageSelector />
-        </nav>
+        <AppNavbar />
         <main class="main-view">
           <router-view name="main"></router-view>
         </main>
@@ -34,7 +31,7 @@
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import MenuToggleButton from "./components/MenuToggleButton.vue";
-import LanguageSelector from "./components/LanguageSelector.vue";
+import AppNavbar from "./components/AppNavbar.vue";
 
 const showSidebar = ref(true);
 
@@ -97,14 +94,6 @@ div.main-container {
 
 main.main-view {
   max-height: 100%;
-}
-
-#nav {
-  display: inline-block;
-  padding-bottom: calc(0.375em - 1px);
-  padding-left: 0.75em;
-  padding-right: 0.75em;
-  padding-top: calc(0.375em - 1px);
 }
 
 #nav a {
