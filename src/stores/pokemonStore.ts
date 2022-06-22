@@ -13,6 +13,7 @@ import type {
   Region,
   Language,
   Stat,
+  Type,
 } from "@16patsle/pokeapi.js";
 
 interface State {
@@ -29,6 +30,7 @@ interface State {
   language: string;
   languages: Language[];
   stats: Stat[];
+  types: Type[];
 }
 
 export const usePokemonStore = defineStore("pokemon", {
@@ -48,6 +50,7 @@ export const usePokemonStore = defineStore("pokemon", {
       language: "en",
       languages: [],
       stats: [],
+      types: [],
     };
   },
   getters: {
@@ -171,6 +174,10 @@ export const usePokemonStore = defineStore("pokemon", {
       (await Promise.all(promises)).forEach((stat, i) => {
         this.stats[i] = stat;
       });
+    },
+    async fetchPokemonType(typeId: number) {
+      const data = await PokeApi.getType(typeId);
+      this.types[typeId] = data;
     },
     async fetchPokemonWikiEntry(pokemonId: number) {
       const response = await fetch(`/data/${pokemonId}.json`);
