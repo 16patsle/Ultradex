@@ -1,11 +1,11 @@
 <template>
-  <div class="language-selector field is-inline-block">
+  <div class="language-selector field is-inline-block full-width">
     <div class="field-label">
-      <label class="label is-flex is-align-items-center">
-        <p class="mr-2">Language</p>
-        <div class="control has-icons-left">
-          <div class="select is-rounded is-small">
-            <select v-model="store.language">
+      <label class="label is-flex is-align-items-center flex-gap">
+        <p>Language</p>
+        <div class="control has-icons-left is-flex-grow-1">
+          <div class="select is-rounded is-small full-width">
+            <select v-model="store.language" class="full-width">
               <LanguageSelectorOption
                 v-for="language in filteredLanguages"
                 :key="language.name"
@@ -41,3 +41,13 @@ const fetchLanguages = async () => {
 
 fetchLanguages();
 </script>
+
+<style scoped>
+.full-width {
+  width: 100%;
+}
+
+.flex-gap {
+  gap: 1rem;
+}
+</style>
