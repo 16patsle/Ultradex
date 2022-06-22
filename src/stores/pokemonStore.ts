@@ -123,14 +123,19 @@ export const usePokemonStore = defineStore("pokemon", {
     },
     async fetchLanguages() {
       const languages = (await PokeApi.getLanguage('')).results;
+      const promises = [];
 
       for (const languageIndex in languages) {
         const language = languages[Number(languageIndex)];
         const languageId = idFromUrl(language.url);
         if (languageId) {
-          this.languages[languageId] = await PokeApi.getLanguage(languageId);
+          promises[languageId] = PokeApi.getLanguage(languageId);
         }
       }
+
+      (await Promise.all(promises)).forEach((language, i) => {
+        this.languages[i] = language;
+      })
     },
     async fetchPokemonWikiEntry(pokemonId: number) {
       const response = await fetch(`/data/${pokemonId}.json`);
