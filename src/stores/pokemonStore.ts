@@ -122,7 +122,7 @@ export const usePokemonStore = defineStore("pokemon", {
       this.regions[regionId] = data;
     },
     async fetchLanguages() {
-      const languages = (await PokeApi.getLanguage('')).results;
+      const languages = (await PokeApi.getLanguage("")).results;
       const promises = [];
 
       for (const languageIndex in languages) {
@@ -135,7 +135,23 @@ export const usePokemonStore = defineStore("pokemon", {
 
       (await Promise.all(promises)).forEach((language, i) => {
         this.languages[i] = language;
-      })
+      });
+
+      // TODO: Should probably fix missing names in the API instead of this hack
+      this.languages[11].names.push({
+        language: {
+          name: "en",
+          url: "/api/v2/language/9/",
+        },
+        name: "Japanese",
+      });
+      this.languages[12].names.push({
+        language: {
+          name: "en",
+          url: "/api/v2/language/9/",
+        },
+        name: "Simplified Chinese",
+      });
     },
     async fetchPokemonWikiEntry(pokemonId: number) {
       const response = await fetch(`/data/${pokemonId}.json`);
