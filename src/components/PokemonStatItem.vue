@@ -13,17 +13,14 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { usePokemonStore } from "@/stores/pokemonStore";
-import type { PokemonStat } from "@16patsle/pokeapi.js";
+import type { Stat } from "@16patsle/pokeapi.js";
 import { idFromUrl } from "@/utils/idFromUrl";
 import { pokemonNameLocalized } from "@/utils/pokemonNameLocalized";
 
-const props = withDefaults(
-  defineProps<{ icon?: string; stat?: PokemonStat }>(),
-  {
-    icon: "",
-    stat: undefined,
-  }
-);
+const props = withDefaults(defineProps<{ icon?: string; stat?: Stat }>(), {
+  icon: "",
+  stat: undefined,
+});
 
 const store = usePokemonStore();
 
