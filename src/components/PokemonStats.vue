@@ -9,42 +9,22 @@
     <PokemonStatItem
       v-for="stat in pokemon.stats"
       :key="stat.stat.name"
-      :icon="statIcon(stat.stat.name)"
+      :stat="stat"
       :class="'order-' + statOrder(stat.stat.name)"
-    >
-      {{ titlecase(stat.stat.name.replace("-", " ").replace("hp", "HP")) }}:
-      {{ stat.base_stat }}
-    </PokemonStatItem>
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import type { Pokemon } from "@16patsle/pokeapi.js";
 import PokemonStatItem from "@/components/PokemonStatItem.vue";
-import { titlecase } from "@/utils/titlecase";
+import { usePokemonStore } from "@/stores/pokemonStore";
 
 defineProps<{
   pokemon: Pokemon;
 }>();
 
-const statIcon = (name: string) => {
-  switch (name) {
-    case "speed":
-      return "feather-alt";
-    case "special-defense":
-      return "shield-alt";
-    case "special-attack":
-      return "bolt";
-    case "defense":
-      return "shield-alt";
-    case "attack":
-      return "bolt";
-    case "hp":
-      return "heart";
-    default:
-      return "";
-  }
-};
+const store = usePokemonStore();
 
 // Use the order CSS property to improve the layout
 const statOrder = (name: string) => {
@@ -62,6 +42,14 @@ const statOrder = (name: string) => {
       return null;
   }
 };
+
+const fetchStats = async () => {
+  if (!store.stats.length) {
+    await store.fetchPokemonStats();
+  }
+};
+
+fetchStats();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
