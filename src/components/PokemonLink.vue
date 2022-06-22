@@ -6,7 +6,11 @@
     <slot />
     <PokemonSpriteIcon v-if="variety" :pokemonData="variety" :lazy="lazyIcon" />
     <div v-else class="icon-placeholder" />
-    <div>{{ pokemonName }}</div>
+    <div v-if="showId">#{{ pokemonIdFormatted }}</div>
+    &nbsp;
+    <div>
+      {{ pokemonName }}
+    </div>
   </router-link>
 </template>
 
@@ -18,16 +22,19 @@ import { computed, ref, watch } from "vue";
 import { usePokemonStore } from "../stores/pokemonStore";
 import { pokemonNameLocalized } from "../utils/pokemonNameLocalized";
 import PokemonSpriteIcon from "./PokemonSpriteIcon.vue";
+import { formatPokemonId } from "@/utils/pokemonUtils";
 
 const props = withDefaults(
   defineProps<{
     pokemon: NamedAPIResource;
     loadingPaused?: boolean;
     lazyIcon?: boolean;
+    showId?: boolean;
   }>(),
   {
     loadingPaused: false,
     lazyIcon: false,
+    showId: false,
   }
 );
 
@@ -47,6 +54,9 @@ const pokemonName = computed(() => {
   const name = store.pokemonList[pokemonId.value - 1]?.name;
   return name ? name.charAt(0).toUpperCase() + name.slice(1) : "";
 });
+const pokemonIdFormatted = computed(() =>
+  pokemonId.value ? formatPokemonId(pokemonId.value) : "000"
+);
 const varietyId = ref<number | undefined>(undefined);
 
 const variety = computed(() => {

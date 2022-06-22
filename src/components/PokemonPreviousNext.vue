@@ -5,6 +5,7 @@
         v-if="previousPokemon"
         :pokemon="previousPokemon"
         :lazyIcon="false"
+        showId
         title="Previous pokémon"
       >
         &lt;
@@ -15,6 +16,7 @@
         v-if="nextPokemon"
         :pokemon="nextPokemon"
         :lazyIcon="false"
+        showId
         class="is-flex-direction-row-reverse is-justify-content-end"
         title="Next pokémon"
       >

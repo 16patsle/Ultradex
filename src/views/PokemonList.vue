@@ -12,6 +12,7 @@
           <PokemonLink
             :pokemon="item"
             :loadingPaused="!active"
+            showId
             class="is-justify-content-center"
           />
         </li>
