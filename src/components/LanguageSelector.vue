@@ -1,7 +1,7 @@
 <template>
   <div class="language-selector field is-inline-block">
     <div class="field-label">
-      <label class="label is-flex">
+      <label class="label is-flex is-align-items-center">
         <p class="mr-2">Language</p>
         <div class="control has-icons-left">
           <div class="select is-rounded is-small">
