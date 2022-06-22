@@ -11,6 +11,7 @@ import type {
   Item,
   Location,
   Region,
+  Language,
 } from "@16patsle/pokeapi.js";
 
 interface State {
@@ -25,6 +26,7 @@ interface State {
   pokemonWikiEntries: any[];
   currentlyShowingId: number;
   language: string;
+  languages: Language[];
 }
 
 export const usePokemonStore = defineStore("pokemon", {
@@ -41,7 +43,8 @@ export const usePokemonStore = defineStore("pokemon", {
       regions: [],
       pokemonWikiEntries: [],
       currentlyShowingId: Number(route.params.id),
-      language: "en",
+      language: "fr",
+      languages: [],
     };
   },
   getters: {
@@ -117,6 +120,17 @@ export const usePokemonStore = defineStore("pokemon", {
     async fetchRegion(regionId: number) {
       const data = await PokeApi.getRegion(regionId);
       this.regions[regionId] = data;
+    },
+    async fetchLanguages() {
+      const languages = (await PokeApi.getLanguage('')).results;
+
+      for (const languageIndex in languages) {
+        const language = languages[Number(languageIndex)];
+        const languageId = idFromUrl(language.url);
+        if (languageId) {
+          this.languages[languageId] = await PokeApi.getLanguage(languageId);
+        }
+      }
     },
     async fetchPokemonWikiEntry(pokemonId: number) {
       const response = await fetch(`/data/${pokemonId}.json`);
