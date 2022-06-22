@@ -40,3 +40,6 @@ export function findWithLanguage<T extends ResourceWithLanguage>(
 ) {
   return array.find((item) => item.language.name === language);
 }
+
+export const formatPokemonId = (id: number | string) =>
+  id.toString().padStart(3, "0");

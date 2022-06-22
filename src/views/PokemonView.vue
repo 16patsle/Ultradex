@@ -2,7 +2,7 @@
   <div class="pokemon-view">
     <PokemonPreviousNext />
     <h1 v-if="pokemon && !error" class="title">
-      Pokémon Species: {{ pokemonName }}
+      #{{ idFormatted }} {{ pokemonName }}
     </h1>
     <h1 v-else class="title">Pokémon Species</h1>
     <o-loading :full-page="false" :active="!pokemon"></o-loading>
@@ -26,6 +26,7 @@ import PokemonPreviousNext from "@/components/PokemonPreviousNext.vue";
 import { usePokemonStore } from "../stores/pokemonStore";
 import { pokemonNameLocalized } from "@/utils/pokemonNameLocalized";
 import { handleError } from "@/utils/handleError";
+import { formatPokemonId } from "@/utils/pokemonUtils";
 
 const route = useRoute();
 const store = usePokemonStore();
@@ -36,6 +37,7 @@ const pokemon = computed(() => store.currentPokemon);
 const pokemonName = computed(() =>
   pokemonNameLocalized(pokemon.value, store.language)
 );
+const idFormatted = computed(() => formatPokemonId(store.currentlyShowingId));
 
 const fetchPokemon = async () => {
   if (!store.currentlyShowingId) {
