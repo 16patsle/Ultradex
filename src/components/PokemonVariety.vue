@@ -20,9 +20,9 @@
       <div class="column">
         <div class="has-text-centered">
           <PokemonType
-            v-for="type in pokemonTypes"
-            :key="type"
-            :type="type"
+            v-for="type in pokemon.types"
+            :key="type.slot"
+            :type="type.type"
             class="has-text-centered"
           />
         </div>
@@ -89,14 +89,6 @@ const pokemonNameLocalized = computed(() =>
     store.language
   )
 );
-const pokemonTypes = computed(() => {
-  const typesArray = [];
-  for (const type of pokemon.value.types) {
-    typesArray[type.slot - 1] =
-      type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1);
-  }
-  return typesArray;
-});
 
 const fetchPokemonVariety = async () => {
   if (!pokemon.value) {
