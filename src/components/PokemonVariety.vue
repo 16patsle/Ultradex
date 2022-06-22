@@ -21,7 +21,7 @@
         <div class="has-text-centered">
           <PokemonType
             v-for="type in pokemon.types"
-            :key="type.slot"
+            :key="type.type.name"
             :type="type.type"
             class="has-text-centered"
           />
