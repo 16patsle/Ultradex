@@ -12,6 +12,7 @@ import type {
   Location,
   Region,
   Language,
+  Stat,
 } from "@16patsle/pokeapi.js";
 
 interface State {
@@ -27,6 +28,7 @@ interface State {
   currentlyShowingId: number;
   language: string;
   languages: Language[];
+  stats: Stat[];
 }
 
 export const usePokemonStore = defineStore("pokemon", {
@@ -45,6 +47,7 @@ export const usePokemonStore = defineStore("pokemon", {
       currentlyShowingId: Number(route.params.id),
       language: "en",
       languages: [],
+      stats: [],
     };
   },
   getters: {
@@ -151,6 +154,22 @@ export const usePokemonStore = defineStore("pokemon", {
           url: "/api/v2/language/9/",
         },
         name: "Simplified Chinese",
+      });
+    },
+    async fetchPokemonStats() {
+      const stats = (await PokeApi.getStat("")).results;
+      const promises = [];
+
+      for (const statIndex in stats) {
+        const stat = stats[Number(statIndex)];
+        const statId = idFromUrl(stat.url);
+        if (statId) {
+          promises[statId] = PokeApi.getStat(statId);
+        }
+      }
+
+      (await Promise.all(promises)).forEach((stat, i) => {
+        this.stats[i] = stat;
       });
     },
     async fetchPokemonWikiEntry(pokemonId: number) {
