@@ -20,6 +20,7 @@
         <nav id="nav">
           <router-link to="/">Home</router-link> |
           <router-link to="/about">About</router-link>
+          <LanguageSelector />
         </nav>
         <main class="main-view">
           <router-view name="main"></router-view>
@@ -33,6 +34,7 @@
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import MenuToggleButton from "./components/MenuToggleButton.vue";
+import LanguageSelector from "./components/LanguageSelector.vue";
 
 const showSidebar = ref(true);
 

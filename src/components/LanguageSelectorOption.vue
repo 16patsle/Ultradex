@@ -1,0 +1,29 @@
+<template>
+  <option :value="language.name">
+    {{ nameInCurrentLanguage }}
+    <span v-if="nameInSpecifiedLanguage !== language.name"
+      >/ {{ nameInSpecifiedLanguage }}</span
+    >
+    ({{ language.name }})
+  </option>
+</template>
+
+<script setup lang="ts">
+import { computed } from "vue";
+import { usePokemonStore } from "@/stores/pokemonStore";
+import { pokemonNameLocalized } from "@/utils/pokemonNameLocalized";
+import type { Language } from "@16patsle/pokeapi.js";
+
+const props = defineProps<{
+  language: Language;
+}>();
+
+const store = usePokemonStore();
+
+const nameInCurrentLanguage = computed(() =>
+  pokemonNameLocalized(props.language, store.language)
+);
+const nameInSpecifiedLanguage = computed(() =>
+  pokemonNameLocalized(props.language, props.language.name)
+);
+</script>
