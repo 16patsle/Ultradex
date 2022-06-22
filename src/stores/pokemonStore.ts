@@ -43,7 +43,7 @@ export const usePokemonStore = defineStore("pokemon", {
       regions: [],
       pokemonWikiEntries: [],
       currentlyShowingId: Number(route.params.id),
-      language: "fr",
+      language: "en",
       languages: [],
     };
   },
