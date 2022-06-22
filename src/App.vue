@@ -96,15 +96,6 @@ main.main-view {
   max-height: 100%;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-
 #app main.main-view h2 {
   font-size: 1.55rem;
 }
