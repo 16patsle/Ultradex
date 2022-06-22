@@ -45,6 +45,7 @@ div {
   font-weight: 500;
   width: 75px;
   background-color: whitesmoke;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .normal {
