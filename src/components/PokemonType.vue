@@ -1,6 +1,9 @@
 <template>
-  <div v-if="typeData" :class="typeData.name.toLowerCase()">
-    {{ pokemonNameLocalized(typeData, store.language) }}
+  <div :class="typeData && typeData.name.toLowerCase()">
+    <span v-if="typeData">{{
+      pokemonNameLocalized(typeData, store.language)
+    }}</span>
+    <span v-else>&nbsp;</span>
   </div>
 </template>
 
@@ -41,6 +44,7 @@ div {
   color: white;
   font-weight: 500;
   width: 75px;
+  background-color: whitesmoke;
 }
 
 .normal {
