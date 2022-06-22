@@ -1,7 +1,7 @@
 <template>
   <option :value="language.name">
     {{ nameInCurrentLanguage }}
-    <span v-if="nameInSpecifiedLanguage !== language.name"
+    <span v-if="showNameInSpecifiedLanguage"
       >/ {{ nameInSpecifiedLanguage }}</span
     >
     ({{ language.name }})
@@ -24,6 +24,11 @@ const nameInCurrentLanguage = computed(() =>
   pokemonNameLocalized(props.language, store.language)
 );
 const nameInSpecifiedLanguage = computed(() =>
-  pokemonNameLocalized(props.language, props.language.name)
+  pokemonNameLocalized(props.language, props.language.name, false)
+);
+const showNameInSpecifiedLanguage = computed(
+  () =>
+    nameInSpecifiedLanguage.value !== props.language.name &&
+    nameInCurrentLanguage.value !== nameInSpecifiedLanguage.value
 );
 </script>

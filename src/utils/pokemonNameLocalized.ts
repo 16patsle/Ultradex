@@ -12,13 +12,23 @@ type ResourceWithNames = {
   name: string;
 };
 
+/**
+ * Attempt to localize the name of a resource.
+ * @param pokemonSpecies An object with names in multiple languages
+ * @param language A language supported by the API, default "en" (English)
+ * @param fallback A fallback language to use if the requested language is not supported, or false to fall bck to the name property
+ * @returns The name of the pokemon in the requested language or the fallback language, or the name property if fallback is disabled
+ */
 export const pokemonNameLocalized = <T extends ResourceWithNames>(
   pokemonSpecies: T,
-  language = "en"
+  language = "en",
+  fallback: string | false = "en"
 ) =>
   pokemonSpecies
     ? findWithLanguage(pokemonSpecies.names, language)?.name ??
-      pokemonSpecies.name
+      (fallback
+        ? findWithLanguage(pokemonSpecies.names, fallback)?.name
+        : pokemonSpecies.name)
     : "";
 
 export const pokemonFormNameLocalized = (
