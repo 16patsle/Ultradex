@@ -32,6 +32,7 @@ import {
   faCaretRight,
   faBars,
   faTimes,
+  faGlobe,
 } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 // @ts-expect-error Does not have types
@@ -52,7 +53,8 @@ library.add(
   faCaretDown,
   faCaretRight,
   faBars,
-  faTimes
+  faTimes,
+  faGlobe
 );
 
 const app = createApp(App)
