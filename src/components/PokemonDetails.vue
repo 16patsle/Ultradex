@@ -1,7 +1,7 @@
 <template>
   <div class="details-wrapper">
     <div v-if="pokemon">
-      <p class="subtitle">{{ pokemonFlavorTextLocalized }}</p>
+      <PokemonFlavorText :flavorTextEntries="pokemon.flavor_text_entries" />
       <p>Genus: {{ pokemonGenusLocalized }}</p>
       <p>Color: {{ capitalize(pokemon.color.name) }}</p>
       <hr />
@@ -59,6 +59,7 @@ import { computed } from "vue";
 import PokemonVariety from "@/components/PokemonVariety.vue";
 import PokemonEvolutionChain from "@/components/PokemonEvolutionChain.vue";
 import PokemonCollapseTrigger from "@/components/PokemonCollapseTrigger.vue";
+import PokemonFlavorText from "./PokemonFlavorText.vue";
 import { usePokemonStore } from "@/stores/pokemonStore";
 import { idFromUrl } from "@/utils/idFromUrl";
 import { capitalize } from "@/utils/capitalize";
@@ -74,11 +75,6 @@ const pokemon = computed(() => store.currentPokemon);
 
 const pokemonGenusLocalized = computed(
   () => findWithLanguage(pokemon.value.genera, store.language)?.genus ?? ""
-);
-const pokemonFlavorTextLocalized = computed(
-  () =>
-    findWithLanguage(pokemon.value.flavor_text_entries, store.language)
-      ?.flavor_text ?? ""
 );
 const pokemonDefaultVariety = computed(() =>
   getDefaultPokemonVariety(pokemon.value)
