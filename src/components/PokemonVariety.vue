@@ -30,19 +30,19 @@
           <PokemonSprite
             v-if="pokemon.sprites.front_default"
             :sprite="pokemon.sprites.front_default"
-            :pokemonName="titlecase(pokemonNameLocalized)"
+            :pokemonName="pokemonNameLocalized"
             spriteName="front"
           />
           <PokemonSprite
             v-else
             sprite=""
-            :pokemonName="titlecase(pokemonNameLocalized)"
+            :pokemonName="pokemonNameLocalized"
             spriteName="missing"
           />
           <PokemonSprite
             v-if="pokemon.sprites.back_default"
             :sprite="pokemon.sprites.back_default"
-            :pokemonName="titlecase(pokemonNameLocalized)"
+            :pokemonName="pokemonNameLocalized"
             spriteName="back"
           />
         </div>
@@ -82,12 +82,13 @@ const defaultForm = computed(() =>
   pokemon.value ? getDefaultPokemonVarietyForm(pokemon.value) : undefined
 );
 
-const pokemonNameLocalized = computed(() =>
-  pokemonNameLocalizedVariety(
-    store.currentPokemon,
-    pokemon.value,
-    store.language
-  )
+const pokemonNameLocalized = computed(
+  () =>
+    pokemonNameLocalizedVariety(
+      store.currentPokemon,
+      pokemon.value,
+      store.language
+    ) ?? ""
 );
 
 const fetchPokemonVariety = async () => {
