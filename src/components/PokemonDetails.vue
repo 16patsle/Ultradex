@@ -3,7 +3,7 @@
     <div v-if="pokemon">
       <PokemonFlavorText :flavorTextEntries="pokemon.flavor_text_entries" />
       <p>Genus: {{ pokemonGenusLocalized }}</p>
-      <p>Color: {{ capitalize(pokemon.color.name) }}</p>
+      <p>Color: <PokemonColor :color="pokemon.color" /></p>
       <hr />
       <PokemonVariety
         :pokemonVarietyId="idFromUrl(pokemonDefaultVariety.pokemon.url)"
@@ -60,9 +60,9 @@ import PokemonVariety from "@/components/PokemonVariety.vue";
 import PokemonEvolutionChain from "@/components/PokemonEvolutionChain.vue";
 import PokemonCollapseTrigger from "@/components/PokemonCollapseTrigger.vue";
 import PokemonFlavorText from "./PokemonFlavorText.vue";
+import PokemonColor from "./PokemonColor.vue";
 import { usePokemonStore } from "@/stores/pokemonStore";
 import { idFromUrl } from "@/utils/idFromUrl";
-import { capitalize } from "@/utils/capitalize";
 import {
   getDefaultPokemonVariety,
   getOtherPokemonVarieties,

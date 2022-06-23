@@ -15,6 +15,7 @@ import type {
   Stat,
   Type,
   Version,
+  PokemonColor,
 } from "@16patsle/pokeapi.js";
 
 interface State {
@@ -23,6 +24,7 @@ interface State {
   pokemonVarieties: Pokemon[];
   pokemonForms: PokemonForm[];
   pokemonEvolutionChains: EvolutionChain[];
+  pokemonColors: PokemonColor[];
   items: Item[];
   locations: Location[];
   regions: Region[];
@@ -44,6 +46,7 @@ export const usePokemonStore = defineStore("pokemon", {
       pokemonVarieties: [],
       pokemonForms: [],
       pokemonEvolutionChains: [],
+      pokemonColors: [],
       items: [],
       locations: [],
       regions: [],
@@ -185,6 +188,10 @@ export const usePokemonStore = defineStore("pokemon", {
     async fetchGameVersion(versionId: number) {
       const data = await PokeApi.getVersion(versionId);
       this.gameVersions[versionId] = data;
+    },
+    async fetchPokemonColor(colorId: number) {
+      const data = await PokeApi.getPokemonColor(colorId);
+      this.pokemonColors[colorId] = data;
     },
     async fetchPokemonWikiEntry(pokemonId: number) {
       const response = await fetch(`/data/${pokemonId}.json`);
