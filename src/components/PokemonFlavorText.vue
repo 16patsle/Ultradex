@@ -2,10 +2,10 @@
   <div v-if="flavorTextEntries" class="subtitle">
     <o-tabs v-model="gameVersion" multiline>
       <PokemonFlavorTextItem
-        v-for="version in pokemonVersions"
-        :key="version.value"
-        :versionNames="version.versionNames"
-        :flavorText="pokemonFlavorTextObject[version.value]"
+        v-for="entryVersion in pokemonVersions"
+        :key="entryVersion.versions.map((v) => v.name).join(', ')"
+        :versions="entryVersion.versions"
+        :flavorText="pokemonFlavorTextObject[entryVersion.value]"
       />
     </o-tabs>
   </div>
@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import type { FlavorText } from "@16patsle/pokeapi.js";
+import type { FlavorText, NamedAPIResource } from "@16patsle/pokeapi.js";
 import PokemonFlavorTextItem from "./PokemonFlavorTextItem.vue";
 import { usePokemonStore } from "@/stores/pokemonStore";
 import { normalizeTextForComparison } from "@/utils/pokemonUtils";
@@ -47,7 +47,7 @@ const pokemonFlavorTextObject = computed(() => {
 });
 
 const pokemonVersions = computed(() => {
-  type EntryVersion = { versionNames: string[]; flavorText: FlavorText };
+  type EntryVersion = { versions: NamedAPIResource[]; flavorText: FlavorText };
   const entryVersions: EntryVersion[] = [];
 
   pokemonFlavorTextLocalized.value.forEach((entry) => {
@@ -61,10 +61,10 @@ const pokemonVersions = computed(() => {
 
     // If a previous entry with the same flavor text exists, add the version to the list of versions for that entry.
     if (previous) {
-      previous.versionNames.push(entry.version.name);
+      previous.versions.push(entry.version);
     } else {
       entryVersions.push({
-        versionNames: [entry.version.name],
+        versions: [entry.version],
         flavorText: entry,
       });
     }
@@ -72,15 +72,15 @@ const pokemonVersions = computed(() => {
 
   return entryVersions.map((entryVersion) => {
     return {
-      versionNames: entryVersion.versionNames,
+      versions: entryVersion.versions,
       // Prefer using the second version, since the first one has weird formatting.
-      value: entryVersion.versionNames[1] ?? entryVersion.versionNames[0],
+      value: (entryVersion.versions[1] ?? entryVersion.versions[0]).name,
     };
   });
 });
 
 const setVersion = ([newVersion]: typeof pokemonVersions.value) => {
-  gameVersion.value = newVersion.versionNames[1] ?? newVersion.versionNames[0];
+  gameVersion.value = (newVersion.versions[1] ?? newVersion.versions[0]).name;
 };
 
 watch(pokemonVersions, setVersion);

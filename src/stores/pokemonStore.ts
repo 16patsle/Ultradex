@@ -14,6 +14,7 @@ import type {
   Language,
   Stat,
   Type,
+  Version,
 } from "@16patsle/pokeapi.js";
 
 interface State {
@@ -31,6 +32,7 @@ interface State {
   languages: Language[];
   stats: Stat[];
   types: Type[];
+  gameVersions: Version[];
 }
 
 export const usePokemonStore = defineStore("pokemon", {
@@ -51,6 +53,7 @@ export const usePokemonStore = defineStore("pokemon", {
       languages: [],
       stats: [],
       types: [],
+      gameVersions: [],
     };
   },
   getters: {
@@ -178,6 +181,10 @@ export const usePokemonStore = defineStore("pokemon", {
     async fetchPokemonType(typeId: number) {
       const data = await PokeApi.getType(typeId);
       this.types[typeId] = data;
+    },
+    async fetchGameVersion(versionId: number) {
+      const data = await PokeApi.getVersion(versionId);
+      this.gameVersions[versionId] = data;
     },
     async fetchPokemonWikiEntry(pokemonId: number) {
       const response = await fetch(`/data/${pokemonId}.json`);
