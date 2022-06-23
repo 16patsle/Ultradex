@@ -1,10 +1,15 @@
 <template>
   <div class="stat py-1">
     <div class="icon is-medium">
-      <fa-icon :icon="icon || statIcon(stat.stat.name)" size="lg" fixed-width />
+      <fa-icon
+        :icon="icon || statIcon(stat?.stat.name)"
+        size="lg"
+        fixed-width
+      />
     </div>
     <p v-if="statData">
-      {{ pokemonNameLocalized(statData, store.language) }}: {{ stat.base_stat }}
+      {{ pokemonNameLocalized(statData, store.language) }}:
+      {{ stat?.base_stat }}
     </p>
     <p v-else><slot /></p>
   </div>
@@ -13,14 +18,17 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { usePokemonStore } from "@/stores/pokemonStore";
-import type { Stat } from "@16patsle/pokeapi.js";
+import type { PokemonStat } from "@16patsle/pokeapi.js";
 import { idFromUrl } from "@/utils/idFromUrl";
 import { pokemonNameLocalized } from "@/utils/pokemonNameLocalized";
 
-const props = withDefaults(defineProps<{ icon?: string; stat?: Stat }>(), {
-  icon: "",
-  stat: undefined,
-});
+const props = withDefaults(
+  defineProps<{ icon?: string; stat?: PokemonStat }>(),
+  {
+    icon: "",
+    stat: undefined,
+  }
+);
 
 const store = usePokemonStore();
 
@@ -29,7 +37,7 @@ const statData = computed(() =>
   statId.value ? store.stats[statId.value] : undefined
 );
 
-const statIcon = (name: string) => {
+const statIcon = (name = "") => {
   switch (name) {
     case "speed":
       return "feather-alt";
