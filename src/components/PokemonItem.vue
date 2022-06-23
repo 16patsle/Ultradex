@@ -1,56 +1,37 @@
 <template>
   <span class="link-wrapper is-inline-flex is-align-items-center">
-    <PokemonIcon
-      v-if="itemData"
-      :src="itemData.sprites.default"
-      alt=""
-      type="default"
-    />
-    <span v-if="itemData">
-      {{ pokemonNameLocalized(itemData, store.language) }}
-    </span>
-    <span v-else>
-      {{ item.name }}
-    </span>
+    <PokemonResource
+      :resource="item"
+      :storeArray="store.items"
+      :fetch="store.fetchItem"
+    >
+      <template v-slot="slotProps">
+        <PokemonIcon
+          :src="slotProps.resource.sprites.default"
+          alt=""
+          type="default"
+        />
+        {{ pokemonNameLocalized(slotProps.resource, store.language) }}
+      </template>
+      <template #else>
+        {{ item.name }}
+      </template>
+    </PokemonResource>
   </span>
 </template>
 
 <script setup lang="ts">
 import type { NamedAPIResource } from "@16patsle/pokeapi.js";
-import { handleError } from "@/utils/handleError";
-import { idFromUrl } from "@/utils/idFromUrl";
-import { computed, ref } from "vue";
-import { usePokemonStore } from "../stores/pokemonStore";
-import { pokemonNameLocalized } from "../utils/pokemonNameLocalized";
+import { usePokemonStore } from "@/stores/pokemonStore";
+import { pokemonNameLocalized } from "@/utils/pokemonNameLocalized";
 import PokemonIcon from "./PokemonIcon.vue";
+import PokemonResource from "./PokemonResource.vue";
 
-const props = defineProps<{
+defineProps<{
   item: NamedAPIResource;
 }>();
 
 const store = usePokemonStore();
-
-const error = ref("");
-
-const itemId = computed(() => idFromUrl(props.item.url));
-
-const itemData = computed(() =>
-  itemId.value ? store.items[itemId.value] : null
-);
-
-const fetchItem = async () => {
-  if (!itemData.value && itemId.value) {
-    error.value = "";
-
-    try {
-      await store.fetchItem(itemId.value);
-    } catch (err) {
-      error.value = handleError(err);
-    }
-  }
-};
-
-fetchItem();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

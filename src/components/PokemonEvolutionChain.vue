@@ -1,46 +1,39 @@
 <template>
   <div class="evolution-chain-wrapper">
-    <o-loading :full-page="false" :active="!chain"></o-loading>
-    <o-notification v-if="error" variant="danger">
-      <h2 class="subtitle">ERROR!</h2>
-      <p>{{ error }}</p>
-    </o-notification>
-    <div v-if="chain" class="notification">
-      <PokemonEvolutionStep :evolutionStep="chain.chain" />
-    </div>
+    <PokemonResource
+      :resource="chain"
+      :storeArray="store.pokemonEvolutionChains"
+      :fetch="store.fetchPokemonEvolutionChain"
+    >
+      <template #default="{ resource }">
+        <div class="notification">
+          <PokemonEvolutionStep :evolutionStep="resource.chain" />
+        </div>
+      </template>
+      <template #else>
+        <o-loading :full-page="false" active></o-loading>
+      </template>
+      <template #error="{ error }">
+        ><o-notification variant="danger">
+          <h2 class="subtitle">ERROR!</h2>
+          <p>{{ error }}</p>
+        </o-notification>
+      </template>
+    </PokemonResource>
   </div>
 </template>
 
 <script setup lang="ts">
-import { handleError } from "@/utils/handleError";
-import { computed, ref } from "vue";
-import { usePokemonStore } from "../stores/pokemonStore";
+import type { APIResource } from "@16patsle/pokeapi.js";
+import { usePokemonStore } from "@/stores/pokemonStore";
 import PokemonEvolutionStep from "./PokemonEvolutionStep.vue";
+import PokemonResource from "./PokemonResource.vue";
 
-const props = defineProps<{
-  chainId: number;
-  speciesId: number;
+defineProps<{
+  chain: APIResource;
 }>();
 
 const store = usePokemonStore();
-
-const error = ref("");
-
-const chain = computed(() => store.pokemonEvolutionChains[props.chainId]);
-
-const fetchEvolutionChain = async () => {
-  if (!store.pokemonEvolutionChains[props.chainId]) {
-    error.value = "";
-
-    try {
-      await store.fetchPokemonEvolutionChain(props.chainId);
-    } catch (err) {
-      error.value = handleError(err);
-    }
-  }
-};
-
-fetchEvolutionChain();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

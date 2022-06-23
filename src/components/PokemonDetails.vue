@@ -23,10 +23,7 @@
             Evolution chain
           </PokemonCollapseTrigger>
         </template>
-        <PokemonEvolutionChain
-          :chainId="idFromUrl(pokemon.evolution_chain.url)"
-          :speciesId="store.currentlyShowingId"
-        />
+        <PokemonEvolutionChain :chain="pokemon.evolution_chain" />
       </o-collapse>
       <o-collapse
         v-if="pokemonOtherVarieties.length > 0"

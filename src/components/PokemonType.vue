@@ -1,36 +1,27 @@
 <template>
-  <div :class="typeData && typeData.name.toLowerCase()">
-    <span v-if="typeData">{{
-      pokemonNameLocalized(typeData, store.language)
-    }}</span>
-    <span v-else>&nbsp;</span>
+  <div :class="type.name.toLowerCase()">
+    <PokemonResource
+      :resource="type"
+      :storeArray="store.types"
+      :fetch="store.fetchPokemonType"
+    >
+      <template #default="{ resource }">
+        {{ pokemonNameLocalized(resource, store.language) }}
+      </template>
+      <template #else>&nbsp;</template>
+    </PokemonResource>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
 import type { NamedAPIResource } from "@16patsle/pokeapi.js";
 import { usePokemonStore } from "@/stores/pokemonStore";
-import { idFromUrl } from "@/utils/idFromUrl";
 import { pokemonNameLocalized } from "@/utils/pokemonNameLocalized";
+import PokemonResource from "./PokemonResource.vue";
 
-const props = defineProps<{ type: NamedAPIResource }>();
+defineProps<{ type: NamedAPIResource }>();
 
 const store = usePokemonStore();
-
-const typeId = computed(() => idFromUrl(props.type.url));
-
-const typeData = computed(() =>
-  typeId.value ? store.types[typeId.value] : null
-);
-
-const fetchType = async () => {
-  if (!typeData.value && typeId.value) {
-    await store.fetchPokemonType(typeId.value);
-  }
-};
-
-fetchType();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
