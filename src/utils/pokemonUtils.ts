@@ -43,3 +43,10 @@ export function findWithLanguage<T extends ResourceWithLanguage>(
 
 export const formatPokemonId = (id: number | string) =>
   id.toString().padStart(3, "0");
+
+/**
+ * Normalized a string for comparison by lowercasing and removing non-alphanumeric (non-word) characters.
+ * @param text A string to normalize
+ * @returns The normalized string
+ */
+export const normalizeTextForComparison = (text: string) => text.toLowerCase().replace(/\W+/g, "");
