@@ -49,4 +49,5 @@ export const formatPokemonId = (id: number | string) =>
  * @param text A string to normalize
  * @returns The normalized string
  */
-export const normalizeTextForComparison = (text: string) => text.toLowerCase().replace(/\W+/g, "");
+export const normalizeTextForComparison = (text: string) =>
+  text.toLowerCase().replace(/\W+/g, "");
