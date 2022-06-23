@@ -17,7 +17,7 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 
-import { Collapse, Loading, Notification } from "@oruga-ui/oruga-next";
+import Oruga from "@oruga-ui/oruga-next";
 import { bulmaConfig } from "@oruga-ui/theme-bulma";
 import "@oruga-ui/theme-bulma/dist/bulma.css";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -61,9 +61,7 @@ const app = createApp(App)
   .use(createPinia())
   .use(router)
   .component("fa-icon", FontAwesomeIcon)
-  .use(Collapse, bulmaConfig)
-  .use(Loading, bulmaConfig)
-  .use(Notification, bulmaConfig)
+  .use(Oruga, bulmaConfig)
   .component("RecycleScroller", RecycleScroller);
 
 app.mount("#app");
