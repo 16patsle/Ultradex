@@ -3,7 +3,7 @@ import parser from "xml2json";
 import fs from "fs-extra";
 import path from "path";
 
-import wtf, { Document } from "wtf_wikipedia";
+import wtf, { Document, Section } from "wtf_wikipedia";
 import wtfPluginHtml from "wtf-plugin-html";
 
 wtf.extend(wtfPluginHtml);
@@ -30,11 +30,37 @@ type ParsedPage = {
   document: Document;
   id?: number;
   text: {
-    introduction?: any
+    [key: string]: ParsedSection;
+  };
+}
+
+type ParsedSection = {
+  html: string;
+  title: string;
+  index: number;
+  depth: number;
+  children: {
+    [key: string]: ParsedSection;
   };
 }
 
 const doTitle = (title: string) => title;
+
+const makeSection = (section: Section, sectionIndex: number | string) => {
+  const index = typeof sectionIndex === "number" ? sectionIndex : parseInt(sectionIndex);
+  return {
+    html: section.html({
+      title: false,
+      sentences: true,
+      tables: true,
+      lists: true,
+    }),
+    index: index,
+    title: section.title(),
+    depth: section.depth(),
+    children: {},
+  }
+}
 
 (async function parseBulbapediaExport() {
   const xml = await fs.readFile(
@@ -72,21 +98,14 @@ const doTitle = (title: string) => title;
     }
 
     for (const template of templates) {
+      // TODO: Figure out this
       if (template.template === "pokémon infobox") {
         parsedPages[pageIndex].id = parseInt(template.data.ndex, 10);
       }
     }
     for (const sectionIndex in currentPage.document.sections()) {
       if (sectionIndex === "0") {
-        currentPage.text.introduction = {
-          html: currentPage.document.sections()[sectionIndex].html({
-            title: false,
-            sentences: true,
-            tables: true,
-            lists: true,
-          }),
-          index: 0,
-        };
+        currentPage.text.introduction = makeSection(currentPage.document.sections()[sectionIndex], 0);
       } else if (
         currentPage.document.sections()[sectionIndex].depth() === 0
       ) {
@@ -102,20 +121,7 @@ const doTitle = (title: string) => title;
             currentPage.document.sections()[sectionIndex].title()
           );*/
 
-          currentPage.text[sectionTitleKey] = {
-            html: currentPage.document.sections()[sectionIndex].html({
-              title: false,
-              sentences: true,
-              tables: true,
-              lists: true,
-            }),
-            index: sectionIndex,
-            title: doTitle(
-              currentPage.document.sections()[sectionIndex].title()
-            ),
-            depth: currentPage.document.sections()[sectionIndex].depth(),
-            children: {},
-          };
+          currentPage.text[sectionTitleKey] = makeSection(currentPage.document.sections()[sectionIndex], sectionIndex);
         }
 
         let sectionTitleKeyChild = "";
@@ -151,23 +157,7 @@ const doTitle = (title: string) => title;
 
               currentPage.text[sectionTitleKey].children[
                 sectionTitleKeyChild
-              ] = {
-                html: currentPage.document.sections()[sectionIndexChild].html(
-                  {
-                    title: false,
-                    sentences: true,
-                    tables: true,
-                    lists: true,
-                  }
-                ),
-                index: sectionIndexChild - parseInt(sectionIndex) - 1,
-                title: doTitle(
-                  currentPage.document.sections()[sectionIndexChild].title()
-                ),
-                depth:
-                currentPage.document.sections()[sectionIndexChild].depth(),
-                children: {},
-              };
+              ] = makeSection(currentPage.document.sections()[sectionIndexChild], sectionIndexChild - parseInt(sectionIndex) - 1)
             }
           } else if (
             currentPage.document.sections()[sectionIndexChild].depth() > 1
@@ -208,26 +198,8 @@ const doTitle = (title: string) => title;
 
                     currentPage.text[sectionTitleKey].children[
                       sectionTitleKeyChild
-                    ].children[sectionTitleKeyChild2] = {
-                      html: currentPage.document.sections()[sectionIndexChild2].html(
-                        {
-                          title: false,
-                          sentences: true,
-                          tables: true,
-                          lists: true,
-                        }
-                      ),
-                      index: sectionIndexChild2 - sectionIndexChild,
-                      title: doTitle(
-                        currentPage.document
-                          .sections()
-                          [sectionIndexChild2].title()
-                      ),
-                      depth:
-                      currentPage.document.sections()[sectionIndexChild2]
-                          .depth(),
-                      children: {},
-                    };
+                    ].children[sectionTitleKeyChild2] = 
+                    makeSection(currentPage.document.sections()[sectionIndexChild2], sectionIndexChild2 - sectionIndexChild);
                   }
                 } catch (err) {
                   console.error(
@@ -285,26 +257,7 @@ const doTitle = (title: string) => title;
                           sectionTitleKeyChild
                         ].children[sectionTitleKeyChild2].children[
                           sectionTitleKeyChild3
-                        ] = {
-                          html: currentPage.document.sections()[sectionIndexChild3].html(
-                            {
-                              title: false,
-                              sentences: true,
-                              tables: true,
-                              lists: true,
-                            }
-                          ),
-                          index: sectionIndexChild3 - sectionIndexChild2,
-                          title: doTitle(
-                            currentPage.document
-                              .sections()
-                              [sectionIndexChild3].title()
-                          ),
-                          depth:
-                            currentPage.document.sections()[
-                              sectionIndexChild3
-                            ].depth(),
-                        };
+                        ] = makeSection(currentPage.document.sections()[sectionIndexChild3], sectionIndexChild3 - sectionIndexChild2);
                       }
                     } catch (err) {
                       console.error(
