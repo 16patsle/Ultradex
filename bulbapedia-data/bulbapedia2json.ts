@@ -7,6 +7,32 @@ import Document from "./document/Document";
 import doSection from "./output/section";
 import doTitle from "./output/title";
 
+type BulbapediaExport = {
+  mediawiki: {
+    page: BulbapediaPage[];
+  }
+}
+
+type BulbapediaPage = {
+  title: string;
+  revision: BulbapediaRevision;
+}
+
+type BulbapediaRevision = {
+  text: {
+    $t: string;
+  };
+}
+
+type ParsedPage = {
+  title: string;
+  document: Document;
+  id?: number;
+  text: {
+    introduction?: any
+  };
+}
+
 (async function parseBulbapediaExport() {
   const xml = await fs.readFile(
     path.join(__dirname, "bulbapedia-pokemon-export.xml")
@@ -21,25 +47,29 @@ import doTitle from "./output/title";
   } = parser.toJson(xml, {
     object: true,
     coerce: true,
-  });
+  }) as BulbapediaExport;
+
+  const parsedPages: ParsedPage[] = [];
 
   for (const pageIndex in page) {
-    page[pageIndex] = {
+    parsedPages[pageIndex] = {
       title: page[pageIndex].title.replace(" (Pokémon)", ""),
       document: new Document(page[pageIndex].revision.text.$t),
       text: {},
     };
 
-    for (const template of page[pageIndex].document.sections()[0].data
+    const currentPage = parsedPages[pageIndex];
+
+    for (const template of currentPage.document.sections()[0].data
       .templates) {
       if (template.template === "pokémon infobox") {
-        page[pageIndex].id = parseInt(template.data.ndex, 10);
+        parsedPages[pageIndex].id = parseInt(template.data.ndex, 10);
       }
     }
-    for (const sectionIndex in page[pageIndex].document.sections()) {
+    for (const sectionIndex in currentPage.document.sections()) {
       if (sectionIndex === "0") {
-        page[pageIndex].text.introduction = {
-          html: doSection(page[pageIndex].document.sections()[sectionIndex], {
+        currentPage.text.introduction = {
+          html: doSection(currentPage.document.sections()[sectionIndex], {
             title: false,
             sentences: true,
             tables: true,
@@ -48,22 +78,22 @@ import doTitle from "./output/title";
           index: 0,
         };
       } else if (
-        page[pageIndex].document.sections()[sectionIndex].depth === 0
+        currentPage.document.sections()[sectionIndex].depth === 0
       ) {
         const sectionTitleKey =
-          doTitle(page[pageIndex].document.sections()[sectionIndex].title())
+          doTitle(currentPage.document.sections()[sectionIndex].title())
             .toLowerCase()
             .replace(new RegExp(" ", "g"), "_") || sectionIndex;
-        if (!page[pageIndex].text[sectionTitleKey]) {
+        if (!currentPage.text[sectionTitleKey]) {
           /*console.log(
             sectionIndex,
-            page[pageIndex].document.sections()[sectionIndex].data.depth,
+            currentPage.document.sections()[sectionIndex].data.depth,
             sectionIndex,
-            page[pageIndex].document.sections()[sectionIndex].title()
+            currentPage.document.sections()[sectionIndex].title()
           );*/
 
-          page[pageIndex].text[sectionTitleKey] = {
-            html: doSection(page[pageIndex].document.sections()[sectionIndex], {
+          currentPage.text[sectionTitleKey] = {
+            html: doSection(currentPage.document.sections()[sectionIndex], {
               title: false,
               sentences: true,
               tables: true,
@@ -71,9 +101,9 @@ import doTitle from "./output/title";
             }),
             index: sectionIndex,
             title: doTitle(
-              page[pageIndex].document.sections()[sectionIndex].title()
+              currentPage.document.sections()[sectionIndex].title()
             ),
-            depth: page[pageIndex].document.sections()[sectionIndex].data.depth,
+            depth: currentPage.document.sections()[sectionIndex].data.depth,
             children: {},
           };
         }
@@ -83,20 +113,20 @@ import doTitle from "./output/title";
         let sectionTitleKeyChild3 = "";
         for (
           let sectionIndexChild = parseInt(sectionIndex) + 1;
-          sectionIndexChild < page[pageIndex].document.sections().length;
+          sectionIndexChild < currentPage.document.sections().length;
           sectionIndexChild++
         ) {
           if (
-            page[pageIndex].document.sections()[sectionIndexChild].depth === 1
+            currentPage.document.sections()[sectionIndexChild].depth === 1
           ) {
             sectionTitleKeyChild =
               doTitle(
-                page[pageIndex].document.sections()[sectionIndexChild].title()
+                currentPage.document.sections()[sectionIndexChild].title()
               )
                 .toLowerCase()
                 .replace(new RegExp(" ", "g"), "_") || sectionIndexChild;
             if (
-              !page[pageIndex].text[sectionTitleKey].children[
+              !currentPage.text[sectionTitleKey].children[
                 sectionTitleKeyChild
               ]
             ) {
@@ -109,11 +139,11 @@ import doTitle from "./output/title";
                 page[pageIndex].document.sections()[sectionIndexChild].title()
               );*/
 
-              page[pageIndex].text[sectionTitleKey].children[
+              currentPage.text[sectionTitleKey].children[
                 sectionTitleKeyChild
               ] = {
                 html: doSection(
-                  page[pageIndex].document.sections()[sectionIndexChild],
+                  currentPage.document.sections()[sectionIndexChild],
                   {
                     title: false,
                     sentences: true,
@@ -123,29 +153,29 @@ import doTitle from "./output/title";
                 ),
                 index: sectionIndexChild - parseInt(sectionIndex) - 1,
                 title: doTitle(
-                  page[pageIndex].document.sections()[sectionIndexChild].title()
+                  currentPage.document.sections()[sectionIndexChild].title()
                 ),
                 depth:
-                  page[pageIndex].document.sections()[sectionIndexChild].data
+                currentPage.document.sections()[sectionIndexChild].data
                     .depth,
                 children: {},
               };
             }
           } else if (
-            page[pageIndex].document.sections()[sectionIndexChild].depth > 1
+            currentPage.document.sections()[sectionIndexChild].depth > 1
           ) {
             for (
               let sectionIndexChild2 = sectionIndexChild;
-              sectionIndexChild2 < page[pageIndex].document.sections().length;
+              sectionIndexChild2 < currentPage.document.sections().length;
               sectionIndexChild2++
             ) {
               if (
-                page[pageIndex].document.sections()[sectionIndexChild2]
+                currentPage.document.sections()[sectionIndexChild2]
                   .depth === 2
               ) {
                 sectionTitleKeyChild2 =
                   doTitle(
-                    page[pageIndex].document
+                    currentPage.document
                       .sections()
                       [sectionIndexChild2].title()
                   )
@@ -153,7 +183,7 @@ import doTitle from "./output/title";
                     .replace(new RegExp(" ", "g"), "_") || sectionIndexChild2;
                 try {
                   if (
-                    !page[pageIndex].text[sectionTitleKey].children[
+                    !currentPage.text[sectionTitleKey].children[
                       sectionTitleKeyChild
                     ].children[sectionTitleKeyChild2]
                   ) {
@@ -168,11 +198,11 @@ import doTitle from "./output/title";
                         [sectionIndexChild2].title()
                     );*/
 
-                    page[pageIndex].text[sectionTitleKey].children[
+                    currentPage.text[sectionTitleKey].children[
                       sectionTitleKeyChild
                     ].children[sectionTitleKeyChild2] = {
                       html: doSection(
-                        page[pageIndex].document.sections()[sectionIndexChild2],
+                        currentPage.document.sections()[sectionIndexChild2],
                         {
                           title: false,
                           sentences: true,
@@ -182,19 +212,19 @@ import doTitle from "./output/title";
                       ),
                       index: sectionIndexChild2 - sectionIndexChild,
                       title: doTitle(
-                        page[pageIndex].document
+                        currentPage.document
                           .sections()
                           [sectionIndexChild2].title()
                       ),
                       depth:
-                        page[pageIndex].document.sections()[sectionIndexChild2]
+                      currentPage.document.sections()[sectionIndexChild2]
                           .data.depth,
                       children: {},
                     };
                   }
                 } catch (err) {
                   console.error(
-                    `Error with section "${page[pageIndex].document
+                    `Error with section "${currentPage.document
                       .sections()
                       [sectionIndexChild2].title()}" on page "${page[
                       pageIndex
@@ -203,22 +233,22 @@ import doTitle from "./output/title";
                   );
                 }
               } else if (
-                page[pageIndex].document.sections()[sectionIndexChild2].depth >
+                currentPage.document.sections()[sectionIndexChild2].depth >
                 2
               ) {
                 for (
                   let sectionIndexChild3 = sectionIndexChild2;
                   sectionIndexChild3 <
-                  page[pageIndex].document.sections().length;
+                  currentPage.document.sections().length;
                   sectionIndexChild3++
                 ) {
                   if (
-                    page[pageIndex].document.sections()[sectionIndexChild3]
+                    currentPage.document.sections()[sectionIndexChild3]
                       .depth === 3
                   ) {
                     sectionTitleKeyChild3 =
                       doTitle(
-                        page[pageIndex].document
+                        currentPage.document
                           .sections()
                           [sectionIndexChild3].title()
                       )
@@ -227,7 +257,7 @@ import doTitle from "./output/title";
                       sectionIndexChild3;
                     try {
                       if (
-                        !page[pageIndex].text[sectionTitleKey].children[
+                        !currentPage.text[sectionTitleKey].children[
                           sectionTitleKeyChild
                         ].children[sectionTitleKeyChild2].children[
                           sectionTitleKeyChild3
@@ -244,13 +274,13 @@ import doTitle from "./output/title";
                           sectionIndexChild3 - sectionIndexChild2
                         );*/
 
-                        page[pageIndex].text[sectionTitleKey].children[
+                        currentPage.text[sectionTitleKey].children[
                           sectionTitleKeyChild
                         ].children[sectionTitleKeyChild2].children[
                           sectionTitleKeyChild3
                         ] = {
                           html: doSection(
-                            page[pageIndex].document.sections()[
+                            currentPage.document.sections()[
                               sectionIndexChild3
                             ],
                             {
@@ -262,19 +292,19 @@ import doTitle from "./output/title";
                           ),
                           index: sectionIndexChild3 - sectionIndexChild2,
                           title: doTitle(
-                            page[pageIndex].document
+                            currentPage.document
                               .sections()
                               [sectionIndexChild3].title()
                           ),
                           depth:
-                            page[pageIndex].document.sections()[
+                            currentPage.document.sections()[
                               sectionIndexChild3
                             ].data.depth,
                         };
                       }
                     } catch (err) {
                       console.error(
-                        `Error with section "${page[pageIndex].document
+                        `Error with section "${currentPage.document
                           .sections()
                           [sectionIndexChild3].title()}" on page "${page[
                           pageIndex
@@ -296,9 +326,9 @@ import doTitle from "./output/title";
         }
       }
     }
-    page[pageIndex].document = undefined;
+    currentPage.document = undefined;
     fs.writeFile(
-      path.join(__dirname, "../public/data", `${page[pageIndex].id}.json`),
+      path.join(__dirname, "../public/data", `${currentPage.id}.json`),
       JSON.stringify(page[pageIndex])
     );
   }
