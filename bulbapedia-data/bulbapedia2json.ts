@@ -3,9 +3,10 @@ import parser from "xml2json";
 import fs from "fs-extra";
 import path from "path";
 
-import Document from "./document/Document";
-import doSection from "./output/section";
-import doTitle from "./output/title";
+import wtf from "wtf_wikipedia";
+import wtfPluginHtml from "wtf-plugin-html";
+
+wtf.extend(wtfPluginHtml);
 
 type BulbapediaExport = {
   mediawiki: {
@@ -33,6 +34,10 @@ type ParsedPage = {
   };
 }
 
+type Document = ReturnType<typeof wtf>;
+
+const doTitle = (title: string) => title;
+
 (async function parseBulbapediaExport() {
   const xml = await fs.readFile(
     path.join(__dirname, "bulbapedia-pokemon-export.xml")
@@ -54,14 +59,21 @@ type ParsedPage = {
   for (const pageIndex in page) {
     parsedPages[pageIndex] = {
       title: page[pageIndex].title.replace(" (Pokémon)", ""),
-      document: new Document(page[pageIndex].revision.text.$t),
+      document: wtf(page[pageIndex].revision.text.$t),
       text: {},
     };
 
     const currentPage = parsedPages[pageIndex];
 
-    for (const template of currentPage.document.sections()[0].data
-      .templates) {
+    let rawTemplates = currentPage.document.sections()[0].templates();
+    let templates: object[] = []
+    if (!Array.isArray(rawTemplates)) {
+      templates = [rawTemplates]
+    } else {
+      templates = rawTemplates
+    }
+
+    for (const template of templates) {
       if (template.template === "pokémon infobox") {
         parsedPages[pageIndex].id = parseInt(template.data.ndex, 10);
       }
@@ -69,7 +81,8 @@ type ParsedPage = {
     for (const sectionIndex in currentPage.document.sections()) {
       if (sectionIndex === "0") {
         currentPage.text.introduction = {
-          html: doSection(currentPage.document.sections()[sectionIndex], {
+          // @ts-expect-error Type def doesn't work well with plugins 
+          html: currentPage.document.sections()[sectionIndex].html({
             title: false,
             sentences: true,
             tables: true,
@@ -78,7 +91,7 @@ type ParsedPage = {
           index: 0,
         };
       } else if (
-        currentPage.document.sections()[sectionIndex].depth === 0
+        currentPage.document.sections()[sectionIndex].depth() === 0
       ) {
         const sectionTitleKey =
           doTitle(currentPage.document.sections()[sectionIndex].title())
@@ -93,7 +106,8 @@ type ParsedPage = {
           );*/
 
           currentPage.text[sectionTitleKey] = {
-            html: doSection(currentPage.document.sections()[sectionIndex], {
+            // @ts-expect-error Type def doesn't work well with plugins
+            html: currentPage.document.sections()[sectionIndex].html({
               title: false,
               sentences: true,
               tables: true,
@@ -103,7 +117,7 @@ type ParsedPage = {
             title: doTitle(
               currentPage.document.sections()[sectionIndex].title()
             ),
-            depth: currentPage.document.sections()[sectionIndex].data.depth,
+            depth: currentPage.document.sections()[sectionIndex].depth(),
             children: {},
           };
         }
@@ -117,7 +131,7 @@ type ParsedPage = {
           sectionIndexChild++
         ) {
           if (
-            currentPage.document.sections()[sectionIndexChild].depth === 1
+            currentPage.document.sections()[sectionIndexChild].depth() === 1
           ) {
             sectionTitleKeyChild =
               doTitle(
@@ -142,8 +156,8 @@ type ParsedPage = {
               currentPage.text[sectionTitleKey].children[
                 sectionTitleKeyChild
               ] = {
-                html: doSection(
-                  currentPage.document.sections()[sectionIndexChild],
+                // @ts-expect-error Type def doesn't work well with plugins
+                html: currentPage.document.sections()[sectionIndexChild].html(
                   {
                     title: false,
                     sentences: true,
@@ -156,13 +170,12 @@ type ParsedPage = {
                   currentPage.document.sections()[sectionIndexChild].title()
                 ),
                 depth:
-                currentPage.document.sections()[sectionIndexChild].data
-                    .depth,
+                currentPage.document.sections()[sectionIndexChild].depth(),
                 children: {},
               };
             }
           } else if (
-            currentPage.document.sections()[sectionIndexChild].depth > 1
+            currentPage.document.sections()[sectionIndexChild].depth() > 1
           ) {
             for (
               let sectionIndexChild2 = sectionIndexChild;
@@ -171,7 +184,7 @@ type ParsedPage = {
             ) {
               if (
                 currentPage.document.sections()[sectionIndexChild2]
-                  .depth === 2
+                  .depth() === 2
               ) {
                 sectionTitleKeyChild2 =
                   doTitle(
@@ -201,8 +214,8 @@ type ParsedPage = {
                     currentPage.text[sectionTitleKey].children[
                       sectionTitleKeyChild
                     ].children[sectionTitleKeyChild2] = {
-                      html: doSection(
-                        currentPage.document.sections()[sectionIndexChild2],
+                      // @ts-expect-error Type def doesn't work well with plugins
+                      html: currentPage.document.sections()[sectionIndexChild2].html(
                         {
                           title: false,
                           sentences: true,
@@ -218,7 +231,7 @@ type ParsedPage = {
                       ),
                       depth:
                       currentPage.document.sections()[sectionIndexChild2]
-                          .data.depth,
+                          .depth(),
                       children: {},
                     };
                   }
@@ -233,7 +246,7 @@ type ParsedPage = {
                   );
                 }
               } else if (
-                currentPage.document.sections()[sectionIndexChild2].depth >
+                currentPage.document.sections()[sectionIndexChild2].depth() >
                 2
               ) {
                 for (
@@ -244,7 +257,7 @@ type ParsedPage = {
                 ) {
                   if (
                     currentPage.document.sections()[sectionIndexChild3]
-                      .depth === 3
+                      .depth() === 3
                   ) {
                     sectionTitleKeyChild3 =
                       doTitle(
@@ -279,10 +292,8 @@ type ParsedPage = {
                         ].children[sectionTitleKeyChild2].children[
                           sectionTitleKeyChild3
                         ] = {
-                          html: doSection(
-                            currentPage.document.sections()[
-                              sectionIndexChild3
-                            ],
+                          // @ts-expect-error Type def doesn't work well with plugins
+                          html: currentPage.document.sections()[sectionIndexChild3].html(
                             {
                               title: false,
                               sentences: true,
@@ -299,7 +310,7 @@ type ParsedPage = {
                           depth:
                             currentPage.document.sections()[
                               sectionIndexChild3
-                            ].data.depth,
+                            ].depth(),
                         };
                       }
                     } catch (err) {
