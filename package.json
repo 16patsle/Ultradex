@@ -13,7 +13,7 @@
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "bulbapedia": "vite-node bulbapedia-data/bulbapedia2json.ts",
-    "postinstall": "npm run bulbapedia",
+    "postinstall": "patch-package && npm run bulbapedia",
     "preinstall": "curl --data \"key=$FONTAWESOME_KEY\" https://cdn.multitek.no/packages/fontawesome-solid.php --output fontawesome-solid.tar && tar -xf fontawesome-solid.tar"
   },
   "dependencies": {
@@ -24,6 +24,7 @@
     "@oruga-ui/oruga-next": "^0.5.5",
     "@oruga-ui/theme-bulma": "^0.2.6",
     "core-js": "^3.23.2",
+    "patch-package": "^6.4.7",
     "pinia": "^2.0.14",
     "register-service-worker": "^1.7.2",
     "vite-node": "^0.16.0",

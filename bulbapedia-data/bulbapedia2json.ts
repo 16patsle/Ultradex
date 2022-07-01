@@ -3,7 +3,7 @@ import parser from "xml2json";
 import fs from "fs-extra";
 import path from "path";
 
-import wtf from "wtf_wikipedia";
+import wtf, { Document } from "wtf_wikipedia";
 import wtfPluginHtml from "wtf-plugin-html";
 
 wtf.extend(wtfPluginHtml);
@@ -33,8 +33,6 @@ type ParsedPage = {
     introduction?: any
   };
 }
-
-type Document = ReturnType<typeof wtf>;
 
 const doTitle = (title: string) => title;
 
@@ -81,7 +79,6 @@ const doTitle = (title: string) => title;
     for (const sectionIndex in currentPage.document.sections()) {
       if (sectionIndex === "0") {
         currentPage.text.introduction = {
-          // @ts-expect-error Type def doesn't work well with plugins 
           html: currentPage.document.sections()[sectionIndex].html({
             title: false,
             sentences: true,
@@ -106,7 +103,6 @@ const doTitle = (title: string) => title;
           );*/
 
           currentPage.text[sectionTitleKey] = {
-            // @ts-expect-error Type def doesn't work well with plugins
             html: currentPage.document.sections()[sectionIndex].html({
               title: false,
               sentences: true,
@@ -156,7 +152,6 @@ const doTitle = (title: string) => title;
               currentPage.text[sectionTitleKey].children[
                 sectionTitleKeyChild
               ] = {
-                // @ts-expect-error Type def doesn't work well with plugins
                 html: currentPage.document.sections()[sectionIndexChild].html(
                   {
                     title: false,
@@ -214,7 +209,6 @@ const doTitle = (title: string) => title;
                     currentPage.text[sectionTitleKey].children[
                       sectionTitleKeyChild
                     ].children[sectionTitleKeyChild2] = {
-                      // @ts-expect-error Type def doesn't work well with plugins
                       html: currentPage.document.sections()[sectionIndexChild2].html(
                         {
                           title: false,
@@ -292,7 +286,6 @@ const doTitle = (title: string) => title;
                         ].children[sectionTitleKeyChild2].children[
                           sectionTitleKeyChild3
                         ] = {
-                          // @ts-expect-error Type def doesn't work well with plugins
                           html: currentPage.document.sections()[sectionIndexChild3].html(
                             {
                               title: false,
