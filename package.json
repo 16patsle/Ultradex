@@ -12,7 +12,7 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "bulbapedia": "node bulbapedia-data/bulbapedia2json.js",
+    "bulbapedia": "vite-node bulbapedia-data/bulbapedia2json.ts",
     "postinstall": "npm run bulbapedia",
     "preinstall": "curl --data \"key=$FONTAWESOME_KEY\" https://cdn.multitek.no/packages/fontawesome-solid.php --output fontawesome-solid.tar && tar -xf fontawesome-solid.tar"
   },
@@ -26,6 +26,7 @@
     "core-js": "^3.23.2",
     "pinia": "^2.0.14",
     "register-service-worker": "^1.7.2",
+    "vite-node": "^0.16.0",
     "vue": "^3.2.37",
     "vue-router": "^4.0.16",
     "vue-virtual-scroller": "^2.0.0-alpha.1"
