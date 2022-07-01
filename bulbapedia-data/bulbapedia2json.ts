@@ -1,11 +1,11 @@
 /* eslint-env node */
-const parser = require("xml2json");
-const fs = require("fs-extra");
-const path = require("path");
+import parser from "xml2json";
+import fs from "fs-extra";
+import path from "path";
 
-const Document = require("./document/Document");
-const doSection = require("./output/section");
-const doTitle = require("./output/title");
+import Document from "./document/Document";
+import doSection from "./output/section";
+import doTitle from "./output/title";
 
 (async function parseBulbapediaExport() {
   const xml = await fs.readFile(
@@ -121,7 +121,7 @@ const doTitle = require("./output/title");
                     lists: true,
                   }
                 ),
-                index: sectionIndexChild - sectionIndex - 1,
+                index: sectionIndexChild - parseInt(sectionIndex) - 1,
                 title: doTitle(
                   page[pageIndex].document.sections()[sectionIndexChild].title()
                 ),
@@ -135,7 +135,7 @@ const doTitle = require("./output/title");
             page[pageIndex].document.sections()[sectionIndexChild].depth > 1
           ) {
             for (
-              let sectionIndexChild2 = parseInt(sectionIndexChild);
+              let sectionIndexChild2 = sectionIndexChild;
               sectionIndexChild2 < page[pageIndex].document.sections().length;
               sectionIndexChild2++
             ) {
@@ -207,7 +207,7 @@ const doTitle = require("./output/title");
                 2
               ) {
                 for (
-                  let sectionIndexChild3 = parseInt(sectionIndexChild2);
+                  let sectionIndexChild3 = sectionIndexChild2;
                   sectionIndexChild3 <
                   page[pageIndex].document.sections().length;
                   sectionIndexChild3++
