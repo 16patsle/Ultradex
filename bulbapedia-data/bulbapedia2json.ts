@@ -63,6 +63,42 @@ const makeSection = (section: Section, sectionIndex: number | string) => {
 const makeSectionKey = (title: string) => title.toLowerCase()
 .replace(new RegExp(" ", "g"), "_");
 
+const loopSectionChildren = (startIndex: number, currentPage: ParsedPage, level: number, parentSection: ParsedSection) => {
+  for (
+    let sectionIndexChild = startIndex;
+    sectionIndexChild <
+    currentPage.document.sections().length;
+    sectionIndexChild++
+  ) {
+    const section = currentPage.document.sections()[sectionIndexChild]
+    const sectionTitleKey =
+        makeSectionKey(
+          section.title()
+        ) ||
+        String(sectionIndexChild);
+    if (section.depth() === level) {
+      try {
+        if (
+          !parentSection.children[sectionTitleKey]
+        ) {
+          parentSection.children[sectionTitleKey] = makeSection(section, sectionIndexChild - startIndex);
+        }
+      } catch (err) {
+        console.error(
+          `Error with section "${section.title()}" (level ${section.depth()}) on page "${currentPage.title.replace(" (Pokémon)", "")}".`,
+          err
+        );
+      }
+    } else if (
+      section.depth() > level
+    ) {
+      loopSectionChildren(sectionIndexChild, currentPage, level + 1, parentSection.children[sectionTitleKey]);
+    } else {
+      break;
+    }
+  }
+}
+
 (async function parseBulbapediaExport() {
   const xml = await fs.readFile(
     path.join(__dirname, "bulbapedia-pokemon-export.xml")
@@ -113,165 +149,10 @@ const makeSectionKey = (title: string) => title.toLowerCase()
         const sectionTitleKey =
           makeSectionKey(currentPage.document.sections()[sectionIndex].title()) || sectionIndex;
         if (!currentPage.text[sectionTitleKey]) {
-          /*console.log(
-            sectionIndex,
-            currentPage.document.sections()[sectionIndex].data.depth,
-            sectionIndex,
-            currentPage.document.sections()[sectionIndex].title()
-          );*/
-
           currentPage.text[sectionTitleKey] = makeSection(currentPage.document.sections()[sectionIndex], sectionIndex);
         }
 
-        let sectionTitleKeyChild = "";
-        let sectionTitleKeyChild2 = "";
-        let sectionTitleKeyChild3 = "";
-        for (
-          let sectionIndexChild = parseInt(sectionIndex) + 1;
-          sectionIndexChild < currentPage.document.sections().length;
-          sectionIndexChild++
-        ) {
-          if (
-            currentPage.document.sections()[sectionIndexChild].depth() === 1
-          ) {
-            sectionTitleKeyChild =
-              makeSectionKey(currentPage.document.sections()[sectionIndexChild].title()) || String(sectionIndexChild);
-            if (
-              !currentPage.text[sectionTitleKey].children[
-                sectionTitleKeyChild
-              ]
-            ) {
-              /*console.log(
-                sectionIndexChild,
-
-                page[pageIndex].document.sections()[sectionIndexChild].data
-                  .depth,
-                sectionIndexChild - sectionIndex,
-                page[pageIndex].document.sections()[sectionIndexChild].title()
-              );*/
-
-              currentPage.text[sectionTitleKey].children[
-                sectionTitleKeyChild
-              ] = makeSection(currentPage.document.sections()[sectionIndexChild], sectionIndexChild - parseInt(sectionIndex) - 1)
-            }
-          } else if (
-            currentPage.document.sections()[sectionIndexChild].depth() > 1
-          ) {
-            for (
-              let sectionIndexChild2 = sectionIndexChild;
-              sectionIndexChild2 < currentPage.document.sections().length;
-              sectionIndexChild2++
-            ) {
-              if (
-                currentPage.document.sections()[sectionIndexChild2]
-                  .depth() === 2
-              ) {
-                sectionTitleKeyChild2 =
-                  makeSectionKey(
-                    currentPage.document
-                      .sections()
-                      [sectionIndexChild2].title()
-                  ) || String(sectionIndexChild2);
-                try {
-                  if (
-                    !currentPage.text[sectionTitleKey].children[
-                      sectionTitleKeyChild
-                    ].children[sectionTitleKeyChild2]
-                  ) {
-                    /*console.log(
-                      sectionIndexChild2,
-
-                      page[pageIndex].document.sections()[sectionIndexChild2].data
-                        .depth,
-                      sectionIndexChild2 - sectionIndexChild,
-                      page[pageIndex].document
-                        .sections()
-                        [sectionIndexChild2].title()
-                    );*/
-
-                    currentPage.text[sectionTitleKey].children[
-                      sectionTitleKeyChild
-                    ].children[sectionTitleKeyChild2] = 
-                    makeSection(currentPage.document.sections()[sectionIndexChild2], sectionIndexChild2 - sectionIndexChild);
-                  }
-                } catch (err) {
-                  console.error(
-                    `Error with section "${currentPage.document
-                      .sections()
-                      [sectionIndexChild2].title()}" on page "${page[
-                      pageIndex
-                    ].title.replace(" (Pokémon)", "")}".`,
-                    err
-                  );
-                }
-              } else if (
-                currentPage.document.sections()[sectionIndexChild2].depth() >
-                2
-              ) {
-                for (
-                  let sectionIndexChild3 = sectionIndexChild2;
-                  sectionIndexChild3 <
-                  currentPage.document.sections().length;
-                  sectionIndexChild3++
-                ) {
-                  if (
-                    currentPage.document.sections()[sectionIndexChild3]
-                      .depth() === 3
-                  ) {
-                    sectionTitleKeyChild3 =
-                      makeSectionKey(
-                        currentPage.document
-                          .sections()
-                          [sectionIndexChild3].title()
-                      ) ||
-                      String(sectionIndexChild3);
-                    try {
-                      if (
-                        !currentPage.text[sectionTitleKey].children[
-                          sectionTitleKeyChild
-                        ].children[sectionTitleKeyChild2].children[
-                          sectionTitleKeyChild3
-                        ]
-                      ) {
-                        /*console.log(
-                          sectionIndexChild3,
-                          page[pageIndex].document.sections()[sectionIndexChild3]
-                            .data.depth,
-                          sectionIndexChild3 - sectionIndexChild2,
-                          page[pageIndex].document
-                            .sections()
-                            [sectionIndexChild3].title(),
-                          sectionIndexChild3 - sectionIndexChild2
-                        );*/
-
-                        currentPage.text[sectionTitleKey].children[
-                          sectionTitleKeyChild
-                        ].children[sectionTitleKeyChild2].children[
-                          sectionTitleKeyChild3
-                        ] = makeSection(currentPage.document.sections()[sectionIndexChild3], sectionIndexChild3 - sectionIndexChild2);
-                      }
-                    } catch (err) {
-                      console.error(
-                        `Error with section "${currentPage.document
-                          .sections()
-                          [sectionIndexChild3].title()}" on page "${page[
-                          pageIndex
-                        ].title.replace(" (Pokémon)", "")}".`,
-                        err
-                      );
-                    }
-                  } else {
-                    break;
-                  }
-                }
-              } else {
-                break;
-              }
-            }
-          } else {
-            break;
-          }
-        }
+        loopSectionChildren(parseInt(sectionIndex), currentPage, 1, currentPage.text[sectionTitleKey]);
       }
     }
     currentPage.document = undefined;
