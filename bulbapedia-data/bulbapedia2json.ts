@@ -64,48 +64,34 @@ const makeSection = (section: Section, sectionIndex: number | string) => {
 const makeSectionKey = (title: string) =>
   title.toLowerCase().replace(new RegExp(" ", "g"), "_");
 
-const loopSectionChildren = (
-  startIndex: number,
-  currentPage: ParsedPage,
-  level: number,
-  parentSection: ParsedSection
-) => {
-  for (
-    let sectionIndexChild = startIndex;
-    sectionIndexChild < currentPage.document.sections().length;
-    sectionIndexChild++
-  ) {
-    const section = currentPage.document.sections()[sectionIndexChild];
+/**
+ * Add sections as children to their parent.
+ *
+ * Loosely based on https://www.tutorialspoint.com/build-tree-array-from-flat-array-in-javascript
+ * @param array - array of sections
+ * @returns An object with the sections keyed by their title, and children added to their parents.
+ */
+const listToTree = (array: Section[]) => {
+  const result: { [key: string]: ParsedSection } = {};
+
+  const parsedSectionArray = array.map((section) => {
+    const sectionIndex = section.index() || 0;
+    return makeSection(section, sectionIndex);
+  });
+
+  for (let i = 0; i < array.length; i += 1) {
+    const section = array[i];
+    const parentIndex = section.parent()?.index();
+    const parsedSection = parsedSectionArray[i];
     const sectionTitleKey =
-      makeSectionKey(section.title()) || String(sectionIndexChild);
-    if (section.depth() === level) {
-      try {
-        if (!parentSection.children[sectionTitleKey]) {
-          parentSection.children[sectionTitleKey] = makeSection(
-            section,
-            sectionIndexChild - startIndex
-          );
-        }
-      } catch (err) {
-        console.error(
-          `Error with section "${section.title()}" (level ${section.depth()}) on page "${currentPage.title.replace(
-            " (Pokémon)",
-            ""
-          )}".`,
-          err
-        );
-      }
-    } else if (section.depth() > level) {
-      loopSectionChildren(
-        sectionIndexChild,
-        currentPage,
-        level + 1,
-        parentSection.children[sectionTitleKey]
-      );
+      makeSectionKey(section.title()) || (i === 0 ? "introduction" : String(i));
+    if (parentIndex) {
+      parsedSectionArray[parentIndex].children[sectionTitleKey] = parsedSection;
     } else {
-      break;
+      result[sectionTitleKey] = parsedSection;
     }
   }
+  return result;
 };
 
 (async function parseBulbapediaExport() {
@@ -126,6 +112,7 @@ const loopSectionChildren = (
 
   const parsedPages: ParsedPage[] = [];
 
+  //let count = 1;
   const promises: Promise<any>[] = [];
 
   for (const pageIndex in page) {
@@ -135,57 +122,34 @@ const loopSectionChildren = (
       text: {},
     };
 
+    // For debugging
+    //if (count > 1) {
+    //  break;
+    //}
+    //count++;
+
     const currentPage = parsedPages[pageIndex];
 
-    const rawTemplates = currentPage.document.sections()[0].templates();
-    let templates: object[] = [];
-    if (!Array.isArray(rawTemplates)) {
-      templates = [rawTemplates];
-    } else {
-      templates = rawTemplates;
-    }
-
-    for (const template of templates) {
-      // TODO: Figure out this
-      if (template.template === "pokémon infobox") {
-        parsedPages[pageIndex].id = parseInt(template.data.ndex, 10);
+    for (const infobox of currentPage.document.infoboxes()) {
+      if (infobox.type() === "pokémon infobox") {
+        parsedPages[pageIndex].id = infobox.data.ndex.json().number;
+        break;
       }
     }
-    for (const sectionIndex in currentPage.document.sections()) {
-      if (sectionIndex === "0") {
-        currentPage.text.introduction = makeSection(
-          currentPage.document.sections()[sectionIndex],
-          0
-        );
-      } else if (currentPage.document.sections()[sectionIndex].depth() === 0) {
-        const sectionTitleKey =
-          makeSectionKey(
-            currentPage.document.sections()[sectionIndex].title()
-          ) || sectionIndex;
-        if (!currentPage.text[sectionTitleKey]) {
-          currentPage.text[sectionTitleKey] = makeSection(
-            currentPage.document.sections()[sectionIndex],
-            sectionIndex
-          );
-        }
 
-        loopSectionChildren(
-          parseInt(sectionIndex),
-          currentPage,
-          1,
-          currentPage.text[sectionTitleKey]
-        );
-      }
-    }
-    currentPage.document = undefined;
-    console.log(currentPage)
-    promises.push(fs.writeFile(
-      path.join(__dirname, "../public/data", `${currentPage.id}.json`),
-      JSON.stringify(page[pageIndex])
-    ));
+    currentPage.text = listToTree(currentPage.document.sections());
+
+    const { document, ...completedPage } = currentPage;
+
+    promises.push(
+      fs.writeFile(
+        path.join(__dirname, "../public/data", `${currentPage.id}.json`),
+        JSON.stringify(completedPage)
+      )
+    );
   }
 
-  await Promise.all(promises)
+  await Promise.all(promises);
 })().catch((err) => console.log(err));
 
 // Start reading from stdin so we don't exit.
