@@ -11,19 +11,19 @@ wtf.extend(wtfPluginHtml);
 type BulbapediaExport = {
   mediawiki: {
     page: BulbapediaPage[];
-  }
-}
+  };
+};
 
 type BulbapediaPage = {
   title: string;
   revision: BulbapediaRevision;
-}
+};
 
 type BulbapediaRevision = {
   text: {
     $t: string;
   };
-}
+};
 
 type ParsedPage = {
   title: string;
@@ -32,7 +32,7 @@ type ParsedPage = {
   text: {
     [key: string]: ParsedSection;
   };
-}
+};
 
 type ParsedSection = {
   html: string;
@@ -42,10 +42,11 @@ type ParsedSection = {
   children: {
     [key: string]: ParsedSection;
   };
-}
+};
 
 const makeSection = (section: Section, sectionIndex: number | string) => {
-  const index = typeof sectionIndex === "number" ? sectionIndex : parseInt(sectionIndex);
+  const index =
+    typeof sectionIndex === "number" ? sectionIndex : parseInt(sectionIndex);
   return {
     html: section.html({
       title: false,
@@ -57,47 +58,55 @@ const makeSection = (section: Section, sectionIndex: number | string) => {
     title: section.title(),
     depth: section.depth(),
     children: {},
-  }
-}
+  };
+};
 
-const makeSectionKey = (title: string) => title.toLowerCase()
-.replace(new RegExp(" ", "g"), "_");
+const makeSectionKey = (title: string) =>
+  title.toLowerCase().replace(new RegExp(" ", "g"), "_");
 
-const loopSectionChildren = (startIndex: number, currentPage: ParsedPage, level: number, parentSection: ParsedSection) => {
+const loopSectionChildren = (
+  startIndex: number,
+  currentPage: ParsedPage,
+  level: number,
+  parentSection: ParsedSection
+) => {
   for (
     let sectionIndexChild = startIndex;
-    sectionIndexChild <
-    currentPage.document.sections().length;
+    sectionIndexChild < currentPage.document.sections().length;
     sectionIndexChild++
   ) {
-    const section = currentPage.document.sections()[sectionIndexChild]
+    const section = currentPage.document.sections()[sectionIndexChild];
     const sectionTitleKey =
-        makeSectionKey(
-          section.title()
-        ) ||
-        String(sectionIndexChild);
+      makeSectionKey(section.title()) || String(sectionIndexChild);
     if (section.depth() === level) {
       try {
-        if (
-          !parentSection.children[sectionTitleKey]
-        ) {
-          parentSection.children[sectionTitleKey] = makeSection(section, sectionIndexChild - startIndex);
+        if (!parentSection.children[sectionTitleKey]) {
+          parentSection.children[sectionTitleKey] = makeSection(
+            section,
+            sectionIndexChild - startIndex
+          );
         }
       } catch (err) {
         console.error(
-          `Error with section "${section.title()}" (level ${section.depth()}) on page "${currentPage.title.replace(" (Pokémon)", "")}".`,
+          `Error with section "${section.title()}" (level ${section.depth()}) on page "${currentPage.title.replace(
+            " (Pokémon)",
+            ""
+          )}".`,
           err
         );
       }
-    } else if (
-      section.depth() > level
-    ) {
-      loopSectionChildren(sectionIndexChild, currentPage, level + 1, parentSection.children[sectionTitleKey]);
+    } else if (section.depth() > level) {
+      loopSectionChildren(
+        sectionIndexChild,
+        currentPage,
+        level + 1,
+        parentSection.children[sectionTitleKey]
+      );
     } else {
       break;
     }
   }
-}
+};
 
 (async function parseBulbapediaExport() {
   const xml = await fs.readFile(
@@ -126,12 +135,12 @@ const loopSectionChildren = (startIndex: number, currentPage: ParsedPage, level:
 
     const currentPage = parsedPages[pageIndex];
 
-    let rawTemplates = currentPage.document.sections()[0].templates();
-    let templates: object[] = []
+    const rawTemplates = currentPage.document.sections()[0].templates();
+    let templates: object[] = [];
     if (!Array.isArray(rawTemplates)) {
-      templates = [rawTemplates]
+      templates = [rawTemplates];
     } else {
-      templates = rawTemplates
+      templates = rawTemplates;
     }
 
     for (const template of templates) {
@@ -142,17 +151,28 @@ const loopSectionChildren = (startIndex: number, currentPage: ParsedPage, level:
     }
     for (const sectionIndex in currentPage.document.sections()) {
       if (sectionIndex === "0") {
-        currentPage.text.introduction = makeSection(currentPage.document.sections()[sectionIndex], 0);
-      } else if (
-        currentPage.document.sections()[sectionIndex].depth() === 0
-      ) {
+        currentPage.text.introduction = makeSection(
+          currentPage.document.sections()[sectionIndex],
+          0
+        );
+      } else if (currentPage.document.sections()[sectionIndex].depth() === 0) {
         const sectionTitleKey =
-          makeSectionKey(currentPage.document.sections()[sectionIndex].title()) || sectionIndex;
+          makeSectionKey(
+            currentPage.document.sections()[sectionIndex].title()
+          ) || sectionIndex;
         if (!currentPage.text[sectionTitleKey]) {
-          currentPage.text[sectionTitleKey] = makeSection(currentPage.document.sections()[sectionIndex], sectionIndex);
+          currentPage.text[sectionTitleKey] = makeSection(
+            currentPage.document.sections()[sectionIndex],
+            sectionIndex
+          );
         }
 
-        loopSectionChildren(parseInt(sectionIndex), currentPage, 1, currentPage.text[sectionTitleKey]);
+        loopSectionChildren(
+          parseInt(sectionIndex),
+          currentPage,
+          1,
+          currentPage.text[sectionTitleKey]
+        );
       }
     }
     currentPage.document = undefined;
