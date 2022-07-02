@@ -44,8 +44,6 @@ type ParsedSection = {
   };
 }
 
-const doTitle = (title: string) => title;
-
 const makeSection = (section: Section, sectionIndex: number | string) => {
   const index = typeof sectionIndex === "number" ? sectionIndex : parseInt(sectionIndex);
   return {
@@ -61,6 +59,9 @@ const makeSection = (section: Section, sectionIndex: number | string) => {
     children: {},
   }
 }
+
+const makeSectionKey = (title: string) => title.toLowerCase()
+.replace(new RegExp(" ", "g"), "_");
 
 (async function parseBulbapediaExport() {
   const xml = await fs.readFile(
@@ -110,9 +111,7 @@ const makeSection = (section: Section, sectionIndex: number | string) => {
         currentPage.document.sections()[sectionIndex].depth() === 0
       ) {
         const sectionTitleKey =
-          doTitle(currentPage.document.sections()[sectionIndex].title())
-            .toLowerCase()
-            .replace(new RegExp(" ", "g"), "_") || sectionIndex;
+          makeSectionKey(currentPage.document.sections()[sectionIndex].title()) || sectionIndex;
         if (!currentPage.text[sectionTitleKey]) {
           /*console.log(
             sectionIndex,
@@ -136,11 +135,7 @@ const makeSection = (section: Section, sectionIndex: number | string) => {
             currentPage.document.sections()[sectionIndexChild].depth() === 1
           ) {
             sectionTitleKeyChild =
-              doTitle(
-                currentPage.document.sections()[sectionIndexChild].title()
-              )
-                .toLowerCase()
-                .replace(new RegExp(" ", "g"), "_") || sectionIndexChild;
+              makeSectionKey(currentPage.document.sections()[sectionIndexChild].title()) || String(sectionIndexChild);
             if (
               !currentPage.text[sectionTitleKey].children[
                 sectionTitleKeyChild
@@ -172,13 +167,11 @@ const makeSection = (section: Section, sectionIndex: number | string) => {
                   .depth() === 2
               ) {
                 sectionTitleKeyChild2 =
-                  doTitle(
+                  makeSectionKey(
                     currentPage.document
                       .sections()
                       [sectionIndexChild2].title()
-                  )
-                    .toLowerCase()
-                    .replace(new RegExp(" ", "g"), "_") || sectionIndexChild2;
+                  ) || String(sectionIndexChild2);
                 try {
                   if (
                     !currentPage.text[sectionTitleKey].children[
@@ -226,14 +219,12 @@ const makeSection = (section: Section, sectionIndex: number | string) => {
                       .depth() === 3
                   ) {
                     sectionTitleKeyChild3 =
-                      doTitle(
+                      makeSectionKey(
                         currentPage.document
                           .sections()
                           [sectionIndexChild3].title()
-                      )
-                        .toLowerCase()
-                        .replace(new RegExp(" ", "g"), "_") ||
-                      sectionIndexChild3;
+                      ) ||
+                      String(sectionIndexChild3);
                     try {
                       if (
                         !currentPage.text[sectionTitleKey].children[
