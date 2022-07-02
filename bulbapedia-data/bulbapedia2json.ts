@@ -114,7 +114,7 @@ const loopSectionChildren = (
   );
 
   if (!fs.existsSync(path.join(__dirname, "../public/data"))) {
-    fs.mkdirSync(path.join(__dirname, "../public/data"));
+    await fs.mkdir(path.join(__dirname, "../public/data"));
   }
 
   const {
@@ -125,6 +125,8 @@ const loopSectionChildren = (
   }) as BulbapediaExport;
 
   const parsedPages: ParsedPage[] = [];
+
+  const promises: Promise<any>[] = [];
 
   for (const pageIndex in page) {
     parsedPages[pageIndex] = {
@@ -176,11 +178,14 @@ const loopSectionChildren = (
       }
     }
     currentPage.document = undefined;
-    fs.writeFile(
+    console.log(currentPage)
+    promises.push(fs.writeFile(
       path.join(__dirname, "../public/data", `${currentPage.id}.json`),
       JSON.stringify(page[pageIndex])
-    );
+    ));
   }
+
+  await Promise.all(promises)
 })().catch((err) => console.log(err));
 
 // Start reading from stdin so we don't exit.
