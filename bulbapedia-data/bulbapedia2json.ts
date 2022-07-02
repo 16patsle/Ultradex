@@ -52,7 +52,7 @@ const makeSection = (section: Section, sectionIndex: number | string) => {
       headers: false,
       images: true,
       tables: true,
-      lists: true,
+      lists: index === 0 ? false: true,
       paragraphs: true,
     }),
     index: index,
