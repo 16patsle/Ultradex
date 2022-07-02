@@ -49,10 +49,11 @@ const makeSection = (section: Section, sectionIndex: number | string) => {
     typeof sectionIndex === "number" ? sectionIndex : parseInt(sectionIndex);
   return {
     html: section.html({
-      title: false,
-      sentences: true,
+      headers: false,
+      images: true,
       tables: true,
       lists: true,
+      paragraphs: true,
     }),
     index: index,
     title: section.title(),
