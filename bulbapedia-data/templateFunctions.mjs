@@ -1,6 +1,6 @@
-export default (parse) => ({
+export default {
   // https://bulbapedia.bulbagarden.net/wiki/Template:P
-  p: (tmpl, list) => {
+  p: (tmpl, list, parse) => {
     const { pokemon, text } = parse(tmpl, ["pokemon", "text"]);
     const obj = {
       template: "p",
@@ -13,7 +13,7 @@ export default (parse) => ({
   },
 
   // https://bulbapedia.bulbagarden.net/wiki/Template:2t
-  "2t": (tmpl, list) => {
+  "2t": (tmpl, list, parse) => {
     const { type1, type2 } = parse(tmpl, ["type1", "type2"]);
     const text = `${type1}/${type2}`;
     const obj = {
@@ -27,7 +27,7 @@ export default (parse) => ({
   },
 
   // https://bulbapedia.bulbagarden.net/wiki/Template:P
-  obp: (tmpl, list) => {
+  obp: (tmpl, list, parse) => {
     const { title, parenthetical } = parse(tmpl, ["title", "parenthetical"]);
     const obj = {
       template: "obp",
@@ -40,7 +40,7 @@ export default (parse) => ({
   },
 
   // https://bulbapedia.bulbagarden.net/wiki/Template:Wp
-  dl: (tmpl, list) => {
+  dl: (tmpl, list, parse) => {
     const { page, section, text } = parse(tmpl, ["page", "section", "text"]);
     const obj = {
       template: "dl",
@@ -53,7 +53,7 @@ export default (parse) => ({
   },
 
   // https://bulbapedia.bulbagarden.net/wiki/Template:Wp
-  wp: (tmpl, list) => {
+  wp: (tmpl, list, parse) => {
     const { page } = parse(tmpl, ["page"]);
     const obj = {
       template: "wp",
@@ -64,7 +64,7 @@ export default (parse) => ({
   },
 
   // https://bulbapedia.bulbagarden.net/wiki/Template:V2
-  v2: (tmpl, list) => {
+  v2: (tmpl, list, parse) => {
     const { version } = parse(tmpl, ["version"]);
     const obj = {
       template: "v2",
@@ -76,7 +76,7 @@ export default (parse) => ({
   },
 
   // https://bulbapedia.bulbagarden.net/wiki/Template:2v2
-  "2v2": (tmpl, list) => {
+  "2v2": (tmpl, list, parse) => {
     const { version1, version2 } = parse(tmpl, ["version1", "version2"]);
     const page = `Pokémon ${version1} and ${version2} Versions`;
     const text = `${version1} and ${version2}`;
@@ -92,7 +92,7 @@ export default (parse) => ({
   },
 
   // https://bulbapedia.bulbagarden.net/wiki/Template:2v
-  "2v": (tmpl, list) => {
+  "2v": (tmpl, list, parse) => {
     const { version1, version2 } = parse(tmpl, ["version1", "version2"]);
     const page = `Pokémon ${version1} and ${version2} Versions`;
     const text = `${version1} and ${version2} Versions`;
@@ -108,7 +108,7 @@ export default (parse) => ({
   },
 
   // https://bulbapedia.bulbagarden.net/wiki/Template:Game
-  game: (tmpl, list) => {
+  game: (tmpl, list, parse) => {
     const { version } = parse(tmpl, ["version"]);
     const page = `Pokémon ${version} Version`;
     const text = `Pokémon ${version}`;
@@ -123,7 +123,7 @@ export default (parse) => ({
   },
 
   // https://bulbapedia.bulbagarden.net/wiki/Template:Adv
-  adv: (tmpl, list) => {
+  adv: (tmpl, list, parse) => {
     const { title } = parse(tmpl, ["title"]);
     const obj = {
       template: "adv",
@@ -135,7 +135,7 @@ export default (parse) => ({
   },
 
   // https://bulbapedia.bulbagarden.net/wiki/Template:Pkmn
-  pkmn: (tmpl, list) => {
+  pkmn: (tmpl, list, parse) => {
     const { text } = parse(tmpl, ["text"]);
     const obj = {
       template: "pkmn",
@@ -147,7 +147,7 @@ export default (parse) => ({
   },
 
   // https://bulbapedia.bulbagarden.net/wiki/Template:M
-  m: (tmpl, list) => {
+  m: (tmpl, list, parse) => {
     const { title } = parse(tmpl, ["title"]);
     const obj = {
       template: "m",
@@ -159,7 +159,7 @@ export default (parse) => ({
   },
 
   // https://bulbapedia.bulbagarden.net/wiki/Template:An
-  an: (tmpl, list) => {
+  an: (tmpl, list, parse) => {
     const { title } = parse(tmpl, ["title"]);
     const obj = {
       template: "an",
@@ -171,7 +171,7 @@ export default (parse) => ({
   },
 
   // https://bulbapedia.bulbagarden.net/wiki/Template:Ash
-  ash: (tmpl, list) => {
+  ash: (tmpl, list, parse) => {
     const { text = "Ash" } = parse(tmpl, ["text"]);
     const obj = {
       template: "ash",
@@ -183,7 +183,7 @@ export default (parse) => ({
   },
 
   // https://bulbapedia.bulbagarden.net/wiki/Template:Ashfr
-  ashfr: (tmpl, list) => {
+  ashfr: (tmpl, list, parse) => {
     const { text = "his friends" } = parse(tmpl, ["text"]);
     const obj = {
       template: "ashfr",
@@ -195,7 +195,7 @@ export default (parse) => ({
   },
 
   // https://bulbapedia.bulbagarden.net/wiki/Template:TP
-  tp: (tmpl, list) => {
+  tp: (tmpl, list, parse) => {
     const { trainer, pokemon } = parse(tmpl, ["trainer", "pokemon"]);
     const obj = {
       template: "tp",
@@ -206,4 +206,4 @@ export default (parse) => ({
     list.push(obj);
     return pokemon;
   },
-});
+};
