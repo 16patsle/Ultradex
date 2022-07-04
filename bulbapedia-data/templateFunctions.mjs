@@ -133,4 +133,77 @@ export default (parse) => ({
     list.push(obj);
     return title;
   },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:Pkmn
+  pkmn: (tmpl, list) => {
+    const { text } = parse(tmpl, ["text"]);
+    const obj = {
+      template: "pkmn",
+      text,
+      page: `Pokémon ${text}`,
+    };
+    list.push(obj);
+    return text;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:M
+  m: (tmpl, list) => {
+    const { title } = parse(tmpl, ["title"]);
+    const obj = {
+      template: "m",
+      title,
+      page: `${title} (move)`,
+    };
+    list.push(obj);
+    return title;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:An
+  an: (tmpl, list) => {
+    const { title } = parse(tmpl, ["title"]);
+    const obj = {
+      template: "an",
+      title,
+      page: `${title} (anime)`,
+    };
+    list.push(obj);
+    return title;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:Ash
+  ash: (tmpl, list) => {
+    const { text = "Ash" } = parse(tmpl, ["text"]);
+    const obj = {
+      template: "ash",
+      text,
+      page: "Ash Ketchum",
+    };
+    list.push(obj);
+    return text;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:Ashfr
+  ashfr: (tmpl, list) => {
+    const { text = "his friends" } = parse(tmpl, ["text"]);
+    const obj = {
+      template: "ashfr",
+      text,
+      page: "Ash's friends",
+    };
+    list.push(obj);
+    return text;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:TP
+  tp: (tmpl, list) => {
+    const { trainer, pokemon } = parse(tmpl, ["trainer", "pokemon"]);
+    const obj = {
+      template: "tp",
+      trainer,
+      pokemon,
+      page: `${trainer}'s ${pokemon}`,
+    };
+    list.push(obj);
+    return pokemon;
+  },
 });
