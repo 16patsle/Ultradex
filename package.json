@@ -67,12 +67,10 @@
   "license": "Apache-2.0",
   "lint-staged": {
     "*.js": [
-      "npm run lint",
-      "git add"
+      "npm run lint"
     ],
     "*.vue": [
-      "npm run lint",
-      "git add"
+      "npm run lint"
     ]
   }
 }
