@@ -1,3 +1,5 @@
+import type { Mark } from "./Mark"
+
 export type JsonSection = {
   title: string
   depth: number
@@ -22,6 +24,10 @@ export type JsonSentence = {
     page: string;
   }[];
 };
+
+export type JsonSentenceWithParts = JsonSentence & {
+  parts: Mark[];
+}
 
 export type JsonTemplate = {
   template: string,

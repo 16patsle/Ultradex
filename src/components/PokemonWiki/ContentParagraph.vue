@@ -3,15 +3,19 @@
     <ContentSentence
       v-for="(sentence, i) in content.sentences"
       :key="i"
-      :content="sentence"
+      :content="(sentence as JsonSentenceWithParts)"
     />
   </p>
 </template>
 
 <script setup lang="ts">
 import ContentSentence from "./ContentSentence.vue";
+import type {
+  JsonParagraph,
+  JsonSentenceWithParts,
+} from "bulbapedia-data/JsonSection";
 
 defineProps<{
-  content: any;
+  content: JsonParagraph;
 }>();
 </script>

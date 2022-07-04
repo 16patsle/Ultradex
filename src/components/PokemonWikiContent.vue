@@ -17,8 +17,9 @@
 
 <script setup lang="ts">
 import ContentParagraph from "./PokemonWiki/ContentParagraph.vue";
+import type { JsonSection } from "../../bulbapedia-data/JsonSection";
 
 defineProps<{
-  content: any;
+  content: JsonSection;
 }>();
 </script>

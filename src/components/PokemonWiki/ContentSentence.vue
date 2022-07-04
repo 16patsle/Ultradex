@@ -33,8 +33,9 @@
 
 <script setup lang="ts">
 import ContentLink from "./ContentLink.vue";
+import type { JsonSentenceWithParts } from "bulbapedia-data/JsonSection";
 
 defineProps<{
-  content: any;
+  content: JsonSentenceWithParts;
 }>();
 </script>
