@@ -6,6 +6,8 @@ import path from "path";
 import wtf, { Document, Section } from "wtf_wikipedia";
 import wtfPluginHtml from "wtf-plugin-html";
 
+import type { Mark, LinkMark, FormattingMark } from "./Mark";
+
 wtf.extend(wtfPluginHtml);
 
 type BulbapediaExport = {
@@ -44,6 +46,155 @@ type ParsedSection = {
   };
 };
 
+type JsonSentence = {
+  text: string;
+  formatting: {
+    bold?: string[];
+    italic?: string[];
+  };
+  links: {
+    text: string;
+    type: "internal" | "external";
+    page: string;
+  }[];
+};
+
+const makeSentenceParts = (sentence: JsonSentence) => {
+  const parts: Mark[] = [];
+  const formatting: Mark[] = [];
+  const links: LinkMark[] = [];
+
+  if (sentence.formatting) {
+    Object.entries(sentence.formatting).forEach(([formattingType, text]) => {
+      text.forEach((text) => {
+        if (text.length > 0) {
+          formatting.push({
+            type: formattingType as "bold" | "italic",
+            text: text,
+          });
+        }
+      });
+    });
+  }
+
+  if (sentence.links) {
+    sentence.links.forEach((link) => {
+      const text = link.text ?? link.page;
+      if (text?.length > 0) {
+        const formattingItem = formatting.find(
+          (formatting) => formatting.text === text
+        );
+        if (formattingItem) {
+          const linkItem = formattingItem as LinkMark;
+          linkItem.type = `link-${(formattingItem as FormattingMark).type}`;
+          linkItem.linktype = link.type;
+          linkItem.page = link.page;
+        } else {
+          links.push({
+            type: "link",
+            text: text,
+            linktype: link.type,
+            page: link.page,
+          });
+        }
+      }
+    });
+  }
+
+  const marks: Mark[] = [];
+  let formattingMark: Mark | undefined = undefined;
+  let linkMark: Mark | undefined = undefined;
+  let count = 0;
+
+  /* eslint-disable-next-line no-constant-condition */
+  while (true) {
+    if (count >= 100) {
+      console.log(
+        "END",
+        formattingMark,
+        linkMark,
+        formatting?.length,
+        links?.length
+      );
+      break;
+    }
+    if (!formattingMark) {
+      formattingMark = formatting.shift();
+    }
+    if (!linkMark) {
+      linkMark = links.shift();
+    }
+
+    if (formattingMark) {
+      const formattingIndex = sentence.text.indexOf(formattingMark.text);
+
+      if (linkMark) {
+        const linkIndex = sentence.text.indexOf(linkMark.text);
+
+        if (linkIndex < formattingIndex) {
+          marks.push(linkMark);
+          linkMark = undefined;
+        } else {
+          marks.push(formattingMark);
+          formattingMark = undefined;
+        }
+      } else {
+        marks.push(formattingMark);
+        formattingMark = undefined;
+      }
+    } else if (linkMark) {
+      marks.push(linkMark);
+      linkMark = undefined;
+    } else {
+      break;
+    }
+    count++;
+  }
+
+  let rest = sentence.text;
+
+  marks.forEach((mark) => {
+    const split = rest.split(mark.text);
+    parts.push({ text: split[0], type: "text" });
+    parts.push(mark);
+    // Join the rest of the sentence together using the mark text
+    // This handles cases where the text occurs multiple times in the sentence
+    rest = split.slice(1).join(mark.text);
+  });
+  parts.push({ text: rest, type: "text" });
+
+  return parts;
+};
+
+const makeSectionJSON = (section: Section) => {
+  const json = section.json({
+    tables: true,
+    references: true,
+    paragraphs: true,
+    templates: true,
+    infoboxes: true,
+  });
+
+  const paragraphs = (json.paragraphs || []).map((paragraph) => {
+    const sentences = (paragraph.sentences || []).map((sentence) => {
+      const parts = makeSentenceParts(sentence);
+      return {
+        ...sentence,
+        parts: parts,
+      };
+    });
+    return {
+      ...paragraph,
+      sentences,
+    };
+  });
+
+  return {
+    ...json,
+    paragraphs,
+  };
+};
+
 const makeSection = (section: Section, sectionIndex: number | string) => {
   const index =
     typeof sectionIndex === "number" ? sectionIndex : parseInt(sectionIndex);
@@ -55,13 +206,7 @@ const makeSection = (section: Section, sectionIndex: number | string) => {
       lists: index === 0 ? false : true,
       paragraphs: true,
     }),
-    json: section.json({
-      tables: true,
-      references: true,
-      paragraphs: true,
-      templates: true,
-      infoboxes: true,
-    }),
+    json: makeSectionJSON(section),
     index: index,
     title: section.title(),
     depth: section.depth(),
