@@ -1,75 +1,21 @@
 diff --git a/node_modules/wtf_wikipedia/src/template/custom/data-only/functions.js b/node_modules/wtf_wikipedia/src/template/custom/data-only/functions.js
-index 672aed5..a8f5db5 100644
+index 672aed5..fae75e9 100644
 --- a/node_modules/wtf_wikipedia/src/template/custom/data-only/functions.js
 +++ b/node_modules/wtf_wikipedia/src/template/custom/data-only/functions.js
-@@ -401,4 +401,68 @@ export default {
+@@ -1,6 +1,7 @@
+ import parse from '../../parse/toJSON/index.js'
+ import Image from '../../../image/Image.js'
+ import { getLang, sisterProjects, toNumber } from '../_lib.js'
++import customTemplateFunctions from '../../../../../../bulbapedia-data/templateFunctions.mjs'
+ 
+ export default {
+   // https://en.wikipedia.org/wiki/Template:IPA
+@@ -401,4 +402,6 @@ export default {
      list.push(obj)
      return ''
    },
 +
-+  // https://bulbapedia.bulbagarden.net/wiki/Template:P
-+  p: (tmpl, list) => {
-+    const { pokemon, text } = parse(tmpl, ['pokemon', 'text'])
-+    const obj = {
-+      template: 'p',
-+      pokemon,
-+      text,
-+      page: `${pokemon} (Pokémon)`
-+    }
-+    list.push(obj)
-+    return text ?? pokemon
-+  },
-+
-+  // https://bulbapedia.bulbagarden.net/wiki/Template:2t
-+  '2t': (tmpl, list) => {
-+    const { type1, type2 } = parse(tmpl, ['type1', 'type2'])
-+    const text = `${type1}/${type2}`
-+    const obj = {
-+      template: '2t',
-+      type1,
-+      type2,
-+      text,
-+    }
-+    list.push(obj)
-+    return text
-+  },
-+
-+  // https://bulbapedia.bulbagarden.net/wiki/Template:P
-+  obp: (tmpl, list) => {
-+    const { title, parenthetical } = parse(tmpl, ['title', 'parenthetical'])
-+    const obj = {
-+      template: 'obp',
-+      title,
-+      parenthetical,
-+      page: `${title} (${parenthetical})`
-+    }
-+    list.push(obj)
-+    return title
-+  },
-+
-+  // https://bulbapedia.bulbagarden.net/wiki/Template:Wp
-+  dl: (tmpl, list) => {
-+    const { page, section, text } = parse(tmpl, ['page', 'section', 'text'])
-+    const obj = {
-+      template: 'wp',
-+      page,
-+      section,
-+      text,
-+    }
-+    list.push(obj)
-+    return text ?? section
-+  },
-+
-+  // https://bulbapedia.bulbagarden.net/wiki/Template:Wp
-+  wp: (tmpl, list) => {
-+    const { page } = parse(tmpl, ['page'])
-+    const obj = {
-+      template: 'wp',
-+      page,
-+    }
-+    list.push(obj)
-+    return page
-+  }
++  ...customTemplateFunctions(parse),
  }
 diff --git a/node_modules/wtf_wikipedia/types/index.d.ts b/node_modules/wtf_wikipedia/types/index.d.ts
 index 8826379..2b9f0b8 100644
