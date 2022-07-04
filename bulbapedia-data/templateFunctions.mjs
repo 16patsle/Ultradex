@@ -149,6 +149,33 @@ export default {
     return text;
   },
 
+  // https://bulbapedia.bulbagarden.net/wiki/Template:Game2
+  game2: (tmpl, list, parse) => {
+    const { version1, version2, version3 } = parse(tmpl, [
+      "version1",
+      "version2",
+      "version3",
+    ]);
+    const page1 = `Pokémon ${version1} and ${version2} Versions`;
+    const page2 = `Pokémon ${version3} Version`;
+    const text1 = `Pokémon ${version1}, ${version2}`;
+    const text2 = `${version3}`;
+    const text = `${text1}, and ${text2}`;
+    const obj = {
+      template: "game2",
+      version1,
+      version2,
+      version3,
+      page1,
+      page2,
+      text1,
+      text2,
+      text,
+    };
+    list.push(obj);
+    return text;
+  },
+
   // https://bulbapedia.bulbagarden.net/wiki/Template:Adv
   adv: (tmpl, list, parse) => {
     const { title } = parse(tmpl, ["title"]);
@@ -168,6 +195,18 @@ export default {
       template: "pkmn",
       text,
       page: `Pokémon ${text}`,
+    };
+    list.push(obj);
+    return text;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:Pkmn2
+  pkmn2: (tmpl, list, parse) => {
+    const { text } = parse(tmpl, ["text"]);
+    const obj = {
+      template: "pkmn2",
+      text,
+      page: `${text} Pokémon`,
     };
     list.push(obj);
     return text;
@@ -343,5 +382,68 @@ export default {
     };
     list.push(obj);
     return obj.text;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:TFG
+  tfg: (tmpl, list, parse) => {
+    const { title } = parse(tmpl, ["title"]);
+    const obj = {
+      template: "tfg",
+      title,
+      page: `${title} (TFG)`,
+    };
+    list.push(obj);
+    return title;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:TFG_ID
+  "tfg id": (tmpl, list, parse) => {
+    const { series, title, id } = parse(tmpl, ["series", "title", "id"]);
+    const obj = {
+      template: "tfg id",
+      series,
+      title,
+      id,
+      page: `${title} (${series} ${id})`,
+    };
+    list.push(obj);
+    return title;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:Egg
+  egg: (tmpl, list, parse) => {
+    const { title } = parse(tmpl, ["title"]);
+    const obj = {
+      template: "egg",
+      title,
+      page: `${title} (Egg Group)`,
+    };
+    list.push(obj);
+    return title;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:Egg2
+  egg2: (tmpl, list, parse) => {
+    const { title } = parse(tmpl, ["title"]);
+    const text = `${title} Group`;
+    const obj = {
+      template: "egg2",
+      text,
+      page: `${title} (Egg Group)`,
+    };
+    list.push(obj);
+    return text;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:Gen
+  gen: (tmpl, list, parse) => {
+    const { title } = parse(tmpl, ["title"]);
+    const obj = {
+      template: "gen",
+      title,
+      page: `Generation ${title}`,
+    };
+    list.push(obj);
+    return title;
   },
 };
