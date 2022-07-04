@@ -4,12 +4,9 @@ import fs from "fs-extra";
 import path from "path";
 
 import wtf, { Document, Section } from "wtf_wikipedia";
-import wtfPluginHtml from "wtf-plugin-html";
 
 import type { Mark, LinkMark, FormattingMark } from "./Mark";
 import type { JsonSection, JsonSentence } from "./JsonSection";
-
-wtf.extend(wtfPluginHtml);
 
 type BulbapediaExport = {
   mediawiki: {
@@ -38,7 +35,7 @@ type ParsedPage = {
 };
 
 type ParsedSection = {
-  html: string;
+  json: JsonSection;
   title: string;
   index: number;
   depth: number;
@@ -183,17 +180,13 @@ const makeSectionJSON = (section: Section) => {
   };
 };
 
-const makeSection = (section: Section, sectionIndex: number | string) => {
+const makeSection = (
+  section: Section,
+  sectionIndex: number | string
+): ParsedSection => {
   const index =
     typeof sectionIndex === "number" ? sectionIndex : parseInt(sectionIndex);
   return {
-    html: section.html({
-      headers: false,
-      images: true,
-      tables: true,
-      lists: index === 0 ? false : true,
-      paragraphs: true,
-    }),
     json: makeSectionJSON(section),
     index: index,
     title: section.title(),

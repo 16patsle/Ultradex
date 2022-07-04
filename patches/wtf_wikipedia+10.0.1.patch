@@ -1,5 +1,5 @@
 diff --git a/node_modules/wtf_wikipedia/types/index.d.ts b/node_modules/wtf_wikipedia/types/index.d.ts
-index 8826379..7876209 100644
+index 8826379..2b9f0b8 100644
 --- a/node_modules/wtf_wikipedia/types/index.d.ts
 +++ b/node_modules/wtf_wikipedia/types/index.d.ts
 @@ -1,4 +1,4 @@
@@ -8,7 +8,7 @@ index 8826379..7876209 100644
    categories(clue?: number): string[]
    category(clue?: number): string | null
    citations(clue?: number): Reference[]
-@@ -49,11 +49,15 @@ declare class Document {
+@@ -49,7 +49,7 @@ declare class Document {
    wikitext(): string
  }
  
@@ -17,15 +17,7 @@ index 8826379..7876209 100644
    children(clue?: string | number): Section | Section[] | null
    citations: () => object | object[]
    coordinates(): object | object[]
-   depth(): number
-+  /**
-+   * Added by the wtf-plugin-html
-+   */
-+  html(options: object): string
-   images(): Image | Image[]
-   indentation(): number
-   index(): number | null
-@@ -182,7 +186,7 @@ declare class Sentence {
+@@ -182,7 +182,7 @@ declare class Sentence {
    wikitext(): string
  }
  
