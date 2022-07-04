@@ -38,6 +38,4 @@ export type JsonInfobox = {
   [key: string]: unknown;
 };
 
-export type JsonList = {
-  text: string;
-}[];
+export type JsonList = JsonSentence[];

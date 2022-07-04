@@ -3,7 +3,7 @@ import parser from "xml2json";
 import fs from "fs-extra";
 import path from "path";
 
-import wtf, { Document, Section } from "wtf_wikipedia";
+import wtf, { type Document, type Section } from "wtf_wikipedia";
 
 import type { Mark, LinkMark, FormattingMark } from "./Mark";
 import type { JsonSection, JsonSentence } from "./JsonSection";
@@ -165,7 +165,7 @@ const makeSectionJSON = (section: Section) => {
       const parts = makeSentenceParts(sentence);
       return {
         ...sentence,
-        parts: parts,
+        parts,
       };
     });
     return {
@@ -173,10 +173,20 @@ const makeSectionJSON = (section: Section) => {
       sentences,
     };
   });
+  const lists = (json.lists || []).map((list) => {
+    return list.map((sentence) => {
+      const parts = makeSentenceParts(sentence);
+      return {
+        ...sentence,
+        parts,
+      };
+    });
+  });
 
   return {
     ...json,
     paragraphs,
+    lists,
   };
 };
 
