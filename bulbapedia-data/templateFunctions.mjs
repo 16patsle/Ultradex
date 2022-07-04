@@ -39,7 +39,7 @@ export default {
     return title;
   },
 
-  // https://bulbapedia.bulbagarden.net/wiki/Template:Wp
+  // https://bulbapedia.bulbagarden.net/wiki/Template:DL
   dl: (tmpl, list, parse) => {
     const { page, section, text } = parse(tmpl, ["page", "section", "text"]);
     const obj = {
@@ -101,6 +101,33 @@ export default {
       version1,
       version2,
       page,
+      text,
+    };
+    list.push(obj);
+    return text;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:3v
+  "3v": (tmpl, list, parse) => {
+    const { version1, version2, version3 } = parse(tmpl, [
+      "version1",
+      "version2",
+      "version3",
+    ]);
+    const page1 = `Pokémon ${version1} and ${version2} Versions`;
+    const page2 = `Pokémon ${version3} Version`;
+    const text1 = `${version1}, ${version2}`;
+    const text2 = `${version3} Versions`;
+    const text = `${text1}, and ${text2}`;
+    const obj = {
+      template: "3v",
+      version1,
+      version2,
+      version3,
+      page1,
+      page2,
+      text1,
+      text2,
       text,
     };
     list.push(obj);
@@ -205,5 +232,116 @@ export default {
     };
     list.push(obj);
     return pokemon;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:AP
+  ap: (tmpl, list, parse) => {
+    const { pokemon } = parse(tmpl, ["pokemon"]);
+    const obj = {
+      template: "ap",
+      pokemon,
+      page: `Ash's ${pokemon}`,
+    };
+    list.push(obj);
+    return pokemon;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:Ball
+  ball: (tmpl, list, parse) => {
+    const { ball } = parse(tmpl, ["ball"]);
+    const page = `${ball} Ball`;
+    const obj = {
+      template: "ball",
+      ball,
+      page,
+    };
+    list.push(obj);
+    return page;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:Gary
+  gary: (tmpl, list, parse) => {
+    const { text = "Gary" } = parse(tmpl, ["text"]);
+    const obj = {
+      template: "gary",
+      text,
+      page: "Gary Oak",
+    };
+    list.push(obj);
+    return text;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:Ka
+  ka: (tmpl, list, parse) => {
+    const { title } = parse(tmpl, ["title"]);
+    const obj = {
+      template: "ka",
+      title,
+      page: `${title} (Kanto)`,
+    };
+    list.push(obj);
+    return title;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:TRT
+  trt: (tmpl, list, parse) => {
+    const { text = "Team Rocket" } = parse(tmpl, ["text"]);
+    const obj = {
+      template: "trt",
+      text,
+      page: "Team Rocket trio",
+    };
+    list.push(obj);
+    return text;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:Tc
+  tc: (tmpl, list, parse) => {
+    const { title } = parse(tmpl, ["title"]);
+    const obj = {
+      template: "tc",
+      title,
+      page: `${title} (Trainer class)`,
+    };
+    list.push(obj);
+    return title;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:I
+  i: (tmpl, list, parse) => {
+    const { title } = parse(tmpl, ["title"]);
+    const obj = {
+      template: "i",
+      title,
+      page: `${title} (item)`,
+    };
+    list.push(obj);
+    return title;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:Stat
+  stat: (tmpl, list, parse) => {
+    const { stat, text } = parse(tmpl, ["stat", "text"]);
+    const obj = {
+      template: "stat",
+      page: "Stat",
+      section: stat,
+      text,
+    };
+    list.push(obj);
+    return text ?? stat;
+  },
+
+  // https://bulbapedia.bulbagarden.net/wiki/Template:Type
+  type: (tmpl, list, parse) => {
+    const { type, text } = parse(tmpl, ["type", "text"]);
+    const obj = {
+      template: "type",
+      type,
+      page: `${type} (type)`,
+      text: text ?? `${type}-type`,
+    };
+    list.push(obj);
+    return obj.text;
   },
 };
