@@ -1,16 +1,16 @@
-import type { Mark } from "./Mark"
+import type { Mark } from "./Mark";
 
 export type JsonSection = {
-  title: string
-  depth: number
-  paragraphs: JsonParagraph[]
-  infoboxes: JsonInfobox[]
-  lists: JsonList[]
-}
+  title: string;
+  depth: number;
+  paragraphs: JsonParagraph[];
+  infoboxes: JsonInfobox[];
+  lists: JsonList[];
+};
 
 export type JsonParagraph = {
-  sentences: JsonSentence[]
-}
+  sentences: JsonSentence[];
+};
 
 export type JsonSentence = {
   text: string;
@@ -27,17 +27,17 @@ export type JsonSentence = {
 
 export type JsonSentenceWithParts = JsonSentence & {
   parts: Mark[];
-}
+};
 
 export type JsonTemplate = {
-  template: string,
-  [key: string]: unknown
-}
+  template: string;
+  [key: string]: unknown;
+};
 
 export type JsonInfobox = {
-  [key: string]: unknown
-}
+  [key: string]: unknown;
+};
 
 export type JsonList = {
   text: string;
-}[]
+}[];
