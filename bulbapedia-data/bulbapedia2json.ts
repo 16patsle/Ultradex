@@ -7,6 +7,7 @@ import wtf, { Document, Section } from "wtf_wikipedia";
 import wtfPluginHtml from "wtf-plugin-html";
 
 import type { Mark, LinkMark, FormattingMark } from "./Mark";
+import type { JsonSection, JsonSentence } from "./JsonSection";
 
 wtf.extend(wtfPluginHtml);
 
@@ -44,19 +45,6 @@ type ParsedSection = {
   children: {
     [key: string]: ParsedSection;
   };
-};
-
-type JsonSentence = {
-  text: string;
-  formatting: {
-    bold?: string[];
-    italic?: string[];
-  };
-  links: {
-    text: string;
-    type: "internal" | "external";
-    page: string;
-  }[];
 };
 
 const makeSentenceParts = (sentence: JsonSentence) => {
@@ -173,7 +161,7 @@ const makeSectionJSON = (section: Section) => {
     paragraphs: true,
     templates: true,
     infoboxes: true,
-  });
+  }) as JsonSection;
 
   const paragraphs = (json.paragraphs || []).map((paragraph) => {
     const sentences = (paragraph.sentences || []).map((sentence) => {
