@@ -17,12 +17,9 @@
               Wiki entry
             </PokemonCollapseTrigger>
           </template>
-          <div
-            class="content"
-            v-html="pokemonWikiEntry.text.introduction.html"
-          ></div>
           <PokemonWikiContent
             :content="pokemonWikiEntry.text.introduction.json"
+            class="content"
           />
           <o-collapse
             v-for="section in makeSortedArray(pokemonWikiEntry.text)"
@@ -39,8 +36,7 @@
                 {{ section.title }}
               </PokemonCollapseTrigger>
             </template>
-            <div class="content" v-html="section.html"></div>
-            <PokemonWikiContent :content="section.json" />
+            <PokemonWikiContent :content="section.json" class="content" />
             <o-collapse
               v-for="section2 in section.children"
               :key="section2.title"
@@ -56,8 +52,7 @@
                   {{ section2.title }}
                 </PokemonCollapseTrigger>
               </template>
-              <div class="content" v-html="section2.html"></div>
-              <PokemonWikiContent :content="section2.json" />
+              <PokemonWikiContent :content="section2.json" class="content" />
               <o-collapse
                 v-for="section3 in section2.children"
                 :key="section3.title"
@@ -73,8 +68,7 @@
                     {{ section3.title }}
                   </PokemonCollapseTrigger>
                 </template>
-                <div class="content" v-html="section3.html"></div>
-                <PokemonWikiContent :content="section3.json" />
+                <PokemonWikiContent :content="section3.json" class="content" />
               </o-collapse>
             </o-collapse>
           </o-collapse>
