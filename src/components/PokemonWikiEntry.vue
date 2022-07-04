@@ -21,6 +21,9 @@
             class="content"
             v-html="pokemonWikiEntry.text.introduction.html"
           ></div>
+          <PokemonWikiContent
+            :content="pokemonWikiEntry.text.introduction.json"
+          />
           <o-collapse
             v-for="section in makeSortedArray(pokemonWikiEntry.text)"
             :key="section.title"
@@ -37,6 +40,7 @@
               </PokemonCollapseTrigger>
             </template>
             <div class="content" v-html="section.html"></div>
+            <PokemonWikiContent :content="section.json" />
             <o-collapse
               v-for="section2 in section.children"
               :key="section2.title"
@@ -53,6 +57,7 @@
                 </PokemonCollapseTrigger>
               </template>
               <div class="content" v-html="section2.html"></div>
+              <PokemonWikiContent :content="section2.json" />
               <o-collapse
                 v-for="section3 in section2.children"
                 :key="section3.title"
@@ -69,6 +74,7 @@
                   </PokemonCollapseTrigger>
                 </template>
                 <div class="content" v-html="section3.html"></div>
+                <PokemonWikiContent :content="section3.json" />
               </o-collapse>
             </o-collapse>
           </o-collapse>
@@ -91,6 +97,7 @@
 import { computed, ref } from "vue";
 import { usePokemonStore } from "../stores/pokemonStore";
 import PokemonCollapseTrigger from "@/components/PokemonCollapseTrigger.vue";
+import PokemonWikiContent from "@/components/PokemonWikiContent.vue";
 import { handleError } from "@/utils/handleError";
 
 const props = defineProps({
