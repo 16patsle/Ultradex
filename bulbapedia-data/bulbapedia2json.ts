@@ -6,7 +6,13 @@ import path from "path";
 import wtf, { type Document, type Section } from "wtf_wikipedia";
 
 import type { Mark, LinkMark, FormattingMark } from "./Mark";
-import type { JsonSection, JsonSentence } from "./JsonSection";
+import type {
+  JsonList,
+  JsonParagraph,
+  JsonSection,
+  JsonSectionRaw,
+  JsonSentenceRaw,
+} from "./JsonSection";
 
 type BulbapediaExport = {
   mediawiki: {
@@ -44,7 +50,7 @@ type ParsedSection = {
   };
 };
 
-const makeSentenceParts = (sentence: JsonSentence) => {
+const makeSentenceParts = (sentence: JsonSentenceRaw) => {
   const parts: Mark[] = [];
   const formatting: Mark[] = [];
   const links: LinkMark[] = [];
@@ -151,16 +157,16 @@ const makeSentenceParts = (sentence: JsonSentence) => {
   return parts;
 };
 
-const makeSectionJSON = (section: Section) => {
+const makeSectionJSON = (section: Section): JsonSection => {
   const json = section.json({
     tables: true,
     references: true,
     paragraphs: true,
     templates: true,
     infoboxes: true,
-  }) as JsonSection;
+  }) as JsonSectionRaw;
 
-  const paragraphs = (json.paragraphs || []).map((paragraph) => {
+  const paragraphs = (json.paragraphs || []).map((paragraph): JsonParagraph => {
     const sentences = (paragraph.sentences || []).map((sentence) => {
       const parts = makeSentenceParts(sentence);
       return {
@@ -173,7 +179,7 @@ const makeSectionJSON = (section: Section) => {
       sentences,
     };
   });
-  const lists = (json.lists || []).map((list) => {
+  const lists = (json.lists || []).map((list): JsonList => {
     return list.map((sentence) => {
       const parts = makeSentenceParts(sentence);
       return {

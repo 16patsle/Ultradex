@@ -1,18 +1,27 @@
 import type { Mark } from "./Mark";
 
-export type JsonSection = {
+export type JsonSectionRaw = {
   title: string;
   depth: number;
-  paragraphs: JsonParagraph[];
+  paragraphs: JsonParagraphRaw[];
   infoboxes: JsonInfobox[];
+  lists: JsonListRaw[];
+};
+
+export type JsonSection = JsonSectionRaw & {
+  paragraphs: JsonParagraph[];
   lists: JsonList[];
 };
 
-export type JsonParagraph = {
-  sentences: JsonSentence[];
+export type JsonParagraphRaw = {
+  sentences: JsonSentenceRaw[];
 };
 
-export type JsonSentence = {
+export type JsonParagraph = {
+  sentences: JsonSentenceWithParts[];
+};
+
+export type JsonSentenceRaw = {
   text: string;
   formatting: {
     bold?: string[];
@@ -25,7 +34,7 @@ export type JsonSentence = {
   }[];
 };
 
-export type JsonSentenceWithParts = JsonSentence & {
+export type JsonSentenceWithParts = JsonSentenceRaw & {
   parts: Mark[];
 };
 
@@ -38,4 +47,6 @@ export type JsonInfobox = {
   [key: string]: unknown;
 };
 
-export type JsonList = JsonSentence[];
+export type JsonListRaw = JsonSentenceRaw[];
+
+export type JsonList = JsonSentenceWithParts[];
