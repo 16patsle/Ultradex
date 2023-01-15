@@ -276,6 +276,7 @@ const listToTree = (array: Section[]) => {
 
     for (const infobox of currentPage.document.infoboxes()) {
       if (infobox.type() === "pokémon infobox") {
+        // @ts-expect-error ndex does exist on data
         parsedPages[pageIndex].id = infobox.data.ndex.json().number;
         break;
       }
