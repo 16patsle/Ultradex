@@ -4,6 +4,7 @@ import type {
   PokemonForm,
 } from "@16patsle/pokeapi.js";
 import { capitalize } from "@/utils/capitalize";
+import { titlecase } from "@/utils/titlecase";
 import { findWithLanguage, getDefaultPokemonVarietyForm } from "./pokemonUtils";
 import type { Name } from "@16patsle/pokeapi.js";
 
@@ -28,7 +29,8 @@ export const pokemonNameLocalized = <T extends ResourceWithNames>(
     ? findWithLanguage(pokemonSpecies.names, language)?.name ??
       (fallback
         ? findWithLanguage(pokemonSpecies.names, fallback)?.name
-        : pokemonSpecies.name)
+        : undefined) ??
+      titlecase(pokemonSpecies.name.split("-").join(" "))
     : "";
 
 export const pokemonFormNameLocalized = (
