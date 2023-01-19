@@ -10,6 +10,7 @@ import type {
   NamedAPIResource,
   Item,
   Location,
+  Move,
   Region,
   Language,
   Stat,
@@ -27,6 +28,7 @@ interface State {
   pokemonColors: PokemonColor[];
   items: Item[];
   locations: Location[];
+  moves: Move[];
   regions: Region[];
   pokemonWikiEntries: any[];
   currentlyShowingId: number;
@@ -49,6 +51,7 @@ export const usePokemonStore = defineStore("pokemon", {
       pokemonColors: [],
       items: [],
       locations: [],
+      moves: [],
       regions: [],
       pokemonWikiEntries: [],
       currentlyShowingId: Number(route.params.id),
@@ -128,6 +131,10 @@ export const usePokemonStore = defineStore("pokemon", {
     async fetchLocation(locationId: number) {
       const data = await PokeApi.getLocation(locationId);
       this.locations[locationId] = data;
+    },
+    async fetchMove(moveId: number) {
+      const data = await PokeApi.getMove(moveId);
+      this.moves[moveId] = data;
     },
     async fetchRegion(regionId: number) {
       const data = await PokeApi.getRegion(regionId);
