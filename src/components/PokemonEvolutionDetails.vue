@@ -39,7 +39,27 @@
             during {{ details.time_of_day }}
           </span>
         </li>
+        <li v-if="details.held_item">
+          holding <PokemonItem :item="details.held_item" />
+          <span v-if="details.time_of_day">
+            during {{ details.time_of_day }}
+          </span>
+        </li>
       </ul>
+    </div>
+    <div
+      v-if="details.trigger.name === 'recoil-damage'"
+      class="is-flex is-align-items-center"
+    >
+      After receiving recoil damage
+    </div>
+    <div
+      v-if="details.trigger.name === 'strong-style-move'"
+      class="is-flex is-align-items-center"
+    >
+      After using
+      <PokemonMove v-if="details.known_move" :move="details.known_move" /> in
+      the strong style
     </div>
   </li>
 </template>
@@ -48,6 +68,7 @@
 import type { EvolutionDetail } from "@16patsle/pokeapi.js";
 import PokemonItem from "./PokemonItem.vue";
 import PokemonLocation from "./PokemonLocation.vue";
+import PokemonMove from "./PokemonMove.vue";
 
 defineProps<{
   details: EvolutionDetail;
