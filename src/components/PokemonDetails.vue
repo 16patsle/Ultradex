@@ -1,8 +1,11 @@
 <template>
   <div class="details-wrapper">
     <div v-if="pokemon">
-      <PokemonFlavorText :flavorTextEntries="pokemon.flavor_text_entries" />
-      <p>Genus: {{ pokemonGenusLocalized }}</p>
+      <PokemonFlavorText
+        v-if="pokemon.flavor_text_entries.length"
+        :flavorTextEntries="pokemon.flavor_text_entries"
+      />
+      <p v-if="pokemonGenusLocalized">Genus: {{ pokemonGenusLocalized }}</p>
       <p>Color: <PokemonColor :color="pokemon.color" /></p>
       <hr />
       <PokemonVariety
@@ -10,7 +13,7 @@
         isDefault
       />
       <o-collapse
-        v-if="pokemon.evolution_chain.url"
+        v-if="pokemon.evolution_chain?.url"
         :open="false"
         class="details-collapse"
       >
