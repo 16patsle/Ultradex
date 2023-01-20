@@ -6,7 +6,9 @@
       :fetch="store.fetchItem"
     >
       <template v-slot="slotProps">
+        <!-- sprites.default can be null (example #900 Kleavor) -->
         <PokemonIcon
+          v-if="slotProps.resource.sprites.default"
           :src="slotProps.resource.sprites.default"
           alt=""
           type="default"
