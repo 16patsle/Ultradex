@@ -29,3 +29,11 @@ yarn-error.log*
 # Font Awesome install files
 /fontawesome-solid.tar
 /fortawesome-pro-solid-svg-icons-*.tgz
+
+# Nuxt
+.nuxt
+.nitro
+.cache
+.output
+.env
+dist

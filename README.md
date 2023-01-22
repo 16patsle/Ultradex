@@ -14,16 +14,26 @@ In addition, you can read the relevant wiki entry from [Bulbapedia](https://bulb
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### Development
+
+Start the development server on http://localhost:3000
 
 ```sh
-npm run serve
+npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### Production
+
+Build the application for production:
 
 ```sh
 npm run build
+```
+
+Locally preview production build:
+
+```sh
+npm run preview
 ```
 
 ### Run Unit Tests with [Vitest](https://vitest.dev/)
