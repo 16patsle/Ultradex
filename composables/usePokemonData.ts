@@ -42,3 +42,11 @@ export const usePokemonVarietyFormsData = async (id?: number) => {
   );
   return { pokemonForms, error };
 };
+
+export const usePokemonStatsData = async () => {
+  const store = usePokemonStore();
+  const { data: stats, error } = await useAsyncData(`stats`, () =>
+    store.fetchPokemonStats()
+  );
+  return { stats, error };
+};

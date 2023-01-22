@@ -22,8 +22,6 @@ defineProps<{
   pokemon: Pokemon;
 }>();
 
-const store = usePokemonStore();
-
 // Use the order CSS property to improve the layout
 const statOrder = (name: string) => {
   switch (name) {
@@ -40,14 +38,6 @@ const statOrder = (name: string) => {
       return null;
   }
 };
-
-const fetchStats = async () => {
-  if (!store.stats.length) {
-    await store.fetchPokemonStats();
-  }
-};
-
-fetchStats();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

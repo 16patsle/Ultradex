@@ -29,8 +29,9 @@ const props = withDefaults(
 const store = usePokemonStore();
 
 const statId = computed(() => idFromUrl(props.stat?.stat.url));
+const { stats, error } = await usePokemonStatsData();
 const statData = computed(() =>
-  statId.value ? store.stats[statId.value] : undefined
+  statId.value && stats.value ? stats.value[statId.value] : undefined
 );
 
 const statIcon = (name = "") => {

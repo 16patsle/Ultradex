@@ -209,6 +209,8 @@ export const usePokemonStore = defineStore("pokemon", {
       (await Promise.all(promises)).forEach((stat, i) => {
         this.stats[i] = stat;
       });
+
+      return this.stats;
     },
     async fetchPokemonType(typeId: number) {
       const data = await getType(typeId);
