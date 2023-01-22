@@ -33,15 +33,15 @@ const props = withDefaults(
 
 const pokemonId = computed(() => idFromUrl(props.pokemon.url));
 const { data: variety } = await useDefaultPokemonVarietyData(pokemonId.value);
-const pokemonName = computed(async () => {
+const { data: pokemon } = await usePokemonSpeciesData(pokemonId.value);
+const { pokemonList } = await usePokemonSpeciesListData();
+const pokemonName = computed(() => {
   if (!pokemonId.value) {
     return props.pokemon.name;
   }
-  const { data: pokemon } = await usePokemonSpeciesData(pokemonId.value);
   if (pokemon.value) {
     return pokemonNameLocalized(pokemon.value);
   }
-  const { pokemonList } = await usePokemonSpeciesListData();
   const name = pokemonList.value?.results[pokemonId.value - 1]?.name;
   return name ? name.charAt(0).toUpperCase() + name.slice(1) : "";
 });

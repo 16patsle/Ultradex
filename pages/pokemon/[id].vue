@@ -1,6 +1,6 @@
 <template>
   <div class="pokemon-view">
-    <PokemonPreviousNext />
+    <PokemonPreviousNext :id="pokemon?.id" />
     <h1 v-if="pokemon && !error" class="title">
       #{{ idFormatted }} {{ pokemonName }}
     </h1>
@@ -27,7 +27,9 @@ const { data: pokemon, error } = await usePokemonSpeciesData(
 const pokemonName = computed(
   () => pokemon.value && pokemonNameLocalized(pokemon.value, store.language)
 );
-const idFormatted = computed(() => formatPokemonId(store.currentlyShowingId));
+const idFormatted = computed(() =>
+  pokemon.value?.id ? formatPokemonId(pokemon.value.id) : formatPokemonId()
+);
 </script>
 
 <style>
