@@ -5,10 +5,7 @@ export default defineNuxtConfig({
   alias: {
     "@": fileURLToPath(new URL("./src", import.meta.url)),
   },
-  image: {
-    domains: ["raw.githubusercontent.com"],
-  },
-  modules: ["@pinia/nuxt", "@nuxt/image-edge"],
+  modules: ["@pinia/nuxt"],
   typescript: { shim: false, strict: true },
   vite: {
     server: {
