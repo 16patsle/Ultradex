@@ -18,7 +18,7 @@
     "preinstall": "curl --data \"key=$FONTAWESOME_KEY\" https://cdn.multitek.no/packages/fontawesome-solid.php --output fontawesome-solid.tar && tar -xf fontawesome-solid.tar"
   },
   "dependencies": {
-    "@16patsle/pokeapi.js": "^2.0.1",
+    "@16patsle/pokeapi.js": "^2.1.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.8",
     "@fortawesome/pro-solid-svg-icons": "file:fortawesome-pro-solid-svg-icons-5.15.4.tgz",
     "@fortawesome/vue-fontawesome": "^3.0.0",
@@ -26,6 +26,7 @@
     "@oruga-ui/theme-bulma": "^0.2.8",
     "@pinia/nuxt": "^0.4.6",
     "core-js": "^3.27.1",
+    "idb": "^7.1.1",
     "patch-package": "^6.5.1",
     "pinia": "^2.0.28",
     "register-service-worker": "^1.7.2",
