@@ -190,6 +190,8 @@ export const usePokemonStore = defineStore("pokemon", {
         },
         name: "Simplified Chinese",
       });
+
+      return this.languages;
     },
     async fetchPokemonStats() {
       const stats = (await getStat("")).results;
