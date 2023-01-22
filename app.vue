@@ -10,6 +10,7 @@
         >
         <AppNavbar isTouchMode />
         <!--<router-view name="sidebar" class="sidebar-content"></router-view>-->
+        <PokemonList />
       </aside>
       <div v-show="showMain" class="column main-container">
         <MenuToggleButton

@@ -1,12 +1,8 @@
 <template>
   <div :class="type.name.toLowerCase()">
-    <PokemonResource
-      :resource="type"
-      :storeArray="store.types"
-      :fetch="store.fetchPokemonType"
-    >
+    <PokemonResource :resource="type" :fetch="store.fetchPokemonType">
       <template #default="{ resource }">
-        {{ pokemonNameLocalized(resource, store.language) }}
+        {{ pokemonNameLocalized(resource as Type, store.language) }}
       </template>
       <template #else>&nbsp;</template>
     </PokemonResource>
@@ -14,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import type { NamedAPIResource } from "@16patsle/pokeapi.js";
+import type { NamedAPIResource, Type } from "@16patsle/pokeapi.js";
 
 defineProps<{ type: NamedAPIResource }>();
 

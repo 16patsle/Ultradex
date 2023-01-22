@@ -9,29 +9,16 @@ import type { APIResource } from "@16patsle/pokeapi.js";
 
 const props = defineProps<{
   resource: APIResource;
-  storeArray: any[];
-  fetch: (id: number) => Promise<void>;
+  fetch: (id: number) => Promise<unknown>;
 }>();
-
-const error = ref("");
 
 const resourceId = computed(() => idFromUrl(props.resource.url));
 
-const resourceData = computed(() =>
-  resourceId.value ? props.storeArray[resourceId.value] : null
+const { data: resourceData, error } = await useAsyncData(
+  props.resource.url,
+  () =>
+    resourceId.value
+      ? props.fetch(resourceId.value)
+      : Promise.reject("Missing id")
 );
-
-const fetchResource = async () => {
-  if (!resourceData.value && resourceId.value) {
-    try {
-      await props.fetch(resourceId.value);
-    } catch (err) {
-      error.value = handleError(err);
-    }
-  }
-};
-
-watch(() => props.resource, fetchResource);
-
-fetchResource();
 </script>

@@ -1,12 +1,8 @@
 <template>
   <span class="is-inline-flex is-align-items-center">
-    <PokemonResource
-      :resource="move"
-      :storeArray="store.moves"
-      :fetch="store.fetchMove"
-    >
+    <PokemonResource :resource="move" :fetch="store.fetchMove">
       <template v-slot="slotProps">
-        {{ pokemonNameLocalized(slotProps.resource, store.language) }}
+        {{ pokemonNameLocalized(slotProps.resource as Move, store.language) }}
       </template>
       <template #else>
         {{ move.name }}
@@ -16,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import type { NamedAPIResource } from "@16patsle/pokeapi.js";
+import type { Move, NamedAPIResource } from "@16patsle/pokeapi.js";
 
 defineProps<{
   move: NamedAPIResource;

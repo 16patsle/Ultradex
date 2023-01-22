@@ -22,40 +22,20 @@
 const route = useRoute();
 const store = usePokemonStore();
 
-const error = ref("");
-
-const pokemon = computed(() => store.currentPokemon);
-const pokemonName = computed(() =>
-  pokemonNameLocalized(pokemon.value, store.language)
+const { pokemon, error } = await usePokemonSpeciesData(Number(route.params.id));
+const pokemonName = computed(
+  () => pokemon.value && pokemonNameLocalized(pokemon.value, store.language)
 );
 const idFormatted = computed(() => formatPokemonId(store.currentlyShowingId));
-
-const fetchPokemon = async () => {
-  if (!store.currentlyShowingId) {
-    return;
-  }
-  error.value = "";
-
-  try {
-    await store.fetchPokemonSpecies(store.currentlyShowingId);
-  } catch (err) {
-    error.value = handleError(err);
-  }
-};
-
-const data = await useAsyncData("pokemon/" + route.params.id, fetchPokemon);
-console.log(data);
 
 watch(
   () => route.params.id,
   (newId) => {
     store.currentlyShowingId = Number(newId);
-    fetchPokemon();
   }
 );
 
 store.currentlyShowingId = Number(route.params.id);
-fetchPokemon();
 </script>
 
 <style>

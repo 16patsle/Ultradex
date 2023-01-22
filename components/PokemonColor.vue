@@ -5,12 +5,12 @@
     :storeArray="store.pokemonColors"
     :fetch="store.fetchPokemonColor"
   >
-    {{ pokemonNameLocalized(resource, store.language) }}
+    {{ pokemonNameLocalized(resource as PokemonColor, store.language) }}
   </PokemonResource>
 </template>
 
 <script setup lang="ts">
-import type { NamedAPIResource } from "@16patsle/pokeapi.js";
+import type { NamedAPIResource, PokemonColor } from "@16patsle/pokeapi.js";
 
 defineProps<{ color: NamedAPIResource }>();
 

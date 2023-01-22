@@ -9,6 +9,7 @@
       <p>Color: <PokemonColor :color="pokemon.color" /></p>
       <hr />
       <PokemonVariety
+        v-if="pokemonDefaultVariety"
         :pokemonVarietyId="idFromUrl(pokemonDefaultVariety.pokemon.url)"
         isDefault
       />
@@ -54,19 +55,21 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import type { PokemonSpecies } from "~~/../pokeapi.js";
+
+const props = defineProps<{ pokemon: PokemonSpecies }>();
+
 const store = usePokemonStore();
 
-const pokemon = computed(() => store.currentPokemon);
-
 const pokemonGenusLocalized = computed(
-  () => findWithLanguage(pokemon.value.genera, store.language)?.genus ?? ""
+  () => findWithLanguage(props.pokemon.genera, store.language)?.genus ?? ""
 );
 const pokemonDefaultVariety = computed(() =>
-  getDefaultPokemonVariety(pokemon.value)
+  getDefaultPokemonVariety(props.pokemon)
 );
 const pokemonOtherVarieties = computed(() =>
-  getOtherPokemonVarieties(pokemon.value)
+  getOtherPokemonVarieties(props.pokemon)
 );
 </script>
 

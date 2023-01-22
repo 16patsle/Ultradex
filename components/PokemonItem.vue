@@ -1,19 +1,15 @@
 <template>
   <span class="link-wrapper is-inline-flex is-align-items-center">
-    <PokemonResource
-      :resource="item"
-      :storeArray="store.items"
-      :fetch="store.fetchItem"
-    >
+    <PokemonResource :resource="item" :fetch="store.fetchItem">
       <template v-slot="slotProps">
         <!-- sprites.default can be null (example #900 Kleavor) -->
         <PokemonIcon
-          v-if="slotProps.resource.sprites.default"
-          :src="slotProps.resource.sprites.default"
+          v-if="(slotProps.resource as Item).sprites.default"
+          :src="(slotProps.resource as Item).sprites.default"
           alt=""
           type="default"
         />
-        {{ pokemonNameLocalized(slotProps.resource, store.language) }}
+        {{ pokemonNameLocalized(slotProps.resource as Item, store.language) }}
       </template>
       <template #else>
         {{ item.name }}
@@ -23,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import type { NamedAPIResource } from "@16patsle/pokeapi.js";
+import type { Item, NamedAPIResource } from "@16patsle/pokeapi.js";
 
 defineProps<{
   item: NamedAPIResource;

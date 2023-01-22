@@ -1,6 +1,19 @@
 import { defineStore } from "pinia";
-import { getPokemonSpecies } from "@16patsle/pokeapi.js/src/getPokemon";
+import { getEvolutionChain } from "@16patsle/pokeapi.js/src/getEvolution";
+import { getVersion } from "@16patsle/pokeapi.js/src/getGame";
+import { getItem } from "@16patsle/pokeapi.js/src/getItem";
+import { getLanguage } from "@16patsle/pokeapi.js/src/getLanguage";
+import { getLocation, getRegion } from "@16patsle/pokeapi.js/src/getLocation";
+import { getMove } from "@16patsle/pokeapi.js/src/getMove";
 import {
+  getPokemon,
+  getPokemonColor,
+  getPokemonForm,
+  getPokemonSpecies,
+  getStat,
+  getType,
+} from "@16patsle/pokeapi.js/src/getPokemon";
+import type {
   PokemonSpecies,
   Pokemon,
   PokemonForm,
@@ -66,29 +79,16 @@ export const usePokemonStore = defineStore("pokemon", {
   actions: {
     async fetchPokemonSpecies(id: number | null) {
       if (id) {
-        try {
-          //
-          //const data = await useAsyncData("pokemon" + id, () =>
-          //  getPokemonSpecies(id, {})
-          //);
-          //if (data.data.value) {
-          //  this.pokemonSpecies[id] = data.data
-          //    .value as unknown as PokemonSpecies;
-          //}
-          const data = await getPokemonSpecies(id);
-          this.pokemonSpecies[id] = data;
-        } catch (e) {
-          throw new Error(
-            "Error here !!!" + (e as Error).message + (e as Error).stack
-          );
-        }
+        const data = await getPokemonSpecies(id);
+        this.pokemonSpecies[id] = data;
+        return data;
       } else {
-        //const data = await PokeApi.getPokemonSpecies("?limit=1000");
-        //this.pokemonList = data.results;
+        const data = await getPokemonSpecies("?limit=1000");
+        this.pokemonList = data.results;
       }
     },
     async fetchPokemonVariety(speciesId: number, varietyId: number) {
-      /* const data = await PokeApi.getPokemon(varietyId);
+      const data = await getPokemon(varietyId);
       if (this.pokemonSpecies[speciesId]) {
         for (const varietyIndex in this.pokemonSpecies[speciesId].varieties) {
           if (
@@ -96,9 +96,10 @@ export const usePokemonStore = defineStore("pokemon", {
               .name === data.name
           ) {
             this.pokemonVarieties[varietyId] = data;
+            return data;
           }
         }
-      } */
+      }
     },
     async fetchDefaultPokemonVariety(
       speciesId: number
@@ -111,9 +112,7 @@ export const usePokemonStore = defineStore("pokemon", {
         if (variety.is_default) {
           const varietyId = idFromUrl(variety.pokemon.url);
           if (varietyId) {
-            /* this.pokemonVarieties[varietyId] = await PokeApi.getPokemon(
-              varietyId
-            ); */
+            this.pokemonVarieties[varietyId] = await getPokemon(varietyId);
             return varietyId;
           }
         }
@@ -122,46 +121,53 @@ export const usePokemonStore = defineStore("pokemon", {
     async fetchPokemonVarietyForms(varietyId: number) {
       const variety = this.pokemonVarieties[varietyId];
       if (!variety) {
-        //throw new Error(`No variety loaded with id ${varietyId}`);
-        return;
+        throw new Error(`No variety loaded with id ${varietyId}`);
       }
+      const formValues: PokemonForm[] = [];
       for (const formIndex in variety.forms) {
         const form = variety.forms[Number(formIndex)];
         const formId = idFromUrl(form.url);
         if (formId) {
-          /* this.pokemonForms[formId] = await PokeApi.getPokemonForm(formId); */
+          this.pokemonForms[formId] = await getPokemonForm(formId);
+          formValues.push(this.pokemonForms[formId]);
         }
       }
+      return formValues;
     },
     async fetchPokemonEvolutionChain(chainId: number) {
-      /* const data = await PokeApi.getEvolutionChain(chainId);
-      this.pokemonEvolutionChains[chainId] = data; */
+      const data = await getEvolutionChain(chainId);
+      this.pokemonEvolutionChains[chainId] = data;
+      return data;
     },
     async fetchItem(itemId: number) {
-      /* const data = await PokeApi.getItem(itemId);
-      this.items[itemId] = data; */
+      const data = await getItem(itemId);
+      this.items[itemId] = data;
+      return data;
     },
     async fetchLocation(locationId: number) {
-      /* const data = await PokeApi.getLocation(locationId);
-      this.locations[locationId] = data; */
+      const data = await getLocation(locationId);
+      this.locations[locationId] = data;
+      return data;
     },
     async fetchMove(moveId: number) {
-      /* const data = await PokeApi.getMove(moveId);
-      this.moves[moveId] = data; */
+      const data = await getMove(moveId);
+      this.moves[moveId] = data;
+      return data;
     },
     async fetchRegion(regionId: number) {
-      /* const data = await PokeApi.getRegion(regionId);
-      this.regions[regionId] = data; */
+      const data = await getRegion(regionId);
+      this.regions[regionId] = data;
+      return data;
     },
     async fetchLanguages() {
-      /* const languages = (await PokeApi.getLanguage("")).results;
+      const languages = (await getLanguage("")).results;
       const promises = [];
 
       for (const languageIndex in languages) {
         const language = languages[Number(languageIndex)];
         const languageId = idFromUrl(language.url);
         if (languageId) {
-          promises[languageId] = PokeApi.getLanguage(languageId);
+          promises[languageId] = getLanguage(languageId);
         }
       }
 
@@ -183,35 +189,38 @@ export const usePokemonStore = defineStore("pokemon", {
           url: "/api/v2/language/9/",
         },
         name: "Simplified Chinese",
-      }); */
+      });
     },
     async fetchPokemonStats() {
-      /* const stats = (await PokeApi.getStat("")).results;
+      const stats = (await getStat("")).results;
       const promises = [];
 
       for (const statIndex in stats) {
         const stat = stats[Number(statIndex)];
         const statId = idFromUrl(stat.url);
         if (statId) {
-          promises[statId] = PokeApi.getStat(statId);
+          promises[statId] = getStat(statId);
         }
       }
 
       (await Promise.all(promises)).forEach((stat, i) => {
         this.stats[i] = stat;
-      }); */
+      });
     },
     async fetchPokemonType(typeId: number) {
-      /* const data = await PokeApi.getType(typeId);
-      this.types[typeId] = data; */
+      const data = await getType(typeId);
+      this.types[typeId] = data;
+      return data;
     },
     async fetchGameVersion(versionId: number) {
-      /* const data = await PokeApi.getVersion(versionId);
-      this.gameVersions[versionId] = data; */
+      const data = await getVersion(versionId);
+      this.gameVersions[versionId] = data;
+      return data;
     },
     async fetchPokemonColor(colorId: number) {
-      /* const data = await PokeApi.getPokemonColor(colorId);
-      this.pokemonColors[colorId] = data; */
+      const data = await getPokemonColor(colorId);
+      this.pokemonColors[colorId] = data;
+      return data;
     },
     async fetchPokemonWikiEntry(pokemonId: number) {
       /* const response = await fetch(`/data/${pokemonId}.json`);

@@ -2,12 +2,13 @@
   <div class="evolution-chain-wrapper">
     <PokemonResource
       :resource="chain"
-      :storeArray="store.pokemonEvolutionChains"
       :fetch="store.fetchPokemonEvolutionChain"
     >
       <template #default="{ resource }">
         <div class="notification">
-          <PokemonEvolutionStep :evolutionStep="resource.chain" />
+          <PokemonEvolutionStep
+            :evolutionStep="(resource as EvolutionChain).chain"
+          />
         </div>
       </template>
       <template #else>
@@ -24,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import type { APIResource } from "@16patsle/pokeapi.js";
+import type { APIResource, EvolutionChain } from "@16patsle/pokeapi.js";
 
 defineProps<{
   chain: APIResource;

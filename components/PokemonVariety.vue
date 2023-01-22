@@ -1,9 +1,9 @@
 <template>
   <div class="variety-wrapper">
     <o-loading :full-page="false" :active="!pokemon"></o-loading>
-    <o-notification v-if="error" variant="danger">
+    <o-notification v-if="error || errorForms" variant="danger">
       <h2 class="subtitle">ERROR!</h2>
-      <p>{{ error }}</p>
+      <p>{{ error || errorForms }}</p>
     </o-notification>
     <div v-if="!isDefault && pokemon" class="columns">
       <div class="column">
@@ -53,56 +53,38 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
-
 const props = withDefaults(
   defineProps<{
-    pokemonVarietyId: number;
+    pokemonVarietyId: number | undefined;
     isDefault?: boolean;
   }>(),
   { isDefault: false }
 );
 
-const emit = defineEmits(["loaded"]);
+//const emit = defineEmits(["loaded"]);
 
 const store = usePokemonStore();
 
-const error = ref("");
-
-const pokemon = computed(() => store.pokemonVarieties[props.pokemonVarietyId]);
+const { pokemon, error } = await usePokemonVarietyData(
+  store.currentlyShowingId,
+  props.pokemonVarietyId
+);
+const { pokemonForms, error: errorForms } = await usePokemonVarietyFormsData(
+  props.pokemonVarietyId
+);
 const defaultForm = computed(() =>
   pokemon.value ? getDefaultPokemonVarietyForm(pokemon.value) : undefined
 );
 
-const pokemonNameLocalized = computed(
-  () =>
-    pokemonNameLocalizedVariety(
-      store.currentPokemon,
-      pokemon.value,
-      store.language
-    ) ?? ""
+const pokemonNameLocalized = computed(() =>
+  pokemon.value
+    ? pokemonNameLocalizedVariety(
+        store.currentPokemon,
+        pokemon.value,
+        store.language
+      )
+    : undefined ?? ""
 );
-
-const fetchPokemonVariety = async () => {
-  if (!pokemon.value) {
-    error.value = "";
-
-    try {
-      await store.fetchPokemonVariety(
-        store.currentlyShowingId,
-        props.pokemonVarietyId
-      );
-      await store.fetchPokemonVarietyForms(props.pokemonVarietyId);
-      emit("loaded");
-    } catch (err) {
-      error.value = handleError(err);
-    }
-  } else {
-    emit("loaded");
-  }
-};
-
-fetchPokemonVariety();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

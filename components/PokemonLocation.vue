@@ -1,19 +1,17 @@
 <template>
   <span class="link-wrapper is-inline-flex is-align-items-center">
-    <PokemonResource
-      :resource="location"
-      :storeArray="store.locations"
-      :fetch="store.fetchLocation"
-    >
+    <PokemonResource :resource="location" :fetch="store.fetchLocation">
       <template #default="{ resource }">
-        {{ pokemonNameLocalized(resource, store.language) }}
+        {{ pokemonNameLocalized(resource as Location, store.language) }}
         <PokemonResource
           v-slot="slotProps"
-          :resource="resource.region"
-          :storeArray="store.regions"
+          :resource="(resource as Location).region"
           :fetch="store.fetchRegion"
         >
-          in {{ pokemonNameLocalized(slotProps.resource, store.language) }}
+          in
+          {{
+            pokemonNameLocalized(slotProps.resource as Region, store.language)
+          }}
         </PokemonResource>
       </template>
       <template #else>
@@ -24,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import type { NamedAPIResource } from "@16patsle/pokeapi.js";
+import type { Location, NamedAPIResource, Region } from "@16patsle/pokeapi.js";
 
 defineProps<{
   location: NamedAPIResource;
