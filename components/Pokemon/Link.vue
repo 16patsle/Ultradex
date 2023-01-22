@@ -61,7 +61,11 @@ const variety = computed(() => {
 });
 
 const fetchPokemonVariety = async () => {
-  if (!variety.value && !props.loadingPaused) {
+  if (
+    !variety.value &&
+    !props.loadingPaused &&
+    "requestIdleCallback" in globalThis
+  ) {
     error.value = "";
 
     try {

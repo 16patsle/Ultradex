@@ -13,6 +13,7 @@ module.exports = {
     "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
     "no-undef": "off",
+    "vue/multi-word-component-names": "off",
     "vue/require-default-prop": "error",
     "vue/require-prop-types": "error",
     "vue/attributes-order": "error",

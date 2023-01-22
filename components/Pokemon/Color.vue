@@ -2,7 +2,6 @@
   <PokemonResource
     v-slot="{ resource }"
     :resource="color"
-    :storeArray="store.pokemonColors"
     :fetch="store.fetchPokemonColor"
   >
     {{ pokemonNameLocalized(resource as PokemonColor, store.language) }}

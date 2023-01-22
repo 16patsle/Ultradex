@@ -11,7 +11,7 @@
         <li>
           <PokemonLink
             :pokemon="item"
-            :loadingPaused="!active"
+            :loadingPaused="true || active"
             showId
             class="is-justify-content-center"
           />
