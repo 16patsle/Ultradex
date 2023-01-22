@@ -29,7 +29,7 @@ const props = withDefaults(
 const store = usePokemonStore();
 
 const statId = computed(() => idFromUrl(props.stat?.stat.url));
-const { stats, error } = await usePokemonStatsData();
+const { stats } = await usePokemonStatsData();
 const statData = computed(() =>
   statId.value && stats.value ? stats.value[statId.value] : undefined
 );

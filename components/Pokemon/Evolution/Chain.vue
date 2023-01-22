@@ -1,38 +1,24 @@
 <template>
   <div class="evolution-chain-wrapper">
-    <PokemonResource
-      :resource="chain"
-      :fetch="store.fetchPokemonEvolutionChain"
-    >
-      <template #default="{ resource }">
-        <div class="notification">
-          <PokemonEvolutionStep
-            :evolutionStep="(resource as EvolutionChain).chain"
-          />
-        </div>
-      </template>
-      <template #else>
-        <o-loading :full-page="false" active></o-loading>
-      </template>
-      <template #error="{ error }">
-        ><o-notification variant="danger">
-          <h2 class="subtitle">ERROR!</h2>
-          <p>{{ error }}</p>
-        </o-notification>
-      </template>
-    </PokemonResource>
+    <div v-if="chainData" class="notification">
+      <PokemonEvolutionStep :evolutionStep="chainData.chain" />
+    </div>
+    <o-loading v-else :full-page="false" active></o-loading>
+    <o-notification v-if="error" variant="danger">
+      <h2 class="subtitle">ERROR!</h2>
+      <p>{{ error }}</p>
+    </o-notification>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { APIResource, EvolutionChain } from "@16patsle/pokeapi.js";
+import type { APIResource } from "@16patsle/pokeapi.js";
 
-defineProps<{
+const props = defineProps<{
   chain: APIResource;
 }>();
 
-const store = usePokemonStore();
+const { data: chainData, error } = await usePokemonEvolutionChainData(
+  idFromUrl(props.chain.url)
+);
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>

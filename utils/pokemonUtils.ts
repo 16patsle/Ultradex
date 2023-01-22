@@ -13,15 +13,15 @@ export function getOtherPokemonVarieties(pokemon: PokemonSpecies) {
 }
 
 export function getDefaultPokemonVarietyForm(
-  pokemonVariety: Pokemon
+  pokemonVariety: Pokemon,
+  pokemonForms: PokemonForm[]
 ): PokemonForm | undefined {
-  const store = usePokemonStore();
   const formResource = pokemonVariety.forms.find((form) => {
     const formId = idFromUrl(form?.url);
-    return formId ? store.pokemonForms[formId]?.is_default : false;
+    return formId ? pokemonForms[formId]?.is_default : false;
   });
   const formId = idFromUrl(formResource?.url);
-  return formId ? store.pokemonForms[formId] : undefined;
+  return formId ? pokemonForms[formId] : undefined;
 }
 
 type ResourceWithLanguage = { language: { name: string } };

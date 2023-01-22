@@ -31,63 +31,23 @@ const props = withDefaults(
   }
 );
 
-const store = usePokemonStore();
-
-const error = ref("");
-
 const pokemonId = computed(() => idFromUrl(props.pokemon.url));
-const pokemonName = computed(() => {
+const { data: variety } = await useDefaultPokemonVarietyData(pokemonId.value);
+const pokemonName = computed(async () => {
   if (!pokemonId.value) {
     return props.pokemon.name;
   }
-  const pokemon = store.pokemonSpecies[pokemonId.value];
-  if (pokemon) {
-    return pokemonNameLocalized(pokemon, store.language);
+  const { data: pokemon } = await usePokemonSpeciesData(pokemonId.value);
+  if (pokemon.value) {
+    return pokemonNameLocalized(pokemon.value);
   }
-  const name = store.pokemonList[pokemonId.value - 1]?.name;
+  const { pokemonList } = await usePokemonSpeciesListData();
+  const name = pokemonList.value?.results[pokemonId.value - 1]?.name;
   return name ? name.charAt(0).toUpperCase() + name.slice(1) : "";
 });
 const pokemonIdFormatted = computed(() =>
   pokemonId.value ? formatPokemonId(pokemonId.value) : "000"
 );
-const varietyId = ref<number | undefined>(undefined);
-
-const variety = computed(() => {
-  if (varietyId.value) {
-    return store.pokemonVarieties[varietyId.value];
-  } else {
-    return undefined;
-  }
-});
-
-const fetchPokemonVariety = async () => {
-  if (
-    !variety.value &&
-    !props.loadingPaused &&
-    "requestIdleCallback" in globalThis
-  ) {
-    error.value = "";
-
-    try {
-      requestIdleCallback(async () => {
-        if (pokemonId.value) {
-          varietyId.value = await store.fetchDefaultPokemonVariety(
-            pokemonId.value
-          );
-        }
-      });
-    } catch (err) {
-      error.value = handleError(err);
-    }
-  }
-};
-
-watch(props, () => {
-  varietyId.value = undefined;
-  fetchPokemonVariety();
-});
-
-fetchPokemonVariety();
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

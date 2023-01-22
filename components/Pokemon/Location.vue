@@ -1,34 +1,29 @@
 <template>
   <span class="link-wrapper is-inline-flex is-align-items-center">
-    <PokemonResource :resource="location" :fetch="store.fetchLocation">
-      <template #default="{ resource }">
-        {{ pokemonNameLocalized(resource as Location, store.language) }}
-        <PokemonResource
-          v-slot="slotProps"
-          :resource="(resource as Location).region"
-          :fetch="store.fetchRegion"
-        >
-          in
-          {{
-            pokemonNameLocalized(slotProps.resource as Region, store.language)
-          }}
-        </PokemonResource>
+    <template v-if="location">
+      {{ pokemonNameLocalized(location) }}
+      <template v-if="region">
+        in
+        {{ pokemonNameLocalized(region) }}
       </template>
-      <template #else>
-        {{ location.name }}
-      </template>
-    </PokemonResource>
+    </template>
+    <template v-else>
+      {{ props.location.name }}
+    </template>
   </span>
 </template>
 
 <script setup lang="ts">
-import type { Location, NamedAPIResource, Region } from "@16patsle/pokeapi.js";
+import type { NamedAPIResource } from "@16patsle/pokeapi.js";
 
-defineProps<{
+const props = defineProps<{
   location: NamedAPIResource;
 }>();
 
-const store = usePokemonStore();
+const { data: location } = await useLocationData(idFromUrl(props.location.url));
+const { data: region } = await useRegionData(
+  idFromUrl(location.value?.region.url)
+);
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

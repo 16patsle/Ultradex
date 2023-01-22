@@ -1,31 +1,29 @@
 <template>
   <span class="link-wrapper is-inline-flex is-align-items-center">
-    <PokemonResource :resource="item" :fetch="store.fetchItem">
-      <template v-slot="slotProps">
-        <!-- sprites.default can be null (example #900 Kleavor) -->
-        <PokemonIcon
-          v-if="(slotProps.resource as Item).sprites.default"
-          :src="(slotProps.resource as Item).sprites.default"
-          alt=""
-          type="default"
-        />
-        {{ pokemonNameLocalized(slotProps.resource as Item, store.language) }}
-      </template>
-      <template #else>
-        {{ item.name }}
-      </template>
-    </PokemonResource>
+    <template v-if="item">
+      <!-- sprites.default can be null (example #900 Kleavor) -->
+      <PokemonIcon
+        v-if="item.sprites.default"
+        :src="item.sprites.default"
+        alt=""
+        type="default"
+      />
+      {{ pokemonNameLocalized(item) }}
+    </template>
+    <template v-else>
+      {{ props.item.name }}
+    </template>
   </span>
 </template>
 
 <script setup lang="ts">
-import type { Item, NamedAPIResource } from "@16patsle/pokeapi.js";
+import type { NamedAPIResource } from "@16patsle/pokeapi.js";
 
-defineProps<{
+const props = defineProps<{
   item: NamedAPIResource;
 }>();
 
-const store = usePokemonStore();
+const { data: item } = await useItemData(idFromUrl(props.item.url));
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -4,7 +4,7 @@
     <ul>
       <RecycleScroller
         v-slot="{ item, active }"
-        :items="pokemonList ?? []"
+        :items="pokemonList?.results ?? []"
         :item-size="40"
         key-field="name"
       >
@@ -23,4 +23,8 @@
 
 <script setup lang="ts">
 const { pokemonList } = await usePokemonSpeciesListData();
+if (pokemonList.value) {
+  const store = usePokemonStore();
+  store.pokemonList = pokemonList.value.results;
+}
 </script>

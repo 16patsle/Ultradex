@@ -1,9 +1,9 @@
 <template>
   <option :value="language.name">
-    {{ nameInCurrentLanguage }}
-    <span v-if="showNameInSpecifiedLanguage"
-      >/ {{ nameInSpecifiedLanguage }}</span
-    >
+    {{ nameInCurrentLanguage
+    }}{{
+      showNameInSpecifiedLanguage ? ` / ${nameInSpecifiedLanguage}` : ""
+    }}
     ({{ language.name }})
   </option>
 </template>

@@ -10,6 +10,7 @@
       <hr />
       <PokemonVariety
         v-if="pokemonDefaultVariety"
+        :currentPokemon="pokemon"
         :pokemonVarietyId="idFromUrl(pokemonDefaultVariety.pokemon.url)"
         isDefault
       />
@@ -47,6 +48,7 @@
           <PokemonVariety
             v-for="pokemonVariety in pokemonOtherVarieties"
             :key="pokemonVariety.pokemon.name"
+            :currentPokemon="pokemon"
             :pokemonVarietyId="idFromUrl(pokemonVariety.pokemon.url)"
           />
         </div>

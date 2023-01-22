@@ -53,37 +53,42 @@
 </template>
 
 <script setup lang="ts">
+import { PokemonSpecies } from "@16patsle/pokeapi.js";
+
 const props = withDefaults(
   defineProps<{
+    currentPokemon: PokemonSpecies;
     pokemonVarietyId: number | undefined;
     isDefault?: boolean;
   }>(),
   { isDefault: false }
 );
 
-//const emit = defineEmits(["loaded"]);
-
 const store = usePokemonStore();
 
 const { pokemon, error } = await usePokemonVarietyData(
-  store.currentlyShowingId,
+  props.currentPokemon.id,
   props.pokemonVarietyId
 );
 const { pokemonForms, error: errorForms } = await usePokemonVarietyFormsData(
   props.pokemonVarietyId
 );
 const defaultForm = computed(() =>
-  pokemon.value ? getDefaultPokemonVarietyForm(pokemon.value) : undefined
+  pokemon.value && pokemonForms.value
+    ? getDefaultPokemonVarietyForm(pokemon.value, pokemonForms.value)
+    : undefined
 );
 
-const pokemonNameLocalized = computed(() =>
-  pokemon.value
-    ? pokemonNameLocalizedVariety(
-        store.currentPokemon,
-        pokemon.value,
-        store.language
-      )
-    : undefined ?? ""
+const pokemonNameLocalized = computed(
+  () =>
+    (pokemon.value && pokemonForms.value
+      ? pokemonNameLocalizedVariety(
+          props.currentPokemon,
+          pokemon.value,
+          pokemonForms.value,
+          store.language
+        )
+      : undefined) ?? ""
 );
 </script>
 

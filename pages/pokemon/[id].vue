@@ -21,20 +21,13 @@
 const route = useRoute();
 const store = usePokemonStore();
 
-const { pokemon, error } = await usePokemonSpeciesData(Number(route.params.id));
+const { data: pokemon, error } = await usePokemonSpeciesData(
+  Number(route.params.id)
+);
 const pokemonName = computed(
   () => pokemon.value && pokemonNameLocalized(pokemon.value, store.language)
 );
 const idFormatted = computed(() => formatPokemonId(store.currentlyShowingId));
-
-watch(
-  () => route.params.id,
-  (newId) => {
-    store.currentlyShowingId = Number(newId);
-  }
-);
-
-store.currentlyShowingId = Number(route.params.id);
 </script>
 
 <style>

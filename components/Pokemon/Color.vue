@@ -1,17 +1,13 @@
 <template>
-  <PokemonResource
-    v-slot="{ resource }"
-    :resource="color"
-    :fetch="store.fetchPokemonColor"
-  >
-    {{ pokemonNameLocalized(resource as PokemonColor, store.language) }}
-  </PokemonResource>
+  <template v-if="color">
+    {{ pokemonNameLocalized(color) }}
+  </template>
 </template>
 
 <script setup lang="ts">
-import type { NamedAPIResource, PokemonColor } from "@16patsle/pokeapi.js";
+import type { NamedAPIResource } from "@16patsle/pokeapi.js";
 
-defineProps<{ color: NamedAPIResource }>();
+const props = defineProps<{ color: NamedAPIResource }>();
 
-const store = usePokemonStore();
+const { data: color } = await usePokemonColorData(idFromUrl(props.color.url));
 </script>

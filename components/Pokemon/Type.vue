@@ -1,20 +1,18 @@
 <template>
   <div :class="type.name.toLowerCase()">
-    <PokemonResource :resource="type" :fetch="store.fetchPokemonType">
-      <template #default="{ resource }">
-        {{ pokemonNameLocalized(resource as Type, store.language) }}
-      </template>
-      <template #else>&nbsp;</template>
-    </PokemonResource>
+    <template v-if="type">
+      {{ pokemonNameLocalized(type) }}
+    </template>
+    <template v-else>&nbsp;</template>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { NamedAPIResource, Type } from "@16patsle/pokeapi.js";
+import type { NamedAPIResource } from "@16patsle/pokeapi.js";
 
-defineProps<{ type: NamedAPIResource }>();
+const props = defineProps<{ type: NamedAPIResource }>();
 
-const store = usePokemonStore();
+const { data: type } = await usePokemonTypeData(idFromUrl(props.type.url));
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

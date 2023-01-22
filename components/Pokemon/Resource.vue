@@ -1,24 +1,11 @@
 <template>
-  <slot v-if="resourceData" :resource="resourceData" />
+  <slot v-if="resource.data" :resource="resource.data" />
   <slot v-else name="else">&nbsp;</slot>
-  <slot v-if="error" name="error" :error="error" />
+  <slot v-if="resource.error" name="error" :error="resource.error" />
 </template>
 
 <script setup lang="ts">
-import type { APIResource } from "@16patsle/pokeapi.js";
-
-const props = defineProps<{
-  resource: APIResource;
-  fetch: (id: number) => Promise<unknown>;
+defineProps<{
+  resource: ReturnType<typeof useAsyncData>;
 }>();
-
-const resourceId = computed(() => idFromUrl(props.resource.url));
-
-const { data: resourceData, error } = await useAsyncData(
-  props.resource.url,
-  () =>
-    resourceId.value
-      ? props.fetch(resourceId.value)
-      : Promise.reject("Missing id")
-);
 </script>

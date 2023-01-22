@@ -22,6 +22,8 @@ const props = defineProps<{
 
 const store = usePokemonStore();
 
+const gameVersions = ref<Version[]>([]);
+
 const versionIds = computed(() =>
   props.versions.reduce((acc, version) => {
     const id = idFromUrl(version.url);
@@ -35,7 +37,7 @@ const versionIds = computed(() =>
 const versionData = computed(() =>
   versionIds.value
     ? versionIds.value.reduce((acc, versionId) => {
-        const version = store.gameVersions[versionId];
+        const version = gameVersions.value[versionId];
         if (version) {
           acc.push(version);
         }
@@ -65,9 +67,14 @@ const fetchVersions = async () => {
   ) {
     const promises = [];
     for (const versionId of versionIds.value) {
-      promises.push(store.fetchGameVersion(versionId));
+      promises.push(useGameVersionData(versionId));
     }
-    await Promise.all(promises);
+    (await Promise.all(promises)).forEach((version) => {
+      const data = version.data.value;
+      if (data) {
+        gameVersions.value[data?.id] = data;
+      }
+    });
   }
 };
 

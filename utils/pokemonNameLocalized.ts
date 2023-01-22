@@ -19,7 +19,7 @@ type ResourceWithNames = {
  */
 export const pokemonNameLocalized = <T extends ResourceWithNames>(
   pokemonSpecies: T,
-  language = "en",
+  language = usePokemonStore().language ?? "en",
   fallback: string | false = "en"
 ) =>
   pokemonSpecies
@@ -43,7 +43,8 @@ export const pokemonFormNameLocalized = (
 export const pokemonNameLocalizedVariety = (
   pokemonSpecies: PokemonSpecies,
   pokemonVariety: Pokemon,
-  language = "en"
+  pokemonForms: PokemonForm[],
+  language = usePokemonStore().language ?? "en"
 ) => {
   const localizedName = pokemonNameLocalized(pokemonSpecies);
   if (pokemonVariety.name === pokemonSpecies.name) {
@@ -51,7 +52,7 @@ export const pokemonNameLocalizedVariety = (
     return localizedName;
   } else {
     // Other variety, try finding the name in the form data
-    const form = getDefaultPokemonVarietyForm(pokemonVariety);
+    const form = getDefaultPokemonVarietyForm(pokemonVariety, pokemonForms);
     if (form) {
       // Try getting with the right language, but fall back on English
       let name = pokemonFormNameLocalized(form, language);

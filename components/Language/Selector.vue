@@ -25,9 +25,7 @@
 <script setup lang="ts">
 const store = usePokemonStore();
 
-const { data: languages, error } = await useAsyncData(`languages`, () =>
-  store.fetchLanguages()
-);
+const { data: languages, error } = await useLanguagesData();
 
 const filteredLanguages = computed(() =>
   (languages.value ?? [])
