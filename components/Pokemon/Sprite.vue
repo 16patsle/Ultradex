@@ -1,6 +1,6 @@
 <template>
   <div class="sprite-wrapper">
-    <nuxt-img
+    <img
       :src="sprite"
       :alt="capitalize(spriteName + ' sprite for ' + pokemonName)"
       loading="lazy"
