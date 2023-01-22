@@ -33,6 +33,7 @@
     "vue-virtual-scroller": "^2.0.0-alpha.1"
   },
   "devDependencies": {
+    "@nuxt/image-edge": "1.0.0-27840416.dc1ed65",
     "@rushstack/eslint-patch": "^1.2.0",
     "@types/fs-extra": "^11.0.1",
     "@types/jsdom": "^20.0.1",

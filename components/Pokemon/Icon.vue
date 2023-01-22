@@ -1,6 +1,6 @@
 <template>
   <div :class="type">
-    <img
+    <nuxt-img
       :src="src"
       :alt="alt"
       :loading="lazy ? 'lazy' : 'eager'"
