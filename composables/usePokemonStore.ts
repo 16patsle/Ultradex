@@ -83,8 +83,9 @@ export const usePokemonStore = defineStore("pokemon", {
         this.pokemonSpecies[id] = data;
         return data;
       } else {
-        const data = await getPokemonSpecies("?limit=1000");
+        const data = await getPokemonSpecies("?limit=2000");
         this.pokemonList = data.results;
+        return data.results;
       }
     },
     async fetchPokemonVariety(speciesId: number, varietyId: number) {

@@ -56,7 +56,6 @@ const toggleSidebar = (onlyIfMobile) => {
 };
 
 useRouter().beforeEach((to, from, next) => {
-  console.log(to, from);
   if (showSidebar.value) {
     toggleSidebar(true);
   }

@@ -4,7 +4,7 @@
     <ul>
       <RecycleScroller
         v-slot="{ item, active }"
-        :items="store.pokemonList"
+        :items="pokemonList ?? []"
         :item-size="40"
         key-field="name"
       >
@@ -22,22 +22,5 @@
 </template>
 
 <script setup lang="ts">
-const store = usePokemonStore();
-
-onMounted(() => {
-  store.fetchPokemonSpecies(null).then(() => {
-    /*let requests = [];
-      for (let pokemon of store.pokemonData) {
-        let pokemonId = /\S+\/([0-9]+)\//.exec(pokemon.url)[1];
-        if (!store.pokemon[pokemonId]) {
-          requests.push(
-            store.fetchPokemonSpecies({
-              id: pokemonId
-            })
-          );
-        }
-      }
-      return Promise.all(requests);*/
-  });
-});
+const { pokemonList } = await usePokemonSpeciesListData();
 </script>

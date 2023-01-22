@@ -7,6 +7,15 @@ export const usePokemonSpeciesData = async (id: number) => {
   return { pokemon, error };
 };
 
+export const usePokemonSpeciesListData = async () => {
+  const store = usePokemonStore();
+  const { data: pokemonList, error } = await useAsyncData(
+    `pokemon-species`,
+    () => store.fetchPokemonSpecies(null)
+  );
+  return { pokemonList, error };
+};
+
 export const usePokemonVarietyData = async (
   speciesId?: number,
   varietyId?: number
